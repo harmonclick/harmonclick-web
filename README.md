@@ -11,6 +11,3 @@ Abre `data/products.json`, busca el producto y cambia solo el número de `"preci
 - `css/estilos.css` — sistema de diseño · `js/` — lógica del sitio
 - `img/` — fotos optimizadas (WebP) · `fotos-pagina-harmon/` — fotos originales (no se tocan)
 - `herramientas/` — scripts para regenerar imágenes, cobertura y páginas de producto (opcionales)
-
-## Pendiente
-- Pegar el texto del Aviso de privacidad en `aviso-de-privacidad.html` (busca "PENDIENTE").
