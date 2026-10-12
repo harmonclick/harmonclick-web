@@ -477,6 +477,12 @@ body.con-barra { padding-bottom: 84px; }
 /* ---------- Texto legal ---------- */
 .texto-legal { max-width: var(--ancho-texto); padding-block: var(--s6) var(--s7); }
 .texto-legal h2 { font-size: var(--t-xl); margin-top: var(--s6); }
+.texto-legal ul { padding-left: 1.25rem; display: grid; gap: var(--s2); margin: 0 0 var(--s4); color: var(--tinta-2); }
+.texto-legal p { color: var(--tinta-2); }
+.texto-legal h2 { margin-bottom: var(--s3); }
+.legal-resumen { padding: var(--s5); background: var(--verde-50); border: 1px solid var(--verde-100); border-left: 4px solid var(--verde); border-radius: var(--r-md); }
+.legal-resumen h2 { margin-top: 0; }
+.legal-resumen ul { margin: 0; color: var(--tinta); }
 .pendiente { padding: var(--s5); border: 2px dashed var(--coral-700); background: var(--coral-50); border-radius: var(--r-md); color: #4a1626; }
 .pendiente strong { color: var(--coral-700); }
 
