@@ -1,0 +1,366 @@
+{
+  "_ayuda": "ARCHIVO ÚNICO DE PRECIOS Y TEXTOS. Para cambiar un precio busca el producto y edita solo el número de \"precio\" (sin $ ni comas). Guarda el archivo y listo: el diseño no se toca. Los precios \"antes\" son opcionales: borra la línea \"antes\" si no quieres mostrarlo.",
+  "sitio": {
+    "whatsapp": "523353310072",
+    "whatsappVisible": "+52 33 5331 0072",
+    "correo": "contacto.harmonclick@gmail.com",
+    "facebook": "https://www.facebook.com/HarmonClickMx",
+    "facebookTexto": "facebook.com/HarmonClickMx",
+    "horario": "Lunes a domingo, de 7:00 a 17:00 (hora de México)",
+    "dominio": "https://harmonclick.com",
+    "diasNormal": "3 a 7 días hábiles",
+    "diasLejanas": "3 a 9 días hábiles",
+    "zonasLejanas": [
+      "Baja California", "Baja California Sur", "Sonora", "Chihuahua", "Sinaloa", "Chiapas",
+      "Oaxaca", "Guerrero", "Tabasco", "Campeche", "Yucatán", "Quintana Roo"
+    ],
+    "leyenda": "Suplemento alimenticio. No es un medicamento. Consulta a un profesional de la salud antes de usarlo si tienes alguna condición médica, tomas medicamentos, o estás embarazada o en lactancia.",
+    "combo": {
+      "nombre": "Combo Ella & Él",
+      "productos": ["uro", "shilajit"],
+      "precio": 828
+    },
+    "notaCombinados": "¿Combinas productos? Tu asesora te confirmará si aplica un descuento especial 💚",
+    "mostrarTestimonios": false,
+    "testimonios": []
+  },
+  "productos": [
+    {
+      "id": "shilajit",
+      "nombre": "Shilajit Puro JBHK",
+      "nombreCorto": "Shilajit",
+      "pagina": "shilajit.html",
+      "categoria": "Resina pura del Himalaya",
+      "lema": "Resina pura del Himalaya con más de 85 minerales traza y ácido fúlvico.",
+      "beneficioCorto": "Resina pura del Himalaya para apoyar tu energía y tu vitalidad.",
+      "intro": "Resina pura de Shilajit del Himalaya, con más de 85 minerales traza y ácido fúlvico. Un ritual sencillo para acompañar tu energía y tu vitalidad de todos los días.",
+      "metaDescripcion": "Shilajit Puro JBHK: resina pura del Himalaya con más de 85 minerales traza y ácido fúlvico. 100% original y sellado. Envío gratis y pago contra entrega.",
+      "tema": {
+        "fondo": "linear-gradient(160deg, #1b120a 0%, #3a2411 55%, #6b4518 100%)",
+        "texto": "#f7e9cf",
+        "textoSuave": "#d9bd8a",
+        "acento": "#e3b04b"
+      },
+      "precios": {
+        "uno": { "precio": 449, "antes": 549 },
+        "duo": { "precio": 798 },
+        "trio": { "precio": 999 },
+        "cuatroMas": { "precio": 319, "mostrarTexto": true }
+      },
+      "beneficios": [
+        { "t": "Energía y vitalidad diaria", "d": "Apoya tu energía y tu vitalidad en el día a día." },
+        { "t": "Enfoque al trabajar y estudiar", "d": "Apoya tu enfoque cuando más lo necesitas." },
+        { "t": "Rendimiento físico", "d": "Apoya tu rendimiento, como complemento de tu rutina de ejercicio." },
+        { "t": "Defensas naturales", "d": "Apoya las defensas naturales de tu cuerpo." },
+        { "t": "Vitalidad de mujeres y hombres", "d": "Apoya la vitalidad de mujeres y hombres, también en la intimidad." }
+      ],
+      "notaBeneficios": "Es un complemento de un estilo de vida activo: no reemplaza el descanso, la buena alimentación ni el ejercicio.",
+      "uso": {
+        "titulo": "Cómo prepararlo",
+        "pasos": [
+          "Toma una porción: 250 mg de resina, la medida del palito de bambú.",
+          "Disuélvela en un vaso de agua tibia o leche tibia, no hirviendo. También puedes usar té o tu bebida favorita.",
+          "Revuelve unos segundos hasta que se disuelva.",
+          "Bébelo de 4 a 6 días por semana."
+        ],
+        "notas": [
+          "La bebida toma un color oscuro: es una señal normal de una resina auténtica.",
+          "No lo tomes en la noche ni antes de dormir.",
+          "Su sabor es natural y algo amargo; puedes suavizarlo con leche tibia, té o un toque de miel.",
+          "Guárdalo en un lugar fresco y seco."
+        ]
+      },
+      "paraQuien": {
+        "texto": "Mujeres y hombres adultos que quieren acompañar su energía, su enfoque y su rutina activa.",
+        "extra": "¡Ideal para compartir con tu pareja! 💑"
+      },
+      "composicion": {
+        "resumen": "Resina de Shilajit pura, sin aditivos ni rellenos.",
+        "filas": [
+          ["Contenido", "Frasco de 30 g de resina (no son cápsulas)"],
+          ["Porciones", "120 porciones de 250 mg"],
+          ["Ingrediente", "Resina de Shilajit purificada"],
+          ["Incluye", "Más de 85 minerales traza y ácido fúlvico"]
+        ],
+        "sellos": ["100% natural", "Sin aditivos ni rellenos", "Sin gluten", "Apto para veganos"]
+      },
+      "resultados": "Cada persona es distinta. Algunas personas notan más energía y enfoque en las primeras 1 a 2 semanas y, con el uso continuo, el aporte se siente más estable. La clave es la constancia, junto con buen descanso, buena alimentación y actividad física.",
+      "noRecomendado": {
+        "titulo": "No se recomienda para",
+        "items": [
+          "Niños",
+          "Mujeres embarazadas o en lactancia",
+          "Personas con alergia a alguno de sus componentes",
+          "Personas con hemocromatosis, anemia falciforme, talasemia o enfermedades del corazón"
+        ]
+      },
+      "fotos": [
+        { "src": "img/shilajit/shilajit-1-principal", "alt": "Frasco de Shilajit Puro JBHK sobre una roca, con el título Shilajit Puro, resina del Himalaya" },
+        { "src": "img/shilajit/shilajit-2-composicion-beneficios", "alt": "Composición y beneficios del Shilajit: ácido fúlvico, ácido húmico y minerales" },
+        { "src": "img/shilajit/shilajit-3-remolino", "alt": "Frasco de Shilajit rodeado de un remolino de bebida oscura" },
+        { "src": "img/shilajit/shilajit-4-te", "alt": "Frasco de Shilajit junto a una taza de té caliente" },
+        { "src": "img/shilajit/shilajit-5-etiqueta", "alt": "Etiqueta del frasco de Shilajit con la información por porción" }
+      ]
+    },
+    {
+      "id": "uro",
+      "nombre": "URO Probióticos Vaginales",
+      "nombreCorto": "URO",
+      "pagina": "uro.html",
+      "categoria": "Probiótico · Solo para mujeres",
+      "lema": "4 cepas de lactobacilos + prebióticos XOS, formulado para cuidar tu bienestar íntimo.",
+      "beneficioCorto": "Probiótico de 4 cepas, formulado para cuidar tu bienestar íntimo.",
+      "intro": "Probiótico con 4 cepas de lactobacilos y prebióticos XOS, formulado para cuidar tu bienestar íntimo. Combina ambos para ayudar a que predominen las bacterias benéficas sobre las no benéficas.",
+      "metaDescripcion": "URO Probióticos Vaginales, marca O Positiv: 4 cepas de lactobacilos + prebióticos XOS. 100% original y sellado. Envío gratis y pago contra entrega.",
+      "tema": {
+        "fondo": "linear-gradient(160deg, #fdf3ea 0%, #f9dfe0 55%, #e4ecd9 100%)",
+        "texto": "#a8214f",
+        "textoSuave": "#7b5560",
+        "acento": "#a8214f"
+      },
+      "precios": {
+        "uno": { "precio": 479, "antes": 585 },
+        "duo": { "precio": 798 },
+        "trio": { "precio": 999, "frase": "Tu rutina completa de 3 meses por solo $11 al día" },
+        "cuatroMas": { "precio": 319, "mostrarTexto": true }
+      },
+      "beneficios": [
+        { "t": "pH vaginal saludable", "d": "Formulado para apoyar niveles de pH vaginal saludables." },
+        { "t": "Olor vaginal saludable", "d": "Ayuda a mantener un olor vaginal saludable." },
+        { "t": "Equilibrio de levaduras", "d": "Contribuye al equilibrio de levaduras." },
+        { "t": "Flora vaginal saludable", "d": "Formulado para apoyar una flora vaginal saludable." }
+      ],
+      "notaBeneficios": "",
+      "uso": {
+        "titulo": "Cómo tomarlo",
+        "pasos": [
+          "Toma 2 cápsulas por vía oral, una vez al día.",
+          "Acompáñalas con un vaso de agua."
+        ],
+        "notas": [
+          "Guárdalo en un lugar fresco y seco. No necesita refrigeración."
+        ]
+      },
+      "paraQuien": {
+        "texto": "Solo para mujeres adultas, sin límite de edad, también en la menopausia.",
+        "extra": ""
+      },
+      "composicion": {
+        "resumen": "Por porción (2 cápsulas).",
+        "filas": [
+          ["Mezcla probiótica V-Positiv", "50 mg (5 mil millones de UFC)"],
+          ["Cepas", "Lactobacillus acidophilus, Lactobacillus rhamnosus, Lactobacillus reuteri y Lactobacillus fermentum"],
+          ["Prebióticos XOS (xilooligosacáridos)", "400 mg"],
+          ["Otros ingredientes", "Maltodextrina, celulosa (cápsula vegetal) y color natural"],
+          ["Contenido", "60 cápsulas veganas · 30 porciones · rinde 30 días (1 mes)"]
+        ],
+        "sellos": ["100% vegano", "Sin gluten", "Libre de transgénicos"]
+      },
+      "resultados": "Cada cuerpo tiene su propio ritmo: algunas mujeres notan cambios en las primeras semanas y en otras el proceso es más gradual. La clave es la constancia.",
+      "noRecomendado": null,
+      "fotos": [
+        { "src": "img/uro/uro-1-wow", "alt": "Cápsulas rosas de URO saliendo de un frasco, entre listones y fondo en tonos crema" },
+        { "src": "img/uro/uro-2-beneficios", "alt": "Frasco de URO Probiótico Vaginal con sus cuatro beneficios: pH, olor, levaduras y flora" },
+        { "src": "img/uro/uro-3-ingredientes-beneficios", "alt": "Qué hay en cada dosis de URO: 5 mil millones de UFC y 400 mg de prebiótico XOS" },
+        { "src": "img/uro/uro-4-etiqueta", "alt": "Etiqueta del frasco de URO con la información por porción" },
+        { "src": "img/uro/uro-5-relajada", "alt": "Mujer sonriendo en una terraza con el frasco de URO sobre la mesa" }
+      ]
+    },
+    {
+      "id": "ashwagandha",
+      "nombre": "Ashwagandha Extra Fuerza",
+      "nombreCorto": "Ashwagandha",
+      "pagina": "ashwagandha.html",
+      "categoria": "Adaptógeno · Solo adultos 18+",
+      "lema": "Fórmula con 5 ingredientes naturales para acompañar tu día a día.",
+      "beneficioCorto": "Ayuda a sobrellevar el estrés diario con 5 ingredientes naturales.",
+      "intro": "La Ashwagandha, también conocida como ginseng indio, es una planta usada desde hace siglos en la medicina ayurvédica. Es un adaptógeno natural: ayuda a tu cuerpo a adaptarse al estrés físico y mental. Esta fórmula la combina con cúrcuma, rhodiola rosea, jengibre y pimienta negra, que ayuda a su absorción.",
+      "metaDescripcion": "Ashwagandha Extra Fuerza: fórmula avanzada con 5 ingredientes naturales, solo para adultos 18+. 100% original y sellada. Envío gratis y pago contra entrega.",
+      "tema": {
+        "fondo": "linear-gradient(160deg, #0d0a07 0%, #2a0d0b 58%, #5a1612 100%)",
+        "texto": "#f6e6c4",
+        "textoSuave": "#d6b678",
+        "acento": "#d9ab4a"
+      },
+      "precios": {
+        "uno": { "precio": 485, "antes": 585 },
+        "duo": { "precio": 830, "frase": "Tu rutina de 2 meses" },
+        "trio": { "precio": 1098 },
+        "cuatroMas": { "precio": 339, "mostrarTexto": true }
+      },
+      "beneficios": [
+        { "t": "Estrés diario", "d": "Ayuda a sobrellevar el estrés diario." },
+        { "t": "Energía", "d": "Apoya tu energía del día a día." },
+        { "t": "Enfoque y concentración", "d": "Apoya tu enfoque y concentración." },
+        { "t": "Descanso", "d": "Acompaña tu rutina de descanso." },
+        { "t": "Defensas naturales", "d": "Contribuye a las defensas naturales de tu cuerpo." },
+        { "t": "Rendimiento físico", "d": "Apoya tu rendimiento físico." }
+      ],
+      "notaBeneficios": "",
+      "uso": {
+        "titulo": "Cómo tomarla",
+        "pasos": [
+          "Toma 2 cápsulas al día, de preferencia con alimentos.",
+          "Por la mañana te apoya con energía y enfoque; por la noche acompaña tu descanso y relajación.",
+          "También puedes dividir la dosis: 1 cápsula en la mañana y 1 en la noche."
+        ],
+        "notas": [
+          "No excedas la dosis recomendada.",
+          "Muchas personas notan los beneficios con 2 a 4 semanas de uso constante.",
+          "Se recomienda tomarla de 8 a 12 semanas seguidas y descansar 1 a 2 semanas cada 2 o 3 meses.",
+          "Evita combinarla con alcohol o con estimulantes fuertes."
+        ]
+      },
+      "paraQuien": {
+        "texto": "Solo para adultos mayores de 18 años, mujeres y hombres. No es para niños ni menores de edad. No se recomienda durante el embarazo ni la lactancia.",
+        "extra": ""
+      },
+      "composicion": {
+        "resumen": "Por porción (2 cápsulas).",
+        "filas": [
+          ["Ashwagandha", "400 mg"],
+          ["Cúrcuma", "46 mg"],
+          ["Rhodiola rosea", "25 mg"],
+          ["Jengibre", "25 mg"],
+          ["Pimienta negra", "15 mg (ayuda a la absorción)"],
+          ["Contenido", "60 cápsulas vegetales de pululano orgánico · rinde 1 mes"]
+        ],
+        "sellos": ["Sin gluten", "Libre de OGM", "Hecha en instalaciones con certificación GMP"]
+      },
+      "resultados": "Cada persona responde a su propio ritmo. La constancia es lo que más cuenta.",
+      "noRecomendado": {
+        "titulo": "No se recomienda con",
+        "items": [
+          "Hipertiroidismo",
+          "Enfermedad autoinmune",
+          "Medicamentos inmunosupresores",
+          "Embarazo o lactancia"
+        ]
+      },
+      "fotos": [
+        { "src": "img/ashwagandha/ashwagandha-1-principal", "alt": "Frasco de Ashwagandha Extra Fuerza sobre fondo negro con detalles dorados" },
+        { "src": "img/ashwagandha/ashwagandha-2-ingredientes", "alt": "Los 5 ingredientes naturales de la fórmula: ashwagandha, cúrcuma, rhodiola, jengibre y pimienta negra" },
+        { "src": "img/ashwagandha/ashwagandha-3-etiqueta", "alt": "Frasco de Ashwagandha mostrando su etiqueta de información" },
+        { "src": "img/ashwagandha/ashwagandha-4-pareja", "alt": "Pareja de adultos relajada en casa por la noche, con el frasco de Ashwagandha en primer plano" },
+        { "src": "img/ashwagandha/ashwagandha-5-rutina", "alt": "Frasco de Ashwagandha junto a un vaso de agua y cápsulas, como parte de una rutina diaria" }
+      ]
+    },
+    {
+      "id": "nad",
+      "nombre": "NAD+ Liposomal con Resveratrol",
+      "nombreCorto": "NAD+",
+      "pagina": "nad.html",
+      "categoria": "Fórmula liposomal",
+      "lema": "Energía que nace en tus células.",
+      "beneficioCorto": "Precursor de NAD+ con quercetina y resveratrol, para tu energía celular.",
+      "intro": "Fórmula liposomal con Nicotinamida Ribósido, un precursor de NAD+, junto con Quercetina y Trans-Resveratrol. Los ingredientes van protegidos en pequeñas capas de grasa natural, que ayudan a que tu cuerpo los aproveche mejor.",
+      "metaDescripcion": "NAD+ Liposomal con Resveratrol: precursor de NAD+ con quercetina y trans-resveratrol. 100% original y sellado. Envío gratis y pago contra entrega.",
+      "tema": {
+        "fondo": "linear-gradient(135deg, #ffe0ee 0%, #ffeedd 32%, #dcf6f0 66%, #e9dfff 100%)",
+        "texto": "#3b1a5a",
+        "textoSuave": "#6a4a82",
+        "acento": "#8a3fb5"
+      },
+      "precios": {
+        "uno": { "precio": 690 },
+        "duo": { "precio": 1050 },
+        "trio": { "precio": 1350 },
+        "cuatroMas": { "precio": 413, "mostrarTexto": false }
+      },
+      "beneficios": [
+        { "t": "Energía celular y vitalidad diaria", "d": "Apoya tu energía y tu vitalidad de todos los días." },
+        { "t": "Metabolismo", "d": "Acompaña el metabolismo de tu cuerpo." },
+        { "t": "Protección antioxidante", "d": "El resveratrol y la quercetina aportan protección antioxidante." },
+        { "t": "Defensas naturales", "d": "Apoya las defensas naturales de tu cuerpo." },
+        { "t": "Bienestar con los años", "d": "Acompaña tu bienestar a lo largo de los años." }
+      ],
+      "notaBeneficios": "",
+      "uso": {
+        "titulo": "Cómo tomarlo",
+        "pasos": [
+          "Toma 2 cápsulas al día, de preferencia con alimentos, o como te lo indique tu profesional de la salud.",
+          "Puedes tomarlas juntas, o una en la mañana y otra en la comida."
+        ],
+        "notas": []
+      },
+      "paraQuien": {
+        "texto": "Mujeres y hombres adultos (mayores de 18 años).",
+        "extra": ""
+      },
+      "composicion": {
+        "resumen": "Por porción (2 cápsulas): fórmula total de 900 mg.",
+        "filas": [
+          ["Nicotinamida Ribósido (malato de hidrógeno), precursor de NAD+", "500 mg"],
+          ["Quercetina Phytosome", "250 mg"],
+          ["Trans-Resveratrol", "150 mg"],
+          ["Contenido", "80 cápsulas · 2 cápsulas por porción · 40 porciones (aprox. 40 días)"]
+        ],
+        "sellos": [
+          "Fabricado en planta con Buenas Prácticas de Manufactura (GMP)",
+          "Probado por laboratorio independiente",
+          "Sin transgénicos",
+          "Sin fragancias sintéticas",
+          "Libre de gluten, lácteos, soya, huevo y nueces"
+        ]
+      },
+      "resultados": "Cada cuerpo es diferente: muchas personas notan más energía en las primeras semanas.",
+      "noRecomendado": {
+        "titulo": "No se recomienda con",
+        "items": [
+          "Anticoagulantes o antiagregantes (por ejemplo warfarina, clopidogrel o aspirina diaria indicada por el médico)",
+          "Cáncer sensible a hormonas",
+          "Trasplante de órgano o medicamentos inmunosupresores",
+          "Una cirugía programada en las próximas semanas"
+        ]
+      },
+      "fotos": [
+        { "src": "img/nad/nad-1-portada", "alt": "Frasco de NAD+ Liposomal con Resveratrol entre salpicaduras de colores, con el lema Energía que nace en tus células" },
+        { "src": "img/nad/nad-2-informacion", "alt": "Ilustración de dos personas con energía, junto al frasco de NAD+ Liposomal" },
+        { "src": "img/nad/nad-3-beneficios", "alt": "Razones para sumar NAD+ Liposomal a tu rutina y sus tres ingredientes" },
+        { "src": "img/nad/nad-4-etiqueta", "alt": "Frasco de NAD+ Liposomal mostrando la tabla de información por porción" }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "p": "¿Tengo que pagar algo por adelantado?",
+      "r": "No. Con el pago contra entrega no pagas nada por adelantado: ni depósito, ni tarjeta. Pagas en efectivo al repartidor cuando recibes tu pedido, y nunca te pedimos datos bancarios ni de tarjeta."
+    },
+    {
+      "p": "¿Llegan a mi zona?",
+      "r": "Escribe tu código postal en el revisor «¿Llegamos a tu zona?» y te respondemos al instante. Si en tu zona todavía no hay pago contra entrega, también te podemos enviar con pago anticipado, con número de guía y link de rastreo."
+    },
+    {
+      "p": "¿Cuánto tarda en llegar mi pedido?",
+      "r": "Entre 3 y 7 días hábiles; en zonas lejanas, entre 3 y 9 días hábiles. Cuando el almacén procesa tu pedido te enviamos tu número de pedido por WhatsApp (no es inmediato). El repartidor te llama antes para coordinar la entrega."
+    },
+    {
+      "p": "¿Los productos son originales?",
+      "r": "Sí. Todos nuestros productos son 100% originales y llegan sellados."
+    },
+    {
+      "p": "¿Cómo hago mi pedido?",
+      "r": "Elige tu producto y tu paquete, agrégalo al carrito, llena tus datos de entrega y confirma por WhatsApp. Una asesora revisa tu pedido y te confirma los detalles. También puedes pedir directo por WhatsApp desde cualquier producto."
+    },
+    {
+      "p": "¿Puedo pagar con tarjeta?",
+      "r": "Con el pago contra entrega, solo en efectivo al recibir; no se pide tarjeta ni depósito por adelantado."
+    },
+    {
+      "p": "¿El repartidor lleva cambio?",
+      "r": "Lo confirmas cuando el repartidor te llame para coordinar la entrega. Es recomendable tener el efectivo lo más cercano posible al total de tu pedido."
+    },
+    {
+      "p": "¿El envío tiene costo?",
+      "r": "No. El envío es gratis en todos los pedidos y no hay pedido mínimo: puedes comprar desde 1 frasco."
+    },
+    {
+      "p": "¿Cuál es el horario de atención?",
+      "r": "Una asesora te atiende por WhatsApp de lunes a domingo, de 7:00 a 17:00 (hora de México)."
+    },
+    {
+      "p": "¿Los productos son para niños?",
+      "r": "No. Ninguno de nuestros productos es para niños. Cada producto indica a quién va dirigido y cuándo no se recomienda."
+    }
+  ]
+}
