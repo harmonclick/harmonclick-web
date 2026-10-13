@@ -41,6 +41,7 @@
     candado: I('<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),
     reloj: I('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
     correo: I('<rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M4 7.5l8 6 8-6"/>'),
+    telefono: I('<path d="M5 4.5h3.5l1.6 4-2 1.3a11 11 0 0 0 5.1 5.1l1.3-2 4 1.6V18a2 2 0 0 1-2 2A14.5 14.5 0 0 1 3 6.5a2 2 0 0 1 2-2z"/>'),
     facebook: I('<path d="M14 8.5h2.5V5H14a3.5 3.5 0 0 0-3.5 3.5V11H8v3.5h2.5V21H14v-6.5h2.4l.6-3.5H14V8.8c0-.2.1-.3.3-.3z"/>'),
     bolsa: I('<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>'),
     wa: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.47 1.07 2.88 1.21 3.08.15.2 2.1 3.2 5.08 4.49.7.3 1.26.49 1.7.63.72.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.78h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.89 9.89-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 7c0 5.45-4.44 9.88-9.88 9.88M20.46 3.49A11.8 11.8 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.9 11.9 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.42"/></svg>'
@@ -253,7 +254,7 @@
         const msg = `¡Hola! Mi código postal es ${cp5} y vi que no tiene pago contra entrega. Quiero información del envío con pago anticipado.`;
         pintar("aviso--info", "info", "Por ahora el pago contra entrega no llega a tu zona",
           `<p>Nuestra cobertura sigue creciendo. Mientras tanto, sí te lo enviamos con <strong style="display:inline;font-size:inherit">pago anticipado 100% confiable</strong>: te damos tu número de guía y tu link de rastreo, y el repartidor siempre te llama antes de entregar. El envío sigue siendo gratis.</p>
-           <a class="btn btn--sm" href="${HC.waUrl(datos, msg)}" target="_blank" rel="noopener"><span data-i="wa"></span>Escríbenos por WhatsApp</a>`);
+           <a class="btn btn--wa" href="${HC.waUrl(datos, msg)}" target="_blank" rel="noopener"><span data-i="wa"></span>Escríbenos por WhatsApp</a>`);
       }
     };
     const procesar = (forzar) => {
@@ -321,10 +322,10 @@
             <div>
               <h2>Contacto</h2>
               <ul>
-                <li><a href="https://wa.me/${s.whatsapp}" target="_blank" rel="noopener">WhatsApp ${s.whatsappVisible}</a></li>
-                <li><a href="mailto:${s.correo}">${s.correo}</a></li>
-                <li><a href="${s.facebook}" target="_blank" rel="noopener">${s.facebookTexto}</a></li>
-                <li>${s.horario}</li>
+                <li class="pie__contacto"><span class="pie__ico">${HC.icono.telefono}</span><a href="https://wa.me/${s.whatsapp}" target="_blank" rel="noopener">WhatsApp ${s.whatsappVisible}</a></li>
+                <li class="pie__contacto"><span class="pie__ico">${HC.icono.correo}</span><a href="mailto:${s.correo}">${s.correo}</a></li>
+                <li class="pie__contacto"><span class="pie__ico">${HC.icono.facebook}</span><a href="${s.facebook}" target="_blank" rel="noopener">${s.facebookTexto}</a></li>
+                <li class="pie__horario">${s.horario}</li>
               </ul>
             </div>
             <div>
@@ -340,6 +341,7 @@
           <div class="pie__legal">
             <p>${s.leyenda}</p>
             <p>© Harmon &amp; Click. Tienda 100% en línea. Todos los derechos reservados.</p>
+            <p class="pie__seguro">🔒 Sitio seguro · Conexión cifrada (HTTPS)</p>
           </div>
         </div>
       </footer>`;
@@ -408,11 +410,14 @@
   /* ---------- Acordeón ---------- */
   HC.montarAcordeon = (contenedor, items) => {
     contenedor.className = "acordeon";
-    contenedor.innerHTML = items.map((it, i) => `
+    const fila = (it, i) => `
       <div class="acordeon__item">
         <h3 style="margin:0;font-size:inherit"><button class="acordeon__boton" type="button" aria-expanded="false" aria-controls="faq-p${i}" id="faq-b${i}">${it.p}${HC.icono.mas}</button></h3>
         <div class="acordeon__panel" id="faq-p${i}" role="region" aria-labelledby="faq-b${i}"><div><p>${it.r}</p></div></div>
-      </div>`).join("");
+      </div>`;
+    const mitad = Math.ceil(items.length / 2);   // en escritorio: dos columnas independientes
+    contenedor.innerHTML = `<div class="acordeon__col">${items.slice(0, mitad).map((it, i) => fila(it, i)).join("")}</div>
+      <div class="acordeon__col">${items.slice(mitad).map((it, i) => fila(it, i + mitad)).join("")}</div>`;
     contenedor.addEventListener("click", (e) => {
       const b = e.target.closest(".acordeon__boton");
       if (!b) return;

@@ -90,7 +90,7 @@
             ${textoCuatro}
             <div class="pp-botones">
               <button class="btn btn--compra btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
-              <a class="btn btn--secundario btn--bloque" id="btn-wa" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
+              <a class="btn btn--wa btn--bloque" id="btn-wa" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
             </div>
             <ul class="pp-envio">
               <li>${HC.icono.camion}Envío gratis en todos tus pedidos</li>
