@@ -7,21 +7,35 @@
     // Botones generales de WhatsApp
     HC.$$("[data-wa-general]").forEach((a) => (a.href = HC.waUrl(datos, "¡Hola! Quiero información sobre sus productos.")));
 
-    // Collage del héroe (foto 1 de cada producto)
-    HC.$("#collage").innerHTML = prods.map((p) =>
-      `<a href="${p.pagina}" aria-label="Ver ${p.nombre}">${HC.foto(p, 0, { eager: true, sizes: "(min-width:900px) 150px, 44vw" })}</a>`).join("");
+    // Imagen del héroe: prueba la versión optimizada y, si no existe, el original.
+    // Si ninguna existe, la columna derecha queda oculta y el texto se centra.
+    const heroe = HC.$("#heroe"), fig = HC.$("#heroe-imagen");
+    const rutas = ["img/hero/hero-entrega.webp", "fotos-pagina-harmon/hero/hero-entrega.jpg"];
+    const probar = (i) => {
+      if (i >= rutas.length) return;
+      const im = new Image();
+      im.onload = () => {
+        im.alt = "Recibe tu pedido de Harmon & Click en la puerta de tu casa";
+        im.decoding = "async"; im.width = 960; im.height = 1200;
+        fig.appendChild(im);
+        heroe.classList.add("heroe--con-imagen");
+      };
+      im.onerror = () => probar(i + 1);
+      im.src = rutas[i];
+    };
+    probar(0);
 
     // Tarjetas de producto
     HC.$("#rejilla").innerHTML = prods.map((p) => {
       const u = p.precios.uno;
       return `<a class="tarjeta revelar" href="${p.pagina}">
-        ${HC.foto(p, 0)}
+        ${HC.fotoTarjeta(p, 0)}
         <div class="tarjeta__cuerpo">
           <span class="tarjeta__tipo">${p.categoria}</span>
           <h3>${p.nombre}</h3>
           <p class="tarjeta__beneficio">${p.beneficioCorto}</p>
           <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">${HC.fmt(u.precio)}</span>${u.antes ? `<span class="precio-antes"><span class="solo-lectores">Antes </span>${HC.fmt(u.antes)}</span>` : ""}</div>
-          <span class="btn btn--secundario btn--sm btn--bloque">Ver producto</span>
+          <span class="btn btn--secundario btn--bloque">Ver producto</span>
         </div></a>`;
     }).join("");
     HC.revelar(HC.$("#rejilla"));

@@ -23,7 +23,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Plus+Jakarta+Sans:wght@400..600&amp;display=swap">
   <link rel="stylesheet" href="css/estilos.css">
   <link rel="preload" href="data/products.json" as="fetch" crossorigin>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Harmon & Click","url":"https://harmonclick.com/","logo":"https://harmonclick.com/img/favicon-192.png","email":"contacto.harmonclick@gmail.com","telephone":"+52 33 5331 0072","sameAs":["https://www.facebook.com/HarmonClickMx"]}</script>
@@ -33,11 +33,11 @@
   <div data-cabecera></div>
 
   <main id="contenido">
-    <section class="heroe" aria-labelledby="titulo-heroe">
+    <section class="heroe" id="heroe" aria-labelledby="titulo-heroe">
       <div class="contenedor heroe__grid">
         <div class="heroe__texto revelar">
-          <span class="etiqueta-seccion">Tienda 100% en línea</span>
-          <h1 id="titulo-heroe">Recibe primero. <em>Paga cuando llegue</em> a tu puerta.</h1>
+          <span class="etiqueta-seccion" data-c="verde">Tienda 100% en línea</span>
+          <h1 id="titulo-heroe">Recibe primero. <span class="texto-degradado">Paga cuando llegue</span> a tu puerta.</h1>
           <p>Suplementos de bienestar 100% originales y sellados. Haz tu pedido en línea, te lo llevamos sin costo de envío y pagas en efectivo al repartidor.</p>
           <div class="heroe__botones">
             <a class="btn" href="#productos">Ver productos</a>
@@ -45,10 +45,9 @@
           </div>
           <p class="heroe__nota">Atención por WhatsApp de lunes a domingo, de 7:00 a 17:00 (hora de México).</p>
         </div>
-        <div class="collage" id="collage" aria-label="Nuestros productos">
-          <div class="esqueleto" style="aspect-ratio:3/4"></div><div class="esqueleto" style="aspect-ratio:3/4"></div>
-          <div class="esqueleto" style="aspect-ratio:3/4"></div><div class="esqueleto" style="aspect-ratio:3/4"></div>
-        </div>
+        <!-- Imagen del héroe: se carga sola si existe fotos-pagina-harmon/hero/hero-entrega.jpg.
+             Mientras el archivo no exista, esta columna se oculta y el texto queda centrado. -->
+        <figure class="heroe__imagen" id="heroe-imagen"></figure>
       </div>
     </section>
 
@@ -59,18 +58,18 @@
     <section class="confianza" aria-label="Por qué comprar con nosotros">
       <div class="contenedor">
         <ul class="confianza__lista">
-          <li class="confianza__item revelar"><span class="confianza__icono" data-i="efectivo"></span>Pago contra entrega</li>
-          <li class="confianza__item revelar"><span class="confianza__icono" data-i="camion"></span>Envío gratis</li>
-          <li class="confianza__item revelar"><span class="confianza__icono" data-i="escudo"></span>Productos 100% originales y sellados</li>
-          <li class="confianza__item revelar"><span class="confianza__icono" data-i="chat"></span>Atención por WhatsApp</li>
+          <li class="confianza__item revelar"><span class="confianza__icono" data-i="efectivo"></span><span>Pago contra entrega</span></li>
+          <li class="confianza__item revelar"><span class="confianza__icono" data-i="camion"></span><span>Envío gratis</span></li>
+          <li class="confianza__item revelar"><span class="confianza__icono" data-i="escudo"></span><span>Productos 100% originales y sellados</span></li>
+          <li class="confianza__item revelar"><span class="confianza__icono" data-i="chat"></span><span>Atención por WhatsApp</span></li>
         </ul>
       </div>
     </section>
 
-    <section class="seccion" id="productos" aria-labelledby="titulo-productos">
+    <section class="seccion seccion--alt" id="productos" aria-labelledby="titulo-productos">
       <div class="contenedor">
         <div class="encabezado-seccion revelar">
-          <span class="etiqueta-seccion">Productos</span>
+          <span class="etiqueta-seccion" data-c="amarillo">Productos</span>
           <h2 id="titulo-productos">Elige lo que tu rutina necesita</h2>
           <p>Originales, sellados y con envío gratis. Compra desde 1 frasco.</p>
         </div>
@@ -81,10 +80,10 @@
       </div>
     </section>
 
-    <section class="seccion seccion--crema" id="como-funciona" aria-labelledby="titulo-como">
+    <section class="seccion" id="como-funciona" aria-labelledby="titulo-como">
       <div class="contenedor">
         <div class="encabezado-seccion revelar">
-          <span class="etiqueta-seccion">Cómo comprar</span>
+          <span class="etiqueta-seccion" data-c="naranja">Cómo comprar</span>
           <h2 id="titulo-como">Comprar es fácil y sin riesgos</h2>
           <p>Cuatro pasos y sin pagar nada por adelantado.</p>
         </div>
@@ -100,28 +99,30 @@
     <!-- TESTIMONIOS: oculta hasta que tengas reseñas reales.
          Para activarla: en data/products.json pon "mostrarTestimonios": true y agrega tus reseñas
          reales en "testimonios", con este formato: { "texto": "…", "nombre": "María, Guadalajara" } -->
-    <section class="seccion" id="testimonios" aria-labelledby="titulo-testimonios" hidden>
+    <section class="seccion seccion--alt" id="testimonios" aria-labelledby="titulo-testimonios" hidden>
       <div class="contenedor">
-        <div class="encabezado-seccion"><span class="etiqueta-seccion">Testimonios</span><h2 id="titulo-testimonios">Lo que dicen nuestros clientes</h2></div>
+        <div class="encabezado-seccion"><span class="etiqueta-seccion" data-c="verde">Testimonios</span><h2 id="titulo-testimonios">Lo que dicen nuestros clientes</h2></div>
         <div class="testimonios__rejilla" id="testimonios-lista"></div>
       </div>
     </section>
 
-    <section class="seccion" id="faq" aria-labelledby="titulo-faq">
+    <section class="seccion seccion--alt" id="faq" aria-labelledby="titulo-faq">
       <div class="contenedor">
         <div class="encabezado-seccion revelar">
-          <span class="etiqueta-seccion">Preguntas frecuentes</span>
+          <span class="etiqueta-seccion" data-c="rosa">Preguntas frecuentes</span>
           <h2 id="titulo-faq">Resolvemos tus dudas</h2>
         </div>
         <div id="acordeon"></div>
       </div>
     </section>
 
-    <section class="contenedor" aria-labelledby="titulo-banda">
+    <section class="seccion" aria-labelledby="titulo-banda">
+      <div class="contenedor">
       <div class="banda sobre-oscuro revelar">
         <h2 id="titulo-banda">¿Prefieres pedir por mensaje?</h2>
         <p>Escríbenos por WhatsApp y una asesora te ayuda a elegir y hacer tu pedido. Atendemos de lunes a domingo, de 7:00 a 17:00 (hora de México).</p>
         <a class="btn btn--claro" data-wa-general href="https://wa.me/523353310072" target="_blank" rel="noopener"><span data-i="wa"></span>Escríbenos por WhatsApp</a>
+      </div>
       </div>
     </section>
   </main>

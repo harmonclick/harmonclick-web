@@ -32,7 +32,7 @@ PLANTILLA = """<!doctype html>
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&amp;family=Inter:wght@400;500;600;700&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Plus+Jakarta+Sans:wght@400..600&amp;display=swap">
   <link rel="stylesheet" href="css/estilos.css">
   <link rel="preload" href="data/products.json" as="fetch" crossorigin>
 </head>
