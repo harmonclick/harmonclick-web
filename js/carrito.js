@@ -235,6 +235,12 @@
     }
 
     pintar();
+    // Llegada desde "Comprar ahora" / "Finalizar compra" de la página de producto: directo al formulario
+    if (location.hash === "#datos" && HC.$("#form-pedido", raiz)) {
+      const primero = HC.$("#form-pedido input, #form-pedido textarea", raiz);
+      HC.$("#t-datos", raiz).scrollIntoView({ block: "start" });
+      if (primero) primero.focus({ preventScroll: true });
+    }
     document.addEventListener("hc:carrito", () => { /* otros cambios (otra pestaña) */ });
     window.addEventListener("storage", (e) => { if (e.key === "hc_carrito_v1") pintar(); });
   });
