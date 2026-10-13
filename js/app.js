@@ -135,6 +135,27 @@
       if (antes !== String(n)) { el.classList.remove("salto"); void el.offsetWidth; el.classList.add("salto"); }
     });
     HC.$$("[data-carrito-enlace]").forEach((a) => a.setAttribute("aria-label", n ? `Carrito, ${n} ${n === 1 ? "frasco" : "frascos"}` : "Carrito, vacío"));
+    HC.actualizarBarraCarrito();
+  };
+
+  /* ---------- Barra fija "Ver mi pedido (N) · $TOTAL →" ---------- */
+  HC.actualizarBarraCarrito = () => {
+    if (!HC._datos || document.body.dataset.pagina === "carrito") return;
+    const calc = HC.calcular(HC._datos, HC.carrito.leer());
+    let barra = HC.$(".barra-carrito");
+    if (!calc.lineas.length) {
+      if (barra) barra.remove();
+      document.body.classList.remove("con-carro");
+      return;
+    }
+    if (!barra) {
+      barra = document.createElement("a");
+      barra.className = "barra-carrito";
+      barra.href = "carrito.html";
+      document.body.appendChild(barra);
+    }
+    barra.innerHTML = `<span>Ver mi pedido (${calc.frascos}) · ${HC.fmt(calc.total)}</span>${HC.icono.flecha}`;
+    document.body.classList.add("con-carro");
   };
 
   /* ---------- Aviso emergente ---------- */
@@ -271,10 +292,14 @@
     const cab = HC.$("[data-cabecera]");
     if (cab) {
       cab.outerHTML = `
-      <div class="anuncio" role="note">Envío GRATIS · Pagas al recibir</div>
+      <div class="anuncio" role="region" aria-label="Avisos de la tienda">
+        <p class="anuncio__msg is-activo">Sin riesgos: pagas al recibir</p>
+        <p class="anuncio__msg" aria-hidden="true">Envío GRATIS a todo México</p>
+        <p class="anuncio__msg" aria-hidden="true">Productos 100% originales</p>
+      </div>
       <header class="cabecera">
         <div class="contenedor cabecera__fila">
-          <a class="cabecera__logo" href="index.html" aria-label="Harmon &amp; Click, ir al inicio"><img src="img/logos/logo-para-fondo-claro.webp" alt="Harmon &amp; Click" width="60" height="60"></a>
+          <a class="cabecera__logo" href="index.html" aria-label="Harmon &amp; Click, ir al inicio"><img src="img/logos/logo-para-fondo-oscuro.webp" alt="Harmon &amp; Click" width="96" height="60"></a>
           <nav class="menu" aria-label="Principal">${lista()}</nav>
           <div class="cabecera__acciones">
             <a class="icono-btn" href="carrito.html" data-carrito-enlace aria-label="Carrito, vacío">${HC.icono.carrito}<span class="contador" data-contador data-vacio="true" aria-hidden="true">0</span></a>
@@ -354,6 +379,23 @@
       }, { rootMargin: "-45% 0px -50% 0px" });
       Object.keys(mapa).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
     }
+    // Mensajes del anuncio: cambian solos cada 3.5 s (se detienen con el cursor o el foco, y no rotan si prefieres menos movimiento)
+    const anuncio = HC.$(".anuncio");
+    if (anuncio) {
+      const msgs = HC.$$(".anuncio__msg", anuncio);
+      let k = 0, pausa = false;
+      const mostrar = (i) => msgs.forEach((m, j) => { m.classList.toggle("is-activo", j === i); m.setAttribute("aria-hidden", String(j !== i)); });
+      const reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reducido && msgs.length > 1) {
+        setInterval(() => { if (!pausa && !document.hidden) { k = (k + 1) % msgs.length; mostrar(k); } }, 3500);
+        if (window.matchMedia && window.matchMedia("(hover: hover)").matches) {   // en pantallas táctiles no hay "cursor encima"
+          anuncio.addEventListener("mouseenter", () => (pausa = true));
+          anuncio.addEventListener("mouseleave", () => (pausa = false));
+        }
+        anuncio.addEventListener("focusin", () => (pausa = true));
+        anuncio.addEventListener("focusout", () => (pausa = false));
+      }
+    }
     const cabecera = HC.$(".cabecera");
     if (cabecera) {
       const marcar = () => cabecera.classList.toggle("con-borde", window.scrollY > 8);
@@ -403,7 +445,7 @@
   };
 
   /* ---------- Arranque ---------- */
-  HC.listo = HC.datos().then((datos) => { armarPagina(datos); HC.pintarIconos(); HC.revelar(); return datos; });
+  HC.listo = HC.datos().then((datos) => { HC._datos = datos; armarPagina(datos); HC.actualizarBarraCarrito(); HC.pintarIconos(); HC.revelar(); return datos; });
   HC.listo.catch(() => {
     const cont = HC.$("main");
     if (cont) cont.insertAdjacentHTML("afterbegin", '<div class="contenedor" style="padding-block:2rem"><div class="aviso aviso--error"><span data-i="alerta"></span><div><strong>No pudimos cargar la tienda</strong><p>Actualiza la página o escríbenos por WhatsApp al +52 33 5331 0072.</p></div></div></div>');

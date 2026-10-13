@@ -7,23 +7,38 @@
     // Botones generales de WhatsApp
     HC.$$("[data-wa-general]").forEach((a) => (a.href = HC.waUrl(datos, "¡Hola! Quiero información sobre sus productos.")));
 
-    // Imagen del héroe: prueba la versión optimizada y, si no existe, el original.
-    // Si ninguna existe, la columna derecha queda oculta y el texto se centra.
-    const heroe = HC.$("#heroe"), fig = HC.$("#heroe-imagen");
-    const rutas = ["img/hero/hero-entrega.webp", "fotos-pagina-harmon/hero/hero-entrega.jpg"];
-    const probar = (i) => {
-      if (i >= rutas.length) return;
-      const im = new Image();
-      im.onload = () => {
-        im.alt = "Recibe tu pedido de Harmon & Click en la puerta de tu casa";
-        im.decoding = "async"; im.width = 960; im.height = 1200;
-        fig.appendChild(im);
-        heroe.classList.add("heroe--con-imagen");
+    // Video del héroe: autoplay en silencio y en bucle; un clic lo pausa o lo reanuda.
+    const video = HC.$("#video-heroe"), vbtn = HC.$("#video-btn");
+    if (video && vbtn) {
+      let pausadoPorUsuario = false;
+      const reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const estado = (pausado) => {
+        vbtn.dataset.pausado = String(pausado);
+        vbtn.setAttribute("aria-label", pausado ? "Reproducir video" : "Pausar video");
       };
-      im.onerror = () => probar(i + 1);
-      im.src = rutas[i];
-    };
-    probar(0);
+      const reproducir = () => {
+        const r = video.play();
+        if (r && r.catch) r.catch(() => estado(true));   // si el navegador bloquea el autoplay, muestra el botón de play
+      };
+      video.muted = true;
+      video.addEventListener("play", () => estado(false));
+      video.addEventListener("pause", () => estado(true));
+      vbtn.addEventListener("click", () => {
+        if (video.paused) { pausadoPorUsuario = false; reproducir(); }
+        else { pausadoPorUsuario = true; video.pause(); }
+      });
+      if (reducido) { video.pause(); estado(true); }       // quien prefiere menos movimiento lo inicia a mano
+      else {
+        reproducir();
+        // Ahorra batería: se pausa fuera de pantalla y vuelve solo (salvo que lo hayas pausado tú)
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver((es) => es.forEach((e) => {
+            if (e.isIntersecting) { if (!pausadoPorUsuario && video.paused) reproducir(); }
+            else if (!video.paused) video.pause();
+          }), { threshold: 0.25 }).observe(vbtn);
+        }
+      }
+    }
 
     // Tarjetas de producto
     HC.$("#rejilla").innerHTML = prods.map((p) => {

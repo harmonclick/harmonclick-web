@@ -12,5 +12,5 @@ Abre `data/products.json`, busca el producto y cambia solo el número de `"preci
 - `img/` — fotos optimizadas (WebP) · `fotos-pagina-harmon/` — fotos originales (no se tocan)
 - `herramientas/` — scripts para regenerar imágenes, cobertura y páginas de producto (opcionales)
 
-## Imagen del héroe (inicio)
-Sube la foto como `fotos-pagina-harmon/hero/hero-entrega.jpg` (vertical, proporción 4:5 ideal). El sitio la detecta solo y muestra el héroe en dos columnas. Mientras el archivo no exista, el texto del héroe va centrado. Para optimizarla a WebP corre `python3 herramientas/optimizar_imagenes.py`.
+## Video del héroe (inicio)
+El video vertical (9:16) vive en `fotos-pagina-harmon/hero/intro-portada.mp4` y su imagen de portada en `img/hero/intro-portada-poster.webp`. Para cambiarlo, sube un video con ese mismo nombre (MP4 H.264, vertical, sin audio de preferencia y lo más ligero posible).

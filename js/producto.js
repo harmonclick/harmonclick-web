@@ -89,7 +89,7 @@
             </div>
             ${textoCuatro}
             <div class="pp-botones">
-              <button class="btn btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
+              <button class="btn btn--compra btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
               <a class="btn btn--secundario btn--bloque" id="btn-wa" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
             </div>
             <ul class="pp-envio">
@@ -151,7 +151,7 @@
     const barra = document.createElement("div");
     barra.className = "barra-fija";
     barra.innerHTML = `<div class="barra-fija__info"><small data-b-nombre></small><span class="precio" data-b-precio></span></div>
-      <button class="btn" type="button" data-pedir-ahora>Pedir ahora</button>`;
+      <button class="btn btn--compra" type="button" data-pedir-ahora>Pedir ahora</button>`;
     document.body.appendChild(barra);
 
     /* ---------- Paquetes ---------- */

@@ -4,19 +4,17 @@
   const ESTADOS = ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila de Zaragoza", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz de Ignacio de la Llave", "Yucatán", "Zacatecas"];
   const CAMPOS = [
     { id: "nombre", etiqueta: "Nombre completo", auto: "name", err: "Escribe tu nombre completo (nombre y apellido).", ok: (v) => v.trim().split(/\s+/).filter((x) => x.length > 1).length >= 2 },
-    { id: "telefono", etiqueta: "Teléfono / WhatsApp", auto: "tel", tipo: "tel", modo: "tel", err: "Escribe tu número de 10 dígitos, sin espacios ni guiones.", ok: (v) => telefono10(v).length === 10 },
+    { id: "telefono", etiqueta: "Teléfono / WhatsApp", auto: "tel", tipo: "tel", modo: "tel", err: "El teléfono debe tener 10 dígitos", ok: (v) => telefono10(v).length === 10 },
+    { id: "correo", etiqueta: "Correo electrónico", opcional: true, tipo: "email", auto: "email", modo: "email", err: "Escribe un correo válido, por ejemplo nombre@correo.com", ok: (v) => !v.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) },
     { id: "cp", etiqueta: "Código postal", auto: "postal-code", modo: "numeric", max: 5, err: "Escribe tu código postal de 5 dígitos.", ok: (v) => /^\d{5}$/.test(v) },
     { id: "calle", etiqueta: "Calle y número", auto: "address-line1", err: "Escribe tu calle y número.", ok: (v) => v.trim().length >= 3 },
     { id: "colonia", etiqueta: "Colonia", auto: "address-line2", err: "Escribe tu colonia.", ok: (v) => v.trim().length >= 2 },
     { id: "municipio", etiqueta: "Municipio o ciudad", auto: "address-level2", err: "Escribe tu municipio o ciudad.", ok: (v) => v.trim().length >= 2 },
     { id: "estado", etiqueta: "Estado", auto: "address-level1", lista: "estados", err: "Escribe o elige tu estado.", ok: (v) => v.trim().length >= 3 },
-    { id: "referencias", etiqueta: "Referencias", opcional: true, area: true, ok: () => true }
+    { id: "referencias", etiqueta: "Referencias", opcional: true, area: true, ph: "Ejemplo: portón negro, casa de dos pisos, entre Calle Hidalgo y Calle Morelos", ok: () => true }
   ];
   function telefono10(v) {
-    let d = String(v).replace(/\D/g, "");
-    if (d.length === 13 && d.startsWith("521")) d = d.slice(3);
-    else if (d.length === 12 && d.startsWith("52")) d = d.slice(2);
-    return d;
+    return String(v).replace(/\D/g, "");   // exactamente 10 dígitos (sin lada de país)
   }
 
   HC.listo.then((datos) => {
@@ -28,9 +26,9 @@
       <div class="campo">
         <label for="f-${c.id}">${c.etiqueta}${c.opcional ? ' <span class="opcional">(opcional)</span>' : ""}</label>
         ${c.area
-          ? `<textarea id="f-${c.id}" name="${c.id}" rows="2" autocomplete="off"></textarea>`
+          ? `<textarea id="f-${c.id}" name="${c.id}" rows="3" autocomplete="off" ${c.ph ? `placeholder="${c.ph}"` : ""}></textarea>`
           : `<input id="f-${c.id}" name="${c.id}" type="${c.tipo || "text"}" ${c.modo ? `inputmode="${c.modo}"` : ""} ${c.auto ? `autocomplete="${c.auto}"` : ""} ${c.max ? `maxlength="${c.max}"` : ""} ${c.lista ? `list="${c.lista}"` : ""} ${c.opcional ? "" : 'required aria-required="true"'} aria-describedby="e-${c.id}">`}
-        ${c.opcional ? "" : `<p class="error" id="e-${c.id}">${c.err}</p>`}
+        ${c.err ? `<p class="error" id="e-${c.id}">${c.err}</p>` : ""}
         ${c.id === "cp" ? '<div id="estado-cp" aria-live="polite" style="margin-top:.5rem"></div>' : ""}
       </div>`;
 
@@ -86,6 +84,7 @@
             <div class="fila-resumen fila-resumen--total"><span>Total a pagar</span><span class="precio">${HC.fmt(calc.total)}</span></div>
             ${calc.ahorroTotal > 0 ? `<p class="combo-aplicado">${calc.comboAplicado ? `¡Aplicamos el ${calc.comboNombre}! ` : ""}Con tus paquetes ahorras ${HC.fmt(calc.ahorroTotal)}.</p>` : ""}
             ${calc.distintos >= 2 ? `<p class="nota-combinados">${datos.sitio.notaCombinados}</p>` : ""}
+            <button class="btn btn--compra btn--bloque" type="button" id="btn-finalizar" style="margin-top:var(--s5)">Finalizar compra</button>
             <p class="nota" style="margin:var(--s4) 0 0" id="nota-pago">${pagoTxt}</p>
           </section>
         </div>
@@ -97,10 +96,11 @@
               ${campoHTML(CAMPOS[1])}
               ${campoHTML(CAMPOS[2])}
               ${campoHTML(CAMPOS[3])}
-              <div class="fila-2">${campoHTML(CAMPOS[4])}${campoHTML(CAMPOS[5])}</div>
-              ${campoHTML(CAMPOS[6])}
-              <datalist id="estados">${ESTADOS.map((e) => `<option value="${e}">`).join("")}</datalist>
+              ${campoHTML(CAMPOS[4])}
+              <div class="fila-2">${campoHTML(CAMPOS[5])}${campoHTML(CAMPOS[6])}</div>
               ${campoHTML(CAMPOS[7])}
+              <datalist id="estados">${ESTADOS.map((e) => `<option value="${e}">`).join("")}</datalist>
+              ${campoHTML(CAMPOS[8])}
               <button class="btn btn--bloque" type="submit" id="btn-confirmar">${HC.icono.wa}Confirmar pedido por WhatsApp</button>
               <p class="privacidad">🔒 Tus datos solo se usan para enviar tu pedido.</p>
               <div class="confirmacion" id="confirmacion" hidden></div>
@@ -123,6 +123,13 @@
       });
       HC.$("[data-vaciar]", raiz).addEventListener("click", () => { HC.carrito.vaciar(); pintar(); });
 
+      // "Finalizar compra": lleva al formulario de entrega
+      HC.$("#btn-finalizar", raiz).addEventListener("click", () => {
+        const destino = HC.$("#t-datos", raiz);
+        destino.scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(() => HC.$("#f-nombre", raiz).focus({ preventScroll: true }), 450);
+      });
+
       const form = HC.$("#form-pedido", raiz);
       const campo = (id) => form.elements[id];
       const validar = (c, mostrar) => {
@@ -130,7 +137,7 @@
         let v = el.value;
         if (c.id === "cp") v = v.replace(/\D/g, "");
         const bien = c.ok(v);
-        if (c.opcional) return true;
+        if (c.opcional && !c.err) return true;
         if (mostrar) el.setAttribute("aria-invalid", bien ? "false" : "true");
         else if (bien) el.setAttribute("aria-invalid", "false");
         return bien;
@@ -189,6 +196,7 @@
           "", "*Datos de entrega*",
           `👤 Nombre: ${v.nombre.trim()}`,
           `📱 Teléfono: ${telefono10(v.telefono)}`,
+          ...(v.correo.trim() ? [`📧 Correo: ${v.correo.trim()}`] : []),
           `📍 C.P.: ${v.cp}`,
           `🏠 Calle y número: ${v.calle.trim()}`,
           `🏘️ Colonia: ${v.colonia.trim()}`,

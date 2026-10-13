@@ -43,11 +43,17 @@
             <a class="btn" href="#productos">Ver productos</a>
             <a class="btn btn--secundario" data-wa-general href="https://wa.me/523353310072" target="_blank" rel="noopener"><span data-i="wa"></span>Pedir por WhatsApp</a>
           </div>
-          <p class="heroe__nota">Atención por WhatsApp de lunes a domingo, de 7:00 a 17:00 (hora de México).</p>
+          <p class="heroe__nota">Atención por WhatsApp todos los días</p>
         </div>
-        <!-- Imagen del héroe: se carga sola si existe fotos-pagina-harmon/hero/hero-entrega.jpg.
-             Mientras el archivo no exista, esta columna se oculta y el texto queda centrado. -->
-        <figure class="heroe__imagen" id="heroe-imagen"></figure>
+        <!-- Video del héroe (vertical 9:16): arranca solo, en silencio y en bucle. Un clic lo pausa o lo reanuda. -->
+        <figure class="heroe__video">
+          <button class="video-btn" id="video-btn" type="button" aria-label="Pausar video" data-pausado="false">
+            <video id="video-heroe" muted loop autoplay playsinline preload="metadata" poster="img/hero/intro-portada-poster.webp" aria-label="Video de presentación de Harmon &amp; Click">
+              <source src="fotos-pagina-harmon/hero/intro-portada.mp4" type="video/mp4">
+            </video>
+            <span class="video-btn__icono" aria-hidden="true"><span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span></span>
+          </button>
+        </figure>
       </div>
     </section>
 
@@ -60,7 +66,7 @@
         <ul class="confianza__lista">
           <li class="confianza__item revelar"><span class="confianza__icono" data-i="efectivo"></span><span>Pago contra entrega</span></li>
           <li class="confianza__item revelar"><span class="confianza__icono" data-i="camion"></span><span>Envío gratis</span></li>
-          <li class="confianza__item revelar"><span class="confianza__icono" data-i="escudo"></span><span>Productos 100% originales y sellados</span></li>
+          <li class="confianza__item revelar"><span class="confianza__icono" data-i="escudo"></span><span>Productos 100% originales</span></li>
           <li class="confianza__item revelar"><span class="confianza__icono" data-i="chat"></span><span>Atención por WhatsApp</span></li>
         </ul>
       </div>
