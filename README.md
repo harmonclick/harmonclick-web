@@ -28,6 +28,9 @@ La tarjeta oscura junto al verificador de C.P. usa `fotos-pagina-harmon/videos/m
 ## Contenido estático (SEO)
 Los productos del inicio y las preguntas frecuentes (con su JSON-LD FAQPage) se escriben en el HTML con `python3 herramientas/generar_contenido_estatico.py`, leyendo `data/products.json`. `actualizar_version.py` lo corre solo, así que después de editar precios o textos basta con correr ese script.
 
+## Sitemap y robots
+`sitemap.xml` lista las páginas públicas con su URL completa (`https://harmonclick.com/...`) y `robots.txt` permite a todos los rastreadores y apunta al sitemap. **Cuando agregues una página nueva**, añade su `<url><loc>` en `sitemap.xml` y ponle `<link rel="canonical" href="https://harmonclick.com/nombre.html">`. Las páginas que no deben indexarse (`carrito.html`, `404.html`) llevan `noindex` y no van en el sitemap. `actualizar_version.py` avisa si falta alguna.
+
 ## Versión de los archivos (caché del navegador)
 Los archivos CSS, JS y de datos se cargan con una versión (`?v=AAAAMMDD`) para que los visitantes siempre reciban lo último. **Cada vez que cambies algo en `css/`, `js/` o `data/`**, corre antes de hacer commit:
 

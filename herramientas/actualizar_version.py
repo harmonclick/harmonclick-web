@@ -53,3 +53,18 @@ for ruta in destinos:
 print(f"Versión {version}: {len(cambiados)} archivos actualizados")
 for c in cambiados:
     print("  ", c)
+
+# Aviso: toda página pública (sin noindex) debe estar en sitemap.xml y tener su canonical
+with open(os.path.join(RAIZ, "sitemap.xml"), encoding="utf-8") as f:
+    mapa = f.read()
+for ruta in sorted(glob.glob(os.path.join(RAIZ, "*.html"))):
+    nombre = os.path.basename(ruta)
+    with open(ruta, encoding="utf-8") as f:
+        html = f.read()
+    if 'name="robots" content="noindex"' in html:
+        continue
+    url = "https://harmonclick.com/" + ("" if nombre == "index.html" else nombre)
+    if f"<loc>{url}</loc>" not in mapa:
+        print(f"AVISO: {nombre} no está en sitemap.xml; agrégala: <url><loc>{url}</loc></url>")
+    if f'<link rel="canonical" href="{url}">' not in html:
+        print(f"AVISO: {nombre} no tiene el canonical correcto ({url})")
