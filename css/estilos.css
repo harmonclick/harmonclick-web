@@ -645,12 +645,8 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
   .tarjeta .btn { margin-top: var(--s2); }
 
   /* Cómo funciona y preguntas */
-  .pasos { gap: 0; }
-  .paso { grid-template-columns: 2rem 1fr; column-gap: var(--s3); align-items: start; padding-block: var(--s3); }
-  .paso__num { font-size: 1.75rem; padding-bottom: 4px; }
-  .paso h3 { font-size: 1rem; line-height: 1.25; }
-  .paso p { font-size: var(--t-sm); line-height: 1.4; margin-top: 2px; }
-  .como__faq { margin-top: var(--s5); }
+  .paso { padding-block: var(--s4); gap: var(--s2); }
+  .paso__num { font-size: 2.25rem; }
   .banda { padding: var(--s6) var(--s4); }
   .pie { padding-block: var(--s7) var(--s5); }
 }
