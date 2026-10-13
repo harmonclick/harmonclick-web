@@ -21,8 +21,7 @@
       "precio": 828
     },
     "notaCombinados": "¿Combinas productos? Tu asesora te confirmará si aplica un descuento especial 💚",
-    "mostrarTestimonios": false,
-    "testimonios": []
+    "heroBanner": ""
   },
   "productos": [
     {
@@ -34,7 +33,13 @@
       "lema": "Resina pura del Himalaya con más de 85 minerales traza y ácido fúlvico.",
       "beneficioCorto": "Resina pura del Himalaya para apoyar tu energía y tu vitalidad.",
       "intro": "Resina pura de Shilajit del Himalaya, con más de 85 minerales traza y ácido fúlvico. Un ritual sencillo para acompañar tu energía y tu vitalidad de todos los días.",
-      "metaDescripcion": "Shilajit Puro JBHK: resina pura del Himalaya con más de 85 minerales traza y ácido fúlvico. 100% original y sellado. Envío gratis y pago contra entrega.",
+      "metaDescripcion": "Shilajit Puro JBHK: resina pura del Himalaya con más de 85 minerales traza y ácido fúlvico. 100% original. Envío gratis y pago contra entrega.",
+      "resumen": {
+        "lema": "Energía natural de las montañas del Himalaya.",
+        "apoya": ["energía y vitalidad", "rendimiento físico y mental", "aporte de minerales"],
+        "ingredientes": "resina natural rica en ácido fúlvico, ácido húmico y más de 85 minerales traza (hierro, calcio, magnesio).",
+        "datos": "Disuelve una pequeña porción en agua tibia · 120 porciones por frasco"
+      },
       "tema": {
         "fondo": "linear-gradient(160deg, #1b120a 0%, #3a2411 55%, #6b4518 100%)",
         "texto": "#f7e9cf",
@@ -111,7 +116,13 @@
       "lema": "4 cepas de lactobacilos + prebióticos XOS, formulado para cuidar tu bienestar íntimo.",
       "beneficioCorto": "Probiótico de 4 cepas, formulado para cuidar tu bienestar íntimo.",
       "intro": "Probiótico con 4 cepas de lactobacilos y prebióticos XOS, formulado para cuidar tu bienestar íntimo. Combina ambos para ayudar a que predominen las bacterias benéficas sobre las no benéficas.",
-      "metaDescripcion": "URO Probióticos Vaginales, marca O Positiv: 4 cepas de lactobacilos + prebióticos XOS. 100% original y sellado. Envío gratis y pago contra entrega.",
+      "metaDescripcion": "URO Probióticos Vaginales, marca O Positiv: 4 cepas de lactobacilos + prebióticos XOS. 100% original. Envío gratis y pago contra entrega.",
+      "resumen": {
+        "lema": "Bienestar íntimo, natural y sin complicaciones.",
+        "apoya": ["el equilibrio natural de la flora vaginal", "tu bienestar íntimo diario"],
+        "ingredientes": "5 mil millones de UFC con 4 cepas de Lactobacillus, más prebióticos XOS.",
+        "datos": "60 cápsulas veganas · 2 al día · 30 porciones por frasco · para mujeres"
+      },
       "tema": {
         "fondo": "linear-gradient(160deg, #fdf3ea 0%, #f9dfe0 55%, #e4ecd9 100%)",
         "texto": "#a8214f",
@@ -175,7 +186,13 @@
       "lema": "Fórmula con 5 ingredientes naturales para acompañar tu día a día.",
       "beneficioCorto": "Ayuda a sobrellevar el estrés diario con 5 ingredientes naturales.",
       "intro": "La Ashwagandha, también conocida como ginseng indio, es una planta usada desde hace siglos en la medicina ayurvédica. Es un adaptógeno natural: ayuda a tu cuerpo a adaptarse al estrés físico y mental. Esta fórmula la combina con cúrcuma, rhodiola rosea, jengibre y pimienta negra, que ayuda a su absorción.",
-      "metaDescripcion": "Ashwagandha Extra Fuerza: fórmula avanzada con 5 ingredientes naturales, solo para adultos 18+. 100% original y sellada. Envío gratis y pago contra entrega.",
+      "metaDescripcion": "Ashwagandha Extra Fuerza: fórmula avanzada con 5 ingredientes naturales, solo para adultos 18+. 100% original. Envío gratis y pago contra entrega.",
+      "resumen": {
+        "lema": "Tómate un momento para ti.",
+        "apoya": ["manejo del estrés", "energía y concentración", "mejor descanso", "defensas", "rendimiento físico"],
+        "ingredientes": "ashwagandha, cúrcuma, rhodiola, jengibre y pimienta negra.",
+        "datos": "60 cápsulas · 2 al día con alimentos · 1 frasco dura 1 mes · GMP · sin gluten · libre de OGM"
+      },
       "tema": {
         "fondo": "linear-gradient(160deg, #0d0a07 0%, #2a0d0b 58%, #5a1612 100%)",
         "texto": "#f6e6c4",
@@ -254,7 +271,14 @@
       "lema": "Energía que nace en tus células.",
       "beneficioCorto": "Precursor de NAD+ con quercetina y resveratrol, para tu energía celular.",
       "intro": "Fórmula liposomal con Nicotinamida Ribósido, un precursor de NAD+, junto con Quercetina y Trans-Resveratrol. Los ingredientes van protegidos en pequeñas capas de grasa natural, que ayudan a que tu cuerpo los aproveche mejor.",
-      "metaDescripcion": "NAD+ Liposomal con Resveratrol: precursor de NAD+ con quercetina y trans-resveratrol. 100% original y sellado. Envío gratis y pago contra entrega.",
+      "metaDescripcion": "NAD+ Liposomal con Resveratrol: precursor de NAD+ con quercetina y trans-resveratrol. 100% original. Envío gratis y pago contra entrega.",
+      "resumen": {
+        "lema": "Energía que nace en tus células.",
+        "apoya": ["energía celular", "metabolismo", "protección antioxidante", "defensas", "bienestar con los años"],
+        "ingredientesEtiqueta": "Ingredientes (900 mg por porción)",
+        "ingredientes": "nicotinamida ribósido (precursor del NAD+), resveratrol y quercetina. Fórmula liposomal para mejor absorción.",
+        "datos": "80 cápsulas · rinde 40 días · para mujeres y hombres adultos · GMP · sin gluten, lácteos, soya, huevo ni nueces"
+      },
       "tema": {
         "fondo": "linear-gradient(135deg, #ffe0ee 0%, #ffeedd 32%, #dcf6f0 66%, #e9dfff 100%)",
         "texto": "#3b1a5a",

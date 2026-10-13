@@ -188,14 +188,14 @@
             for (let c = rangos[i]; c < rangos[i] + rangos[i + 1]; c++) mapa.set(c, [e, muni]);
           }
         });
-        return { estados: d.estados, mapa };
+        HC._cob = { estados: d.estados, mapa };
+        return HC._cob;
       });
     }
     return promesaCob;
   };
   /* Devuelve {cp, cubierto, estado, municipio, lejana, dias} */
-  HC.consultarCP = async (cp5) => {
-    const [cob, datos] = await Promise.all([HC.cobertura(), HC.datos()]);
+  const resolverCP = (cob, datos, cp5) => {
     const fila = cob.mapa.get(parseInt(cp5, 10));
     if (!fila) return { cp: cp5, cubierto: false };
     const estado = cob.estados[fila[0]];
@@ -203,6 +203,12 @@
     const lejana = lejanas.includes(HC.sinAcentos(estado));
     return { cp: cp5, cubierto: true, estado, municipio: fila[1], lejana, dias: lejana ? datos.sitio.diasLejanas : datos.sitio.diasNormal };
   };
+  HC.consultarCP = async (cp5) => {
+    const [cob, datos] = await Promise.all([HC.cobertura(), HC.datos()]);
+    return resolverCP(cob, datos, cp5);
+  };
+  /* Versión síncrona (solo si la cobertura ya se cargó): sirve para no perder el permiso del clic al abrir WhatsApp */
+  HC.consultarCPSync = (cp5) => (HC._cob && HC._datos ? resolverCP(HC._cob, HC._datos, cp5) : null);
   HC.zonaGuardada = () => guardaSeguro.leer(CLAVE_ZONA);
   HC.guardarZona = (z) => { guardaSeguro.escribir(CLAVE_ZONA, z); document.dispatchEvent(new CustomEvent("hc:zona", { detail: z })); };
 
@@ -278,26 +284,31 @@
   };
 
   /* ---------- Cabecera, pie y botón flotante ---------- */
+  /* Cinta de anuncios: texto que corre sin parar de derecha a izquierda. Dos grupos idénticos para que el bucle no se note. */
+  function cintaAnuncios() {
+    const msgs = ["Sin riesgos: pagas al recibir", "Envío GRATIS · Verifica tu C.P.", "Productos 100% originales"];
+    const grupo = (oculto) => `<ul class="anuncio__grupo"${oculto ? ' aria-hidden="true"' : ""}>${
+      [0, 1, 2, 3].map((vuelta) => msgs.map((m) => `<li${oculto || vuelta ? ' aria-hidden="true"' : ""}>${m}</li>`).join("")).join("")}</ul>`;
+    return `<div class="anuncio" role="region" aria-label="Avisos de la tienda"><div class="anuncio__pista">${grupo(false)}${grupo(true)}</div></div>`;
+  }
+
   function armarPagina(datos) {
     const s = datos.sitio;
     const inicio = document.body.dataset.pagina === "inicio";
     const prefijo = inicio ? "" : "index.html";
     const enlaces = [
       ["productos", "Productos"],
-      ["como-funciona", "Cómo comprar"],
-      ["faq", "Preguntas frecuentes"]
+      ["como-funciona", "Cómo comprar"]
     ];
     const actual = document.body.dataset.pagina === "producto" ? "productos" : "";
-    const lista = (cls) => enlaces.map(([id, t]) => `<a href="${prefijo}#${id}" data-seccion="${id}"${actual === id ? ' aria-current="true"' : ""}>${t}</a>`).join("");
+    const enFaq = document.body.dataset.pagina === "faq";
+    const lista = () => enlaces.map(([id, t]) => `<a href="${prefijo}#${id}" data-seccion="${id}"${actual === id ? ' aria-current="true"' : ""}>${t}</a>`).join("")
+      + `<a href="preguntas-frecuentes.html"${enFaq ? ' aria-current="true"' : ""}>Preguntas frecuentes</a>`;
 
     const cab = HC.$("[data-cabecera]");
     if (cab) {
       cab.outerHTML = `
-      <div class="anuncio" role="region" aria-label="Avisos de la tienda">
-        <p class="anuncio__msg is-activo">Sin riesgos: pagas al recibir</p>
-        <p class="anuncio__msg" aria-hidden="true">Envío GRATIS a todo México</p>
-        <p class="anuncio__msg" aria-hidden="true">Productos 100% originales</p>
-      </div>
+${cintaAnuncios()}
       <header class="cabecera">
         <div class="contenedor cabecera__fila">
           <a class="cabecera__logo" href="index.html" aria-label="Harmon &amp; Click, ir al inicio"><img src="img/logos/logo-para-fondo-oscuro.webp" alt="Harmon &amp; Click" width="96" height="60"></a>
@@ -333,7 +344,7 @@
               <ul>
                 <li><a href="${prefijo}#productos">Productos</a></li>
                 <li><a href="${prefijo}#como-funciona">Cómo comprar</a></li>
-                <li><a href="${prefijo}#faq">Preguntas frecuentes</a></li>
+                <li><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></li>
                 <li><a href="aviso-de-privacidad.html">Aviso de privacidad</a></li>
               </ul>
             </div>
@@ -380,23 +391,6 @@
         });
       }, { rootMargin: "-45% 0px -50% 0px" });
       Object.keys(mapa).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
-    }
-    // Mensajes del anuncio: cambian solos cada 3.5 s (se detienen con el cursor o el foco, y no rotan si prefieres menos movimiento)
-    const anuncio = HC.$(".anuncio");
-    if (anuncio) {
-      const msgs = HC.$$(".anuncio__msg", anuncio);
-      let k = 0, pausa = false;
-      const mostrar = (i) => msgs.forEach((m, j) => { m.classList.toggle("is-activo", j === i); m.setAttribute("aria-hidden", String(j !== i)); });
-      const reducido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (!reducido && msgs.length > 1) {
-        setInterval(() => { if (!pausa && !document.hidden) { k = (k + 1) % msgs.length; mostrar(k); } }, 3500);
-        if (window.matchMedia && window.matchMedia("(hover: hover)").matches) {   // en pantallas táctiles no hay "cursor encima"
-          anuncio.addEventListener("mouseenter", () => (pausa = true));
-          anuncio.addEventListener("mouseleave", () => (pausa = false));
-        }
-        anuncio.addEventListener("focusin", () => (pausa = true));
-        anuncio.addEventListener("focusout", () => (pausa = false));
-      }
     }
     const cabecera = HC.$(".cabecera");
     if (cabecera) {

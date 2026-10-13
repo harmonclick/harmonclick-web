@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Harmon &amp; Click | Suplementos de bienestar con pago contra entrega</title>
-  <meta name="description" content="Tienda en línea de suplementos de bienestar 100% originales y sellados. Envío gratis y pagas en efectivo al recibir. Shilajit, URO, Ashwagandha y NAD+.">
+  <meta name="description" content="Tienda en línea de suplementos de bienestar 100% originales. Envío gratis y pagas en efectivo al recibir. Shilajit, URO, Ashwagandha y NAD+.">
   <link rel="canonical" href="https://harmonclick.com/">
   <meta name="theme-color" content="#007a55">
   <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
@@ -14,7 +14,7 @@
   <meta property="og:locale" content="es_MX">
   <meta property="og:site_name" content="Harmon &amp; Click">
   <meta property="og:title" content="Harmon &amp; Click | Recibe primero, paga al llegar">
-  <meta property="og:description" content="Suplementos de bienestar 100% originales y sellados. Envío gratis y pagas en efectivo al recibir.">
+  <meta property="og:description" content="Suplementos de bienestar 100% originales. Envío gratis y pagas en efectivo al recibir.">
   <meta property="og:url" content="https://harmonclick.com/">
   <meta property="og:image" content="https://harmonclick.com/img/og/og-inicio.jpg">
   <meta property="og:image:width" content="1200">
@@ -38,7 +38,8 @@
         <div class="heroe__texto revelar">
           <span class="etiqueta-seccion" data-c="verde">Tienda 100% en línea</span>
           <h1 id="titulo-heroe">Recibe primero. <span class="texto-degradado">Paga cuando llegue</span> a tu puerta.</h1>
-          <p>Bienestar que llega a tu puerta. Pagas cuando lo recibes.</p>
+          <!-- Banner del lema (negro, "TODO LO QUE NECESITAS, A UN CLICK"): se muestra solo cuando sitio.heroBanner en data/products.json trae la ruta de la imagen -->
+          <div class="heroe__banner" id="heroe-banner" hidden></div>
           <div class="heroe__botones">
             <a class="btn" href="#productos">Ver productos</a>
             <a class="btn btn--wa" data-wa-general href="https://wa.me/523353310072" target="_blank" rel="noopener"><span data-i="wa"></span>Pedir por WhatsApp</a>
@@ -57,8 +58,14 @@
       </div>
     </section>
 
-    <section class="zona" aria-label="Revisar cobertura">
-      <div class="contenedor" id="revisor"></div>
+    <section class="zona" aria-label="Cobertura y envío">
+      <div class="contenedor zona__fila">
+        <div id="revisor"></div>
+        <div class="zona__envio">
+          <span class="zona__envio-ico" data-i="camion"></span>
+          <p class="zona__envio-texto">Envío gratis</p>
+        </div>
+      </div>
     </section>
 
     <section class="confianza" aria-label="Por qué comprar con nosotros">
@@ -101,27 +108,33 @@
       </div>
     </section>
 
-    <!-- TESTIMONIOS: oculta hasta que tengas reseñas reales.
-         Para activarla: en data/products.json pon "mostrarTestimonios": true y agrega tus reseñas
-         reales en "testimonios", con este formato: { "texto": "…", "nombre": "María, Guadalajara" } -->
-    <section class="seccion seccion--alt" id="testimonios" aria-labelledby="titulo-testimonios" hidden>
+    <section class="seccion seccion--alt faq-enlace" aria-label="Preguntas frecuentes">
       <div class="contenedor">
-        <div class="encabezado-seccion"><span class="etiqueta-seccion" data-c="verde">Testimonios</span><h2 id="titulo-testimonios">Lo que dicen nuestros clientes</h2></div>
-        <div class="testimonios__rejilla" id="testimonios-lista"></div>
+        <a class="btn btn--secundario faq-enlace__btn" href="preguntas-frecuentes.html">Preguntas frecuentes · Resolvemos tus dudas<span data-i="flecha"></span></a>
       </div>
     </section>
 
-    <section class="seccion seccion--alt" id="faq" aria-labelledby="titulo-faq">
+    <section class="seccion videos" aria-label="Videos de Harmon &amp; Click">
       <div class="contenedor">
-        <div class="encabezado-seccion revelar">
-          <span class="etiqueta-seccion" data-c="rosa">Preguntas frecuentes</span>
-          <h2 id="titulo-faq">Resolvemos tus dudas</h2>
+        <p class="etiqueta-seccion videos__etiqueta" data-c="verde">Así se vive con Harmon &amp; Click</p>
+        <div class="videos__fila">
+          <figure class="video-card">
+            <video controls preload="none" playsinline poster="img/videos/uro-poster.webp" aria-label="Video de URO">
+              <source src="fotos-pagina-harmon/videos/uro.mp4" type="video/mp4">
+              <source src="fotos-pagina-harmon/videos/uro.webm" type="video/webm">
+            </video>
+          </figure>
+          <figure class="video-card">
+            <video controls preload="none" playsinline poster="img/videos/shilajit-poster.webp" aria-label="Video de Shilajit">
+              <source src="fotos-pagina-harmon/videos/shilajit.mp4" type="video/mp4">
+              <source src="fotos-pagina-harmon/videos/shilajit.webm" type="video/webm">
+            </video>
+          </figure>
         </div>
-        <div id="acordeon"></div>
       </div>
     </section>
 
-    <section class="seccion" aria-labelledby="titulo-banda">
+    <section class="seccion seccion--alt" aria-labelledby="titulo-banda">
       <div class="contenedor">
       <div class="banda sobre-oscuro revelar">
         <h2 id="titulo-banda">¿Necesitas ayuda?</h2>
