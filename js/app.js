@@ -5,6 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
+  const VERSION = "20261013";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -52,7 +53,7 @@
   let promesaDatos;
   HC.datos = () => {
     if (!promesaDatos) {
-      promesaDatos = fetch("data/products.json").then((r) => { if (!r.ok) throw new Error("datos"); return r.json(); });
+      promesaDatos = fetch("data/products.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("datos"); return r.json(); });
     }
     return promesaDatos;
   };
@@ -181,7 +182,7 @@
   let promesaCob;
   HC.cobertura = () => {
     if (!promesaCob) {
-      promesaCob = fetch("data/cobertura.json").then((r) => { if (!r.ok) throw new Error("cobertura"); return r.json(); }).then((d) => {
+      promesaCob = fetch("data/cobertura.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("cobertura"); return r.json(); }).then((d) => {
         const mapa = new Map();
         d.grupos.forEach(([e, muni, rangos]) => {
           for (let i = 0; i < rangos.length; i += 2) {

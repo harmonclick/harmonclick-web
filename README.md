@@ -25,3 +25,10 @@ Sube la imagen (por ejemplo `img/hero/banner-lema.webp` o `.png`) y pon su ruta 
 ## Videos del inicio
 Están en `fotos-pagina-harmon/videos/` (`uro` y `shilajit`, en `.mp4` y `.webm`) y sus portadas en `img/videos/`. Solo se descargan cuando la persona toca play. Los videos originales (pesados) no se guardan en el repositorio. Para cambiar uno, comprímelo (ffmpeg, 720 px de ancho, `-crf 28`) y reemplaza ambos formatos con el mismo nombre.
 
+## Versión de los archivos (caché del navegador)
+Los archivos CSS, JS y de datos se cargan con una versión (`?v=AAAAMMDD`) para que los visitantes siempre reciban lo último. **Cada vez que cambies algo en `css/`, `js/` o `data/`**, corre antes de hacer commit:
+
+    python3 herramientas/actualizar_version.py
+
+(usa la fecha de hoy; también acepta una versión, por ejemplo `... 20261231`). Actualiza todas las páginas y `js/app.js` de una sola vez.
+
