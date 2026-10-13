@@ -126,11 +126,11 @@ a:where(:not(.btn):not(.tarjeta):not(.icono-btn):not(.wa-flotante):not(.cabecera
   .btn--compra, .btn--compra:hover { background-image: linear-gradient(in oklab 90deg, #008f66 0%, #c96a00 50%, #c01450 100%); }
 }
 .btn--compra { min-height: 60px; font-size: 1.1875rem; font-weight: 600; box-shadow: 0 10px 26px rgba(192, 20, 80, .22); }
-/* Botón verde de WhatsApp (confirmar pedido) */
+/* Botones de WhatsApp: verde oficial #25D366, texto e ícono blancos, más grandes */
 .btn--wa, .btn--wa:hover { --fg: #fff; color: #fff; border-color: transparent; }
-.btn--wa { background: #25d366; min-height: 60px; font-size: 1.0625rem; text-shadow: 0 1px 1px rgba(0, 0, 0, .22); box-shadow: 0 10px 24px rgba(37, 211, 102, .28); }
-.btn--wa:hover { background: #1ebe5a; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(37, 211, 102, .36); }
-.btn--wa svg { width: 22px; height: 22px; }
+.btn--wa { background: #25d366; min-height: 60px; padding: 0 var(--s7); font-size: 1.125rem; font-weight: 600; gap: .6rem; text-shadow: 0 1px 1px rgba(0, 0, 0, .22); box-shadow: 0 10px 24px rgba(37, 211, 102, .3); }
+.btn--wa:hover { background: #1ebe5a; transform: translateY(-2px); box-shadow: 0 14px 30px rgba(37, 211, 102, .4); }
+.btn--wa svg { width: 24px; height: 24px; }
 .btn--compra:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(192, 20, 80, .32); filter: brightness(1.06); }
 .btn--compra:active { transform: translateY(0) scale(.98); }
 .btn svg { width: 20px; height: 20px; flex: none; }
@@ -316,18 +316,24 @@ a:where(:not(.btn):not(.tarjeta):not(.icono-btn):not(.wa-flotante):not(.cabecera
 @media (min-width: 800px) { .testimonios__rejilla { grid-template-columns: repeat(3, 1fr); } }
 
 /* ---------- Acordeón ---------- */
-.acordeon { max-width: 800px; margin-inline: auto; border-top: 1px solid var(--line); }
+.acordeon { max-width: 1000px; margin-inline: auto; }
+.acordeon__col { border-top: 1px solid var(--line); }
+.acordeon__col + .acordeon__col { border-top: 0; }
 .acordeon__item { position: relative; border-bottom: 1px solid var(--line); }
 .acordeon__item::before { content: ""; position: absolute; left: 0; top: -1px; bottom: -1px; width: 2px; background: var(--gradiente-v); opacity: 0; transition: opacity .25s; }
 .acordeon__item:has(.acordeon__boton[aria-expanded="true"])::before { opacity: 1; }
-.acordeon__boton { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--s4); padding: var(--s5) var(--s4) var(--s5) var(--s4); background: none; border: 0; text-align: left; font-family: var(--f-titulo); font-weight: 500; font-size: var(--t-lg); line-height: 1.3; letter-spacing: -.01em; color: var(--ink); }
+.acordeon__boton { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: var(--s3); padding: .65rem var(--s3); background: none; border: 0; text-align: left; font-family: var(--f-titulo); font-weight: 500; font-size: 1rem; line-height: 1.3; letter-spacing: -.005em; color: var(--ink); min-height: 44px; }
 .acordeon__boton:hover { color: var(--ink-hover); }
-.acordeon__boton svg { width: 22px; height: 22px; flex: none; color: var(--ink); transition: transform .3s var(--ease); }
+.acordeon__boton svg { width: 20px; height: 20px; flex: none; color: var(--ink); transition: transform .3s var(--ease); }
 .acordeon__boton[aria-expanded="true"] svg { transform: rotate(45deg); }
+@media (min-width: 900px) { .acordeon { display: grid; grid-template-columns: 1fr 1fr; column-gap: var(--s7); align-items: start; } .acordeon__col + .acordeon__col { border-top: 1px solid var(--line); } }
+#faq { padding-block: var(--s7); }
+#faq .encabezado-seccion { margin-bottom: var(--s5); }
+#faq .encabezado-seccion h2 { font-size: var(--t-xl); margin-bottom: 0; }
 .acordeon__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s var(--ease); }
 .acordeon__panel > div { overflow: hidden; }
 .acordeon__panel[data-abierto="true"] { grid-template-rows: 1fr; }
-.acordeon__panel p { color: var(--ink-2); padding: 0 var(--s4) var(--s5); margin: 0; max-width: 62ch; }
+.acordeon__panel p { color: var(--ink-2); padding: 0 var(--s3) var(--s4); margin: 0; max-width: 62ch; font-size: var(--t-sm); line-height: 1.6; }
 
 /* ---------- Banda de WhatsApp ---------- */
 .banda { position: relative; background: var(--ink); color: #fff; border-radius: var(--r-xl); padding: var(--s8) var(--s5); text-align: center; overflow: hidden; }
@@ -345,14 +351,19 @@ a:where(:not(.btn):not(.tarjeta):not(.icono-btn):not(.wa-flotante):not(.cabecera
 .pie h2 { font-family: var(--f-cuerpo); font-size: var(--t-xs); font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: var(--s4); }
 .pie ul { list-style: none; display: grid; gap: var(--s3); }
 .pie li { font-size: var(--t-sm); }
+.pie__contacto { display: flex; align-items: center; gap: .75rem; }
+.pie__ico { display: grid; place-items: center; width: 20px; height: 20px; flex: none; color: #d9d3ca; }
+.pie__ico svg { width: 20px; height: 20px; stroke-width: 1.5; }
+.pie__horario { padding-left: calc(20px + .75rem); color: #d9d3ca; }
+.pie__seguro { margin-top: var(--s3); font-size: var(--t-xs); color: #b9b2a8; letter-spacing: .01em; }
 .pie__legal { margin-top: var(--s7); padding-top: var(--s5); border-top: 1px solid rgba(255,255,255,.14); font-size: var(--t-xs); line-height: 1.7; color: #b9b2a8; }
 .pie__legal p { margin-bottom: var(--s2); max-width: 90ch; }
 @media (min-width: 800px) { .pie__grid { grid-template-columns: 1.3fr 1fr 1fr; } }
 
 /* ---------- Botón flotante de WhatsApp ---------- */
-.wa-flotante { position: fixed; right: 16px; bottom: calc(16px + var(--bar-prod) + var(--bar-carro)); z-index: 90; display: grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; border: 2px solid transparent; background: linear-gradient(var(--ink), var(--ink)) padding-box, var(--gradiente) border-box; color: #fff; box-shadow: 0 10px 28px rgba(20,20,20,.28); transition: transform .25s var(--ease); }
-.wa-flotante:hover { color: #fff; transform: scale(1.06); }
-.wa-flotante svg { width: 28px; height: 28px; }
+.wa-flotante { position: fixed; right: 16px; bottom: calc(16px + var(--bar-prod) + var(--bar-carro)); z-index: 90; display: grid; place-items: center; width: 76px; height: 76px; border-radius: 50%; background: #25d366; color: #fff; box-shadow: 0 12px 32px rgba(37, 211, 102, .45), 0 2px 8px rgba(20, 20, 20, .18); transition: transform .25s var(--ease), background-color .2s; }
+.wa-flotante:hover { color: #fff; background: #1ebe5a; transform: scale(1.06); }
+.wa-flotante svg { width: 40px; height: 40px; }
 
 /* ---------- Aviso emergente ---------- */
 .toast { position: fixed; left: 50%; bottom: calc(24px + var(--bar-prod) + var(--bar-carro)); z-index: 150; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; display: flex; align-items: center; gap: var(--s4); background: var(--ink); color: #fff; padding: var(--s3) var(--s3) var(--s3) var(--s5); border-radius: var(--r-pill); box-shadow: var(--sombra-lg); font-size: var(--t-sm); font-weight: 500; width: max-content; max-width: calc(100% - 2rem); transition: opacity .3s var(--ease), transform .3s var(--ease); }
@@ -593,10 +604,12 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
   .heroe__grid { gap: var(--s5); }
   .heroe__texto h1 { line-height: 1.08; margin-bottom: var(--s3); }
   .heroe__texto p { font-size: .9375rem; line-height: 1.5; margin-bottom: 0; }
-  .heroe__botones { gap: var(--s2); margin-top: var(--s4); flex-wrap: nowrap; }
-  .heroe__botones .btn { flex: 1 1 auto; min-width: 0; padding-inline: var(--s3); font-size: .9375rem; gap: 6px; }
-  .heroe__botones .btn svg { width: 18px; height: 18px; }
-  .video-btn { height: min(48vh, 400px); }
+  .heroe__botones { gap: var(--s2); margin-top: var(--s4); flex-wrap: wrap; }
+  .heroe__botones .btn { flex: 1 1 auto; min-width: 0; padding-inline: var(--s3); font-size: 1rem; gap: 6px; }
+  .heroe__botones .btn--wa { flex: 1.5 1 auto; padding-inline: var(--s3); }
+  .heroe__botones .btn svg { width: 20px; height: 20px; }
+  .btn--wa { padding-inline: var(--s5); }
+  .video-btn { height: min(44vh, 380px); }
 
   /* Revisor de C.P. y distintivos */
   .zona { margin-top: -2rem; }
@@ -616,7 +629,13 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
   /* Cómo funciona y preguntas */
   .paso { padding-block: var(--s4); gap: var(--s2); }
   .paso__num { font-size: 2.25rem; }
-  .acordeon__boton { padding-block: var(--s4); font-size: 1.0625rem; }
   .banda { padding: var(--s6) var(--s4); }
   .pie { padding-block: var(--s7) var(--s5); }
+  #faq { padding-block: var(--s5); }
+  #faq .encabezado-seccion { margin-bottom: var(--s4); }
+}
+
+@media (max-width: 380px) {   /* celulares angostos: los dos botones del héroe siguen en una fila */
+  .heroe__botones .btn, .heroe__botones .btn--wa { padding-inline: 10px; font-size: .9375rem; gap: 5px; }
+  .heroe__botones .btn svg { width: 18px; height: 18px; }
 }
