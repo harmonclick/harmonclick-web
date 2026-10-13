@@ -181,20 +181,19 @@ a:where(:not(.btn):not(.tarjeta):not(.icono-btn):not(.wa-flotante):not(.cabecera
 .heroe__texto p { font-size: var(--t-lg); color: var(--ink-2); margin-inline: auto; max-width: 48ch; }
 .heroe__botones { display: flex; flex-wrap: wrap; gap: var(--s3); margin-top: var(--s6); justify-content: center; }
 .heroe__nota { margin: var(--s5) auto 0; font-size: var(--t-sm); color: var(--ink-2); }
-/* Video vertical 9:16 en marco redondeado. En pantallas chicas va debajo del texto. */
-.heroe__video { margin: 0; justify-self: center; width: min(100%, 300px); }
-.video-btn { position: relative; display: block; width: 100%; padding: 0; border: 0; background: var(--ink); border-radius: var(--r-xl); overflow: hidden; aspect-ratio: 9 / 16; box-shadow: var(--sombra-lg); cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.video-btn video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.video-btn__icono { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(20, 20, 20, .28); color: #fff; opacity: 0; transition: opacity .25s; pointer-events: none; }
-.video-btn__icono span { width: 72px; height: 72px; display: grid; place-items: center; border-radius: 50%; background: rgba(20, 20, 20, .72); border: 1.5px solid rgba(255, 255, 255, .85); }
-.video-btn__icono svg { width: 30px; height: 30px; margin-left: 3px; }
-.video-btn[data-pausado="true"] .video-btn__icono { opacity: 1; }
+/* Video vertical 9:16 como tarjeta redondeada dentro de la columna derecha del héroe */
+.heroe__video { margin: 0; display: flex; justify-content: center; align-items: center; min-width: 0; }
+.video-btn { position: relative; display: block; flex: none; height: min(55vh, 480px); max-width: 100%; aspect-ratio: 9 / 16; padding: 0; border: 0; background: var(--ink); border-radius: var(--r-xl); overflow: hidden; box-shadow: 0 18px 44px rgba(20, 20, 20, .14), 0 2px 8px rgba(20, 20, 20, .06); cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.video-btn video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Indicador pequeño (sin triángulo grande): solo aparece al pausar */
+.video-btn__estado { position: absolute; right: 12px; bottom: 12px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: rgba(20, 20, 20, .6); color: #fff; opacity: 0; transition: opacity .25s; pointer-events: none; }
+.video-btn__estado svg { width: 14px; height: 14px; margin-left: 1px; }
+.video-btn[data-pausado="true"] .video-btn__estado { opacity: 1; }
 @media (min-width: 900px) {
-  .heroe__grid { grid-template-columns: 1.1fr .9fr; gap: var(--s9); }
-  .heroe__texto { text-align: left; margin-inline: 0; }
+  .heroe__grid { grid-template-columns: 1fr 1fr; gap: var(--s8); }
+  .heroe__texto { text-align: left; margin-inline: 0; max-width: 560px; }
   .heroe__texto p, .heroe__nota { margin-inline: 0; }
   .heroe__botones { justify-content: flex-start; }
-  .heroe__video { width: min(100%, 360px); justify-self: center; }
 }
 
 /* ---------- Revisor de C.P. ---------- */
