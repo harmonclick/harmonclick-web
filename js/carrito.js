@@ -40,7 +40,7 @@
           <div class="vacio">
             ${HC.icono.bolsa}
             <h2>Tu carrito está vacío</h2>
-            <p>Cuando agregues un producto, aquí verás tu pedido. Recuerda: envío gratis y pagas en efectivo al recibir.</p>
+            <p>Cuando agregues un producto, aquí verás tu pedido.</p>
             <a class="btn" href="index.html#productos">Ver productos</a>
           </div>`;
         return;
@@ -101,7 +101,7 @@
               ${campoHTML(CAMPOS[7])}
               <datalist id="estados">${ESTADOS.map((e) => `<option value="${e}">`).join("")}</datalist>
               ${campoHTML(CAMPOS[8])}
-              <button class="btn btn--bloque" type="submit" id="btn-confirmar">${HC.icono.wa}Confirmar pedido por WhatsApp</button>
+              <button class="btn btn--wa btn--bloque" type="submit" id="btn-confirmar">${HC.icono.wa}Confirmar pedido por WhatsApp</button>
               <p class="privacidad">🔒 Tus datos solo se usan para enviar tu pedido.</p>
               <div class="confirmacion" id="confirmacion" hidden></div>
             </form>

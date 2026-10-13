@@ -222,7 +222,7 @@
               <span data-i="pin"></span>
               <input id="${id}" name="cp" inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="Código postal" aria-describedby="${id}-r">
             </div>
-            <button class="btn" type="submit">Revisar</button>
+            <button class="btn${o.compacto ? "" : " btn--compra"}" type="submit">Revisar</button>
           </form>
           <div class="cp-resultado" id="${id}-r" aria-live="polite"></div>
         </div>
@@ -246,7 +246,7 @@
       const datos = await HC.datos();
       if (r.cubierto) {
         pintar("aviso--ok", "checkCirculo", "¡Sí llegamos a tu zona!",
-          `<p>En ${r.municipio}, ${r.estado} tienes <strong style="display:inline;font-size:inherit">pago contra entrega</strong> (en efectivo, al recibir) y envío gratis.</p>
+          `<p>En ${r.municipio}, ${r.estado} tienes <strong style="display:inline;font-size:inherit">pago contra entrega</strong>.</p>
            <p>Entrega estimada: <strong style="display:inline;font-size:inherit">${r.dias}</strong>.</p>
            ${o.irAProductos ? '<a class="enlace-flecha" href="#productos">Ver productos <span data-i="flecha"></span></a>' : ""}`);
       } else {
@@ -324,7 +324,7 @@
                 <li><a href="https://wa.me/${s.whatsapp}" target="_blank" rel="noopener">WhatsApp ${s.whatsappVisible}</a></li>
                 <li><a href="mailto:${s.correo}">${s.correo}</a></li>
                 <li><a href="${s.facebook}" target="_blank" rel="noopener">${s.facebookTexto}</a></li>
-                <li>Atención de ${s.horario.charAt(0).toLowerCase() + s.horario.slice(1)}</li>
+                <li>${s.horario}</li>
               </ul>
             </div>
             <div>

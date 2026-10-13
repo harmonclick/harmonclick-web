@@ -13,4 +13,8 @@ Abre `data/products.json`, busca el producto y cambia solo el número de `"preci
 - `herramientas/` — scripts para regenerar imágenes, cobertura y páginas de producto (opcionales)
 
 ## Video del héroe (inicio)
-El video vertical (9:16) vive en `fotos-pagina-harmon/hero/intro-portada.mp4` y su imagen de portada en `img/hero/intro-portada-poster.webp`. Para cambiarlo, sube un video con ese mismo nombre (MP4 H.264, vertical, sin audio de preferencia y lo más ligero posible).
+Vive en `fotos-pagina-harmon/hero/` en cuatro versiones: `intro-portada.mp4` (original), `intro-portada.webm` (VP9, pantallas grandes) y `intro-portada-720.webm` / `intro-portada-720.mp4` (720 px, ligeras, para celular). La imagen de portada es `img/hero/intro-portada-poster.webp`. Si cambias el video, genera las 3 versiones restantes con ffmpeg (WebM primero, MP4 de respaldo), por ejemplo:
+
+    ffmpeg -i intro-portada.mp4 -vf scale=720:1280 -an -c:v libx264 -crf 28 -preset slow -movflags +faststart intro-portada-720.mp4
+    ffmpeg -i intro-portada.mp4 -vf scale=720:1280 -an -c:v libvpx-vp9 -b:v 0 -crf 36 intro-portada-720.webm
+    ffmpeg -i intro-portada.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 37 intro-portada.webm
