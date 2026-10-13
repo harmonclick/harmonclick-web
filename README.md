@@ -27,5 +27,5 @@ Los archivos CSS, JS y de datos se cargan con una versión (`?v=AAAAMMDD`) para 
 
     python3 herramientas/actualizar_version.py
 
-(usa la fecha de hoy; también acepta una versión, por ejemplo `... 20261231`). Actualiza todas las páginas y `js/app.js` de una sola vez.
+(usa la fecha de hoy; si ya la habías usado, le agrega una letra, como `20261013b`, para que los navegadores descarguen lo nuevo; también acepta una versión, por ejemplo `... 20261231`). Actualiza todas las páginas y `js/app.js` de una sola vez.
 
