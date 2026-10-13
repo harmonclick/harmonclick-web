@@ -19,7 +19,7 @@
   HC.$$ = (s, r) => Array.from((r || document).querySelectorAll(s));
 
   /* ---------- Íconos ---------- */
-  const I = (d, extra) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" ${extra || ""}>${d}</svg>`;
+  const I = (d, extra) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" ${extra || ""}>${d}</svg>`;
   HC.icono = {
     camion: I('<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>'),
     efectivo: I('<rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v.01M18 14.5v.01"/>'),
@@ -30,6 +30,7 @@
     cerrar: I('<path d="M6 6l12 12M18 6L6 18"/>'),
     pin: I('<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>'),
     check: I('<path d="M5 12.5l4.5 4.5L19 7.5"/>'),
+    checkFino: I('<path d="M6 12.5l4 4 8-9"/>'),
     checkCirculo: I('<circle cx="12" cy="12" r="9"/><path d="M8 12.3l2.8 2.8L16.2 9.5"/>'),
     info: I('<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.8v.01"/>'),
     alerta: I('<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.4v.01"/>'),
@@ -353,6 +354,12 @@
       }, { rootMargin: "-45% 0px -50% 0px" });
       Object.keys(mapa).forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
     }
+    const cabecera = HC.$(".cabecera");
+    if (cabecera) {
+      const marcar = () => cabecera.classList.toggle("con-borde", window.scrollY > 8);
+      marcar();
+      window.addEventListener("scroll", marcar, { passive: true });
+    }
     HC.actualizarContador();
   }
 
@@ -375,12 +382,16 @@
 
   /* ---------- Fotos de producto ---------- */
   HC.foto = (p, i, opc) => {
-    const o = Object.assign({ grande: false, eager: false, sizes: "(min-width:1000px) 280px, 46vw" }, opc);
+    const o = Object.assign({ eager: false }, opc);
     const f = p.fotos[i];
-    const src = o.grande ? `${f.src}.webp` : `${f.src}-sm.webp`;
-    const srcset = o.grande ? `${f.src}-sm.webp 520w, ${f.src}.webp 1200w` : "";
-    return `<div class="foto" style="--bg:url('../${f.src}-sm.webp');--tema-fondo:${p.tema.acento}22">
-      <img src="${src}" ${srcset ? `srcset="${srcset}" sizes="${o.sizes}"` : ""} alt="${f.alt.replace(/"/g, "&quot;")}" ${o.eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" width="900" height="1200"></div>`;
+    return `<div class="foto" style="--bg-img:url('../${f.src}-sm.webp')">
+      <img src="${f.src}-sm.webp" alt="${f.alt.replace(/"/g, "&quot;")}" ${o.eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" width="520" height="693"></div>`;
+  };
+  /* Imagen de tarjeta de producto: área 4:5 que rellena (object-fit: cover) */
+  HC.fotoTarjeta = (p, i, opc) => {
+    const o = Object.assign({ eager: false }, opc);
+    const f = p.fotos[i || 0];
+    return `<div class="tarjeta__img"><img src="${f.src}-sm.webp" srcset="${f.src}-sm.webp 520w, ${f.src}.webp 1200w" sizes="(min-width:1000px) 280px, 46vw" alt="${f.alt.replace(/"/g, "&quot;")}" ${o.eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" width="520" height="650"></div>`;
   };
 
   /* ---------- Animación al hacer scroll ---------- */

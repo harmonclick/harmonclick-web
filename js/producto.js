@@ -15,11 +15,11 @@
     /* ---------- Plantilla ---------- */
     const slides = p.fotos.map((f, i) => `
       <div class="galeria__slide" role="group" aria-roledescription="diapositiva" aria-label="Foto ${i + 1} de ${p.fotos.length}" data-i="${i}">
-        ${HC.foto(p, i, { grande: true, eager: i === 0, sizes: "(min-width:900px) 560px, 100vw" })}
+        <img src="${f.src}.webp" srcset="${f.src}-sm.webp 520w, ${f.src}.webp 1200w" sizes="(min-width:900px) 600px, 100vw" alt="${esc(f.alt)}" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" width="1200" height="1200">
       </div>`).join("");
     const minis = p.fotos.map((f, i) => `
       <button class="miniatura" type="button" data-i="${i}" aria-label="Ver foto ${i + 1} de ${p.fotos.length}" ${i === 0 ? 'aria-current="true"' : ""}>
-        <img src="${f.src}-sm.webp" alt="" loading="lazy" decoding="async" width="84" height="112">
+        <img src="${f.src}-sm.webp" alt="" loading="lazy" decoding="async" width="84" height="105">
       </button>`).join("");
 
     const tarjetaPaquete = (c) => {
@@ -28,7 +28,7 @@
       return `
       <button class="paquete" type="button" role="radio" aria-checked="false" tabindex="-1" data-clave="${c}">
         ${c === "trio" ? '<span class="etiqueta-favorito">Favorito</span>' : ""}
-        <span class="paquete__radio" aria-hidden="true"></span>
+        <span class="paquete__radio" aria-hidden="true">${HC.icono.checkFino}</span>
         <span>
           <span class="paquete__nombre">${q.nombre}</span>
           ${detalle ? `<span class="paquete__detalle">${detalle}</span>` : ""}
@@ -47,7 +47,7 @@
       ? `<p class="pp-cuatro">¿Quieres 4 o más? <a href="#" data-wa-cuatro>Escríbenos</a> y te los dejamos a ${HC.fmt(c4.precio)} c/u.</p>` : "";
 
     const beneficios = p.beneficios.map((b) => `
-      <li class="beneficio">${HC.icono.checkCirculo}<div><strong>${esc(b.t)}</strong><span>${esc(b.d)}</span></div></li>`).join("");
+      <li class="beneficio">${HC.icono.checkFino}<div><strong>${esc(b.t)}</strong><span>${esc(b.d)}</span></div></li>`).join("");
     const pasos = p.uso.pasos.map((x) => `<li>${esc(x)}</li>`).join("");
     const notas = p.uso.notas.length ? `<ul class="lista-notas">${p.uso.notas.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : "";
     const filas = p.composicion.filas.map(([a, b]) => `<tr><th scope="row">${esc(a)}</th><td>${esc(b)}</td></tr>`).join("");
@@ -55,24 +55,24 @@
     const noRec = p.noRecomendado ? `
       <div class="alerta-caja" role="note"><h3>${esc(p.noRecomendado.titulo)}</h3><ul>${p.noRecomendado.items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
     const otros = datos.productos.filter((x) => x.id !== p.id).map((x) => `
-      <a class="tarjeta revelar" href="${x.pagina}">${HC.foto(x, 0)}
+      <a class="tarjeta revelar" href="${x.pagina}">${HC.fotoTarjeta(x, 0)}
         <div class="tarjeta__cuerpo"><h3>${x.nombre}</h3>
           <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">${HC.fmt(x.precios.uno.precio)}</span></div>
-          <span class="btn btn--secundario btn--sm btn--bloque">Ver producto</span></div></a>`).join("");
+          <span class="btn btn--secundario btn--bloque">Ver producto</span></div></a>`).join("");
 
     raiz.innerHTML = `
-    <div class="pp-banda" style="--tema-fondo:${t.fondo};--tema-texto:${t.texto};--tema-texto-suave:${t.textoSuave};--tema-acento:${t.acento}">
+    <div class="pp-cab">
       <div class="contenedor">
         <nav class="migas" aria-label="Ruta de navegación">
           <a href="index.html#productos">${HC.icono.izq}Todos los productos</a>
         </nav>
-        <div class="pp-banda__titulo">
-          <span class="tipo">${esc(p.categoria)}</span>
-          <h1>${esc(p.nombre)}</h1>
-          <p>${esc(p.lema)}</p>
-        </div>
         <div class="pp-grid">
-          <div class="galeria" role="region" aria-roledescription="carrusel" aria-label="Fotos de ${esc(p.nombre)}">
+          <div class="pp-titulo">
+            <span class="tipo" data-c="verde">${esc(p.categoria)}</span>
+            <h1>${esc(p.nombre)}</h1>
+            <p>${esc(p.lema)}</p>
+          </div>
+          <div class="galeria" role="region" aria-roledescription="carrusel" aria-label="Fotos de ${esc(p.nombre)}" style="--tema-fondo:${t.fondo}">
             <div class="galeria__visor">
               <div class="galeria__pista" tabindex="0" aria-label="Galería de fotos. Desliza o usa las flechas del teclado.">${slides}</div>
               <button class="galeria__flecha galeria__flecha--ant" type="button" aria-label="Foto anterior">${HC.icono.izq}</button>
@@ -106,13 +106,13 @@
     <section class="pp-seccion">
       <div class="contenedor">
         <div class="pp-seccion__cab"><h2>Sobre ${esc(p.nombreCorto)}</h2></div>
-        <p style="max-width:68ch;color:var(--tinta-2);font-size:var(--t-lg)">${esc(p.intro)}</p>
-        <ul class="beneficios revelar" style="margin-top:var(--s5)">${beneficios}</ul>
-        ${p.notaBeneficios ? `<p class="nota" style="margin-top:var(--s4)">${esc(p.notaBeneficios)}</p>` : ""}
+        <p class="pp-intro">${esc(p.intro)}</p>
+        <ul class="beneficios revelar">${beneficios}</ul>
+        ${p.notaBeneficios ? `<p class="nota" style="margin-top:var(--s5)">${esc(p.notaBeneficios)}</p>` : ""}
       </div>
     </section>
 
-    <section class="pp-seccion">
+    <section class="pp-seccion pp-seccion--bg">
       <div class="contenedor dos-col">
         <div class="revelar">
           <div class="pp-seccion__cab"><h2>${esc(p.uso.titulo)}</h2></div>
@@ -123,7 +123,7 @@
           <div class="pp-seccion__cab"><h2>¿Para quién es?</h2></div>
           <p>${esc(p.paraQuien.texto)}</p>
           ${p.paraQuien.extra ? `<p class="extra-pareja">${esc(p.paraQuien.extra)}</p>` : ""}
-          <h3 style="font-family:var(--f-cuerpo);font-size:var(--t-base);font-weight:700;margin-top:var(--s5)">Qué esperar</h3>
+          <h3 style="font-family:var(--f-cuerpo);font-size:var(--t-base);font-weight:600;letter-spacing:0;margin-top:var(--s6)">Qué esperar</h3>
           <p>${esc(p.resultados)}</p>
           ${noRec}
         </div>
@@ -135,18 +135,15 @@
         <div class="pp-seccion__cab"><h2>Composición</h2><p class="nota" style="margin:var(--s2) 0 0">${esc(p.composicion.resumen)}</p></div>
         <div style="max-width:760px"><table class="tabla"><tbody>${filas}</tbody></table></div>
         <ul class="sellos">${sellos}</ul>
+        <p class="leyenda" style="margin:var(--s7) 0 0">${esc(datos.sitio.leyenda)}</p>
       </div>
     </section>
 
-    <section class="pp-seccion">
-      <div class="contenedor"><p class="leyenda" style="margin:0">${esc(datos.sitio.leyenda)}</p></div>
-    </section>
-
-    <section class="seccion seccion--crema otros-productos" aria-labelledby="titulo-otros">
+    <section class="seccion otros-productos" aria-labelledby="titulo-otros">
       <div class="contenedor">
         <div class="encabezado-seccion"><h2 id="titulo-otros">Descubre también</h2></div>
         <div class="rejilla-productos">${otros}</div>
-        <p style="text-align:center;margin:var(--s6) 0 0"><a class="btn btn--secundario" href="index.html#productos">Ver todos los productos</a></p>
+        <p style="text-align:center;margin:var(--s7) auto 0"><a class="btn btn--secundario" href="index.html#productos">Ver todos los productos</a></p>
       </div>
     </section>`;
 
