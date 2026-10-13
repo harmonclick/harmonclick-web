@@ -64,20 +64,17 @@
     // Revisor de código postal
     HC.montarChecker(HC.$("#revisor"), { irAProductos: true });
 
-    // Preguntas frecuentes
-    HC.montarAcordeon(HC.$("#acordeon"), datos.faq);
-
-    // Testimonios (solo si los activas en products.json)
-    const s = datos.sitio;
-    if (s.mostrarTestimonios && s.testimonios.length) {
-      HC.$("#testimonios-lista").innerHTML = s.testimonios.map((t) => `<figure class="testimonio revelar" style="margin:0"><blockquote></blockquote><cite></cite></figure>`).join("");
-      HC.$$("#testimonios-lista .testimonio").forEach((f, i) => {
-        HC.$("blockquote", f).textContent = "“" + s.testimonios[i].texto + "”";
-        HC.$("cite", f).textContent = s.testimonios[i].nombre;
-      });
-      HC.$("#testimonios").hidden = false;
-      HC.revelar();
+    // Banner del lema en el héroe (opcional): sitio.heroBanner trae la ruta de la imagen
+    const rutaBanner = datos.sitio.heroBanner;
+    if (rutaBanner) {
+      const cont = HC.$("#heroe-banner");
+      const img = new Image();
+      img.alt = "Todo lo que necesitas, a un click";
+      img.decoding = "async";
+      img.onload = () => { cont.appendChild(img); cont.hidden = false; };
+      img.src = rutaBanner;
     }
+
     HC.pintarIconos();
   });
 })();

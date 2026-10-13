@@ -32,6 +32,8 @@
         ${c.id === "cp" ? '<div id="estado-cp" aria-live="polite" style="margin-top:.5rem"></div>' : ""}
       </div>`;
 
+    HC.cobertura().catch(() => {});   // precarga: así el envío por WhatsApp no espera la red
+
     function pintar() {
       const items = HC.carrito.leer();
       const calc = HC.calcular(datos, items);
@@ -123,13 +125,6 @@
       });
       HC.$("[data-vaciar]", raiz).addEventListener("click", () => { HC.carrito.vaciar(); pintar(); });
 
-      // "Finalizar compra": lleva al formulario de entrega
-      HC.$("#btn-finalizar", raiz).addEventListener("click", () => {
-        const destino = HC.$("#t-datos", raiz);
-        destino.scrollIntoView({ behavior: "smooth", block: "start" });
-        setTimeout(() => HC.$("#f-nombre", raiz).focus({ preventScroll: true }), 450);
-      });
-
       const form = HC.$("#form-pedido", raiz);
       const campo = (id) => form.elements[id];
       const validar = (c, mostrar) => {
@@ -188,7 +183,7 @@
           : r ? "Pago anticipado (mi C.P. no tiene contra entrega); por favor envíenme los datos de pago"
           : "Por confirmar";
         const partes = [
-          "🛒 *Pedido desde la web*", "",
+          "🛒 Pedido desde la web", "",
           "*Productos*", ...lineas,
           ...(c.comboAplicado ? [`🎁 ${c.comboNombre}: −${HC.fmt(c.descuentoCombo)}`] : []),
           "", `*Total a pagar: ${HC.fmt(c.total)}*`, "Envío: GRATIS", `Pago: ${pago}`,
@@ -206,27 +201,37 @@
         ];
         return partes.join("\n");
       };
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+      /* Abre WhatsApp sin que lo bloqueen: se llama directo desde el clic (sin esperas antes).
+         Si el navegador impide la ventana nueva, se navega en esta misma pestaña (eso nunca se bloquea). */
+      const abrirWhatsApp = (url) => {
+        const ventana = window.open(url, "_blank");
+        if (ventana) { try { ventana.opener = null; } catch (err) { /* nada */ } return true; }
+        window.location.href = url;
+        return false;
+      };
+      const enviarPedido = () => {
         let primero = null;
         CAMPOS.forEach((c) => { if (!validar(c, true) && !primero) primero = campo(c.id); });
-        if (primero) { primero.focus(); primero.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
-        const btn = HC.$("#btn-confirmar", form);
-        btn.setAttribute("aria-busy", "true");
+        if (primero) {
+          primero.scrollIntoView({ block: "center", behavior: "smooth" });
+          primero.focus({ preventScroll: true });
+          return;
+        }
         const v = {}; CAMPOS.forEach((c) => (v[c.id] = campo(c.id).value));
         v.cp = v.cp.replace(/\D/g, "");
-        let r = zona && zona.cp === v.cp ? zona : null;
-        if (!r) { try { r = await HC.consultarCP(v.cp); zona = r; HC.guardarZona(r); } catch (err) { r = null; } }
+        const r = zona && zona.cp === v.cp ? zona : HC.consultarCPSync(v.cp);   // sin esperar nada de la red
         const url = HC.waUrl(datos, mensaje(v, r));
-        const ventana = window.open(url, "_blank", "noopener");
-        btn.removeAttribute("aria-busy");
+        const abrio = abrirWhatsApp(url);
         const conf = HC.$("#confirmacion", form);
         conf.hidden = false;
         conf.innerHTML = `<p><strong>¡Listo! Abrimos WhatsApp con tu pedido.</strong></p>
           <p>Envía el mensaje para que tu asesora lo confirme. Tu carrito se queda guardado por si necesitas ajustar algo.</p>
-          <p><a href="${url}" target="_blank" rel="noopener">${ventana ? "¿No se abrió WhatsApp? Toca aquí." : "Toca aquí para abrir WhatsApp con tu pedido."}</a></p>`;
-        conf.scrollIntoView({ block: "center", behavior: "smooth" });
-      });
+          <p><a href="${url}" target="_blank" rel="noopener">${abrio ? "¿No se abrió WhatsApp? Toca aquí." : "Toca aquí para abrir WhatsApp con tu pedido."}</a></p>`;
+        if (abrio) conf.scrollIntoView({ block: "center", behavior: "smooth" });
+      };
+      form.addEventListener("submit", (e) => { e.preventDefault(); enviarPedido(); });
+      // "Finalizar compra": valida todo y, si está bien, abre WhatsApp con el pedido (igual que "Confirmar pedido por WhatsApp")
+      HC.$("#btn-finalizar", raiz).addEventListener("click", enviarPedido);
     }
 
     pintar();

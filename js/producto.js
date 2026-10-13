@@ -60,6 +60,16 @@
           <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">${HC.fmt(x.precios.uno.precio)}</span></div>
           <span class="btn btn--secundario btn--bloque">Ver producto</span></div></a>`).join("");
 
+    const rs = p.resumen;
+    const resumenHTML = rs ? `
+            <div class="resumen-prod">
+              ${rs.lema && rs.lema !== p.lema ? `<p class="resumen-prod__lema">${esc(rs.lema)}</p>` : ""}
+              <div class="resumen-prod__fila"><strong>Apoya:</strong>
+                <ul class="resumen-prod__apoya">${rs.apoya.map((x) => `<li>${HC.icono.checkFino}${esc(x)}</li>`).join("")}</ul></div>
+              <p><strong>${esc(rs.ingredientesEtiqueta || "Ingredientes")}:</strong> ${esc(rs.ingredientes)}</p>
+              <p class="resumen-prod__datos">${esc(rs.datos)}</p>
+            </div>` : "";
+
     raiz.innerHTML = `
     <div class="pp-cab">
       <div class="contenedor">
@@ -83,6 +93,7 @@
           </div>
 
           <div class="pp-panel">
+            ${resumenHTML}
             <h2 id="titulo-paquete">Elige tu paquete</h2>
             <div class="paquetes" role="radiogroup" aria-labelledby="titulo-paquete">
               ${["uno", "duo", "trio"].map(tarjetaPaquete).join("")}
@@ -95,7 +106,7 @@
             <ul class="pp-envio">
               <li>${HC.icono.camion}Envío gratis en todos tus pedidos</li>
               <li>${HC.icono.efectivo}Pagas en efectivo al recibir</li>
-              <li>${HC.icono.escudo}Producto 100% original y sellado</li>
+              <li>${HC.icono.escudo}Producto 100% original</li>
             </ul>
             <div class="zona--compacta" id="revisor"></div>
           </div>
