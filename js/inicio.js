@@ -5,7 +5,7 @@
     const prods = datos.productos;
 
     // Botones generales de WhatsApp
-    HC.$$("[data-wa-general]").forEach((a) => (a.href = HC.waUrl(datos, "¡Hola! Quiero información sobre sus productos.")));
+    HC.$$("[data-wa-general]").forEach((a) => (a.href = HC.waGeneral(datos)));
 
     // Video del héroe: autoplay en silencio y en bucle; un clic lo pausa o lo reanuda.
     const video = HC.$("#video-heroe"), vbtn = HC.$("#video-btn");
@@ -46,8 +46,9 @@
       }
     }
 
-    // Tarjetas de producto
-    HC.$("#rejilla").innerHTML = prods.map((p) => {
+    // Tarjetas de producto: ya vienen en el HTML (para Google). Solo se vuelven a dibujar si los datos cambiaron (por ejemplo, un precio nuevo).
+    const rejilla = HC.$("#rejilla");
+    const tarjetasHTML = prods.map((p) => {
       const u = p.precios.uno;
       return `<a class="tarjeta revelar" href="${p.pagina}">
         ${HC.fotoTarjeta(p, 0)}
@@ -59,7 +60,13 @@
           <span class="btn btn--secundario btn--bloque">Ver producto</span>
         </div></a>`;
     }).join("");
-    HC.revelar(HC.$("#rejilla"));
+    const normalizar = (t) => t.replace(/\s+/g, " ").trim();
+    const nuevo = document.createElement("div");
+    nuevo.innerHTML = tarjetasHTML;
+    if (!rejilla.querySelector(".tarjeta") || normalizar(rejilla.textContent) !== normalizar(nuevo.textContent)) {
+      rejilla.innerHTML = tarjetasHTML;
+      HC.revelar(rejilla);
+    }
 
     // Revisor de código postal
     HC.montarChecker(HC.$("#revisor"), { irAProductos: true });
