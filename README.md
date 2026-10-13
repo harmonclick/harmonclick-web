@@ -22,6 +22,12 @@ Vive en `fotos-pagina-harmon/hero/` en cuatro versiones: `intro-portada.mp4` (or
 ## Videos del inicio
 Están en `fotos-pagina-harmon/videos/` (`uro` y `shilajit`, en `.mp4` y `.webm`) y sus portadas en `img/videos/`. Solo se descargan cuando la persona toca play. Los videos originales (pesados) no se guardan en el repositorio. Para cambiar uno, comprímelo (ffmpeg, 720 px de ancho, `-crf 28`) y reemplaza ambos formatos con el mismo nombre.
 
+## Video de la marca (inicio)
+La tarjeta oscura junto al verificador de C.P. usa `fotos-pagina-harmon/videos/marca.mp4` y `marca.webm`, con portada `img/videos/marca-poster.webp`. Se reemplaza igual que los demás videos (mismo nombre, ambos formatos).
+
+## Contenido estático (SEO)
+Los productos del inicio y las preguntas frecuentes (con su JSON-LD FAQPage) se escriben en el HTML con `python3 herramientas/generar_contenido_estatico.py`, leyendo `data/products.json`. `actualizar_version.py` lo corre solo, así que después de editar precios o textos basta con correr ese script.
+
 ## Versión de los archivos (caché del navegador)
 Los archivos CSS, JS y de datos se cargan con una versión (`?v=AAAAMMDD`) para que los visitantes siempre reciban lo último. **Cada vez que cambies algo en `css/`, `js/` o `data/`**, corre antes de hacer commit:
 

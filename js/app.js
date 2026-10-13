@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261013b";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261013d";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -61,6 +61,8 @@
 
   /* ---------- WhatsApp ---------- */
   HC.waUrl = (datos, texto) => `https://wa.me/${datos.sitio.whatsapp}?text=${encodeURIComponent(texto)}`;
+  /* Botones generales de WhatsApp: abren el chat con el mensaje de bienvenida (sitio.mensajeWhatsApp). El pedido del carrito usa su propio mensaje. */
+  HC.waGeneral = (datos) => HC.waUrl(datos, datos.sitio.mensajeWhatsApp);
 
   /* ---------- Paquetes y precios ---------- */
   HC.PAQUETES = [
@@ -287,10 +289,11 @@
   /* ---------- Cabecera, pie y botón flotante ---------- */
   /* Cinta de anuncios: texto que corre sin parar de derecha a izquierda. Dos grupos idénticos para que el bucle no se note. */
   function cintaAnuncios() {
-    const msgs = ["Sin riesgos: pagas al recibir", "Envío GRATIS · Verifica tu C.P.", "Productos 100% originales"];
+    const mensaje = "Envío GRATIS · Verifica tu C.P.";
+    const repeticiones = 10;   // suficientes para cubrir pantallas anchas; el grupo se duplica para que el bucle no se note
     const grupo = (oculto) => `<ul class="anuncio__grupo"${oculto ? ' aria-hidden="true"' : ""}>${
-      [0, 1, 2, 3].map((vuelta) => msgs.map((m) => `<li${oculto || vuelta ? ' aria-hidden="true"' : ""}>${m}</li>`).join("")).join("")}</ul>`;
-    return `<div class="anuncio" role="region" aria-label="Avisos de la tienda"><div class="anuncio__pista">${grupo(false)}${grupo(true)}</div></div>`;
+      Array.from({ length: repeticiones }, (_, i) => `<li${oculto || i ? ' aria-hidden="true"' : ""}>${mensaje}</li>`).join("")}</ul>`;
+    return `<div class="anuncio" role="region" aria-label="Aviso de la tienda"><div class="anuncio__pista">${grupo(false)}${grupo(true)}</div></div>`;
   }
 
   function armarPagina(datos) {
@@ -334,7 +337,7 @@ ${cintaAnuncios()}
             <div>
               <h2>Contacto</h2>
               <ul>
-                <li class="pie__contacto"><span class="pie__ico">${HC.icono.telefono}</span><a href="https://wa.me/${s.whatsapp}" target="_blank" rel="noopener">WhatsApp ${s.whatsappVisible}</a></li>
+                <li class="pie__contacto"><span class="pie__ico">${HC.icono.telefono}</span><a href="${HC.waGeneral(datos)}" target="_blank" rel="noopener">WhatsApp ${s.whatsappVisible}</a></li>
                 <li class="pie__contacto"><span class="pie__ico">${HC.icono.correo}</span><a href="mailto:${s.correo}">${s.correo}</a></li>
                 <li class="pie__contacto"><span class="pie__ico">${HC.icono.facebook}</span><a href="${s.facebook}" target="_blank" rel="noopener">${s.facebookTexto}</a></li>
                 <li class="pie__horario">${s.horario}</li>
@@ -353,7 +356,7 @@ ${cintaAnuncios()}
           <div class="pie__legal">
             <p>${s.leyenda}</p>
             <p>© Harmon &amp; Click. Tienda 100% en línea. Todos los derechos reservados.</p>
-            <p class="pie__seguro">🔒 Sitio seguro · Conexión cifrada (HTTPS)</p>
+            <p class="pie__seguro"><span class="pie__candado" aria-hidden="true">🔒</span> Sitio seguro · Conexión cifrada (HTTPS)</p>
           </div>
         </div>
       </footer>`;
@@ -361,7 +364,7 @@ ${cintaAnuncios()}
     if (!HC.$(".wa-flotante")) {
       const a = document.createElement("a");
       a.className = "wa-flotante";
-      a.href = HC.waUrl(datos, "¡Hola! Quiero información sobre sus productos.");
+      a.href = HC.waGeneral(datos);
       a.target = "_blank"; a.rel = "noopener";
       a.setAttribute("aria-label", "Escríbenos por WhatsApp");
       a.innerHTML = HC.icono.wa;
@@ -404,15 +407,17 @@ ${cintaAnuncios()}
 
   /* ---------- Acordeón ---------- */
   HC.montarAcordeon = (contenedor, items) => {
-    contenedor.className = "acordeon";
-    const fila = (it, i) => `
+    if (!contenedor.querySelector(".acordeon__item")) {   // si el HTML ya trae las preguntas (para Google), no se vuelven a dibujar
+      contenedor.classList.add("acordeon");
+      const fila = (it, i) => `
       <div class="acordeon__item">
         <h3 style="margin:0;font-size:inherit"><button class="acordeon__boton" type="button" aria-expanded="false" aria-controls="faq-p${i}" id="faq-b${i}">${it.p}${HC.icono.mas}</button></h3>
         <div class="acordeon__panel" id="faq-p${i}" role="region" aria-labelledby="faq-b${i}"><div><p>${it.r}</p></div></div>
       </div>`;
-    const mitad = Math.ceil(items.length / 2);   // en escritorio: dos columnas independientes
-    contenedor.innerHTML = `<div class="acordeon__col">${items.slice(0, mitad).map((it, i) => fila(it, i)).join("")}</div>
+      const mitad = Math.ceil(items.length / 2);   // en escritorio: dos columnas independientes
+      contenedor.innerHTML = `<div class="acordeon__col">${items.slice(0, mitad).map((it, i) => fila(it, i)).join("")}</div>
       <div class="acordeon__col">${items.slice(mitad).map((it, i) => fila(it, i + mitad)).join("")}</div>`;
+    }
     contenedor.addEventListener("click", (e) => {
       const b = e.target.closest(".acordeon__boton");
       if (!b) return;

@@ -5,9 +5,13 @@ Uso:   python3 herramientas/actualizar_version.py            (usa la fecha de ho
        python3 herramientas/actualizar_version.py 20261231   (usa la versión que indiques)
 Córrelo cada vez que cambies css/, js/ o data/ y antes de hacer commit.
 """
-import datetime, glob, os, re, sys
+import datetime, glob, os, re, subprocess, sys
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Antes de poner la versión, se vuelven a escribir en el HTML los productos, las preguntas y las páginas de producto
+for guion in ("generar_contenido_estatico.py", "generar_paginas_producto.py"):
+    subprocess.run([sys.executable, os.path.join(RAIZ, "herramientas", guion)], check=True, stdout=subprocess.DEVNULL)
 FORMATO = r"\d{8}[a-z]?"
 
 

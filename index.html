@@ -24,8 +24,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Plus+Jakarta+Sans:wght@400..600&amp;display=swap">
-  <link rel="stylesheet" href="css/estilos.css?v=20261013b">
-  <link rel="preload" href="data/products.json?v=20261013b" as="fetch" crossorigin>
+  <link rel="stylesheet" href="css/estilos.css?v=20261013d">
+  <link rel="preload" href="data/products.json?v=20261013d" as="fetch" crossorigin>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Harmon & Click","url":"https://harmonclick.com/","logo":"https://harmonclick.com/img/favicon-192.png","email":"contacto.harmonclick@gmail.com","telephone":"+52 33 5331 0072","sameAs":["https://www.facebook.com/HarmonClickMx"]}</script>
 </head>
 <body data-pagina="inicio">
@@ -42,7 +42,7 @@
           <div class="lema-banner"><span class="lema-banner__linea lema-banner__linea--izq" aria-hidden="true"></span><span class="lema-banner__texto">Todo lo que necesitas, a un click</span><span class="lema-banner__linea lema-banner__linea--der" aria-hidden="true"></span></div>
           <div class="heroe__botones">
             <a class="btn" href="#productos">Ver productos</a>
-            <a class="btn btn--wa" data-wa-general href="https://wa.me/523353310072" target="_blank" rel="noopener"><span data-i="wa"></span>Pedir por WhatsApp</a>
+            <a class="btn btn--wa" data-wa-general href="https://wa.me/523353310072?text=%C2%A1Hola!%20Vengo%20de%20harmonclick.com%20y%20quiero%20informaci%C3%B3n" target="_blank" rel="noopener"><span data-i="wa"></span>Pedir por WhatsApp</a>
           </div>
         </div>
         <!-- Video del héroe (vertical 9:16): arranca solo, en silencio y en bucle. Un clic lo pausa o lo reanuda. -->
@@ -61,9 +61,17 @@
     <section class="zona" aria-label="Cobertura y envío">
       <div class="contenedor zona__fila">
         <div id="revisor"></div>
-        <div class="zona__envio">
-          <span class="zona__envio-ico"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" style="width:48px;height:48px"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg></span>
-          <p class="zona__envio-texto">Envío gratis</p>
+        <div class="zona__marca">
+          <figure class="zona__marca-video">
+            <video controls preload="none" playsinline poster="img/videos/marca-poster.webp" aria-label="Video de Harmon &amp; Click">
+              <source src="fotos-pagina-harmon/videos/marca.mp4" type="video/mp4">
+              <source src="fotos-pagina-harmon/videos/marca.webm" type="video/webm">
+            </video>
+          </figure>
+          <div class="zona__marca-texto">
+            <p class="zona__marca-titulo">Si no nos convence, no lo vendemos.</p>
+            <p class="zona__marca-sub">Elegimos cada producto con cuidado antes de ofrecértelo.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -87,8 +95,44 @@
           <p>Compra desde 1 frasco.</p>
         </div>
         <div class="rejilla-productos" id="rejilla">
-          <div class="esqueleto tarjeta-esq"></div><div class="esqueleto tarjeta-esq"></div>
-          <div class="esqueleto tarjeta-esq"></div><div class="esqueleto tarjeta-esq"></div>
+<!-- INICIO:PRODUCTOS -->
+<a class="tarjeta revelar" href="shilajit.html">
+        <div class="tarjeta__img"><img src="img/shilajit/shilajit-1-principal-sm.webp" srcset="img/shilajit/shilajit-1-principal-sm.webp 520w, img/shilajit/shilajit-1-principal.webp 1200w" sizes="(min-width:1000px) 280px, 46vw" alt="Frasco de Shilajit Puro JBHK sobre una roca, con el título Shilajit Puro, resina del Himalaya" loading="lazy" decoding="async" width="520" height="650"></div>
+        <div class="tarjeta__cuerpo">
+          <span class="tarjeta__tipo">Resina pura del Himalaya</span>
+          <h3>Shilajit Puro JBHK</h3>
+          <p class="tarjeta__beneficio">Resina pura del Himalaya para apoyar tu energía y tu vitalidad.</p>
+          <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">$449</span><span class="precio-antes"><span class="solo-lectores">Antes </span>$549</span></div>
+          <span class="btn btn--secundario btn--bloque">Ver producto</span>
+        </div></a>
+<a class="tarjeta revelar" href="uro.html">
+        <div class="tarjeta__img"><img src="img/uro/uro-1-wow-sm.webp" srcset="img/uro/uro-1-wow-sm.webp 520w, img/uro/uro-1-wow.webp 1200w" sizes="(min-width:1000px) 280px, 46vw" alt="Cápsulas rosas de URO saliendo de un frasco, entre listones y fondo en tonos crema" loading="lazy" decoding="async" width="520" height="650"></div>
+        <div class="tarjeta__cuerpo">
+          <span class="tarjeta__tipo">Probiótico · Solo para mujeres</span>
+          <h3>URO Probióticos Vaginales</h3>
+          <p class="tarjeta__beneficio">Probiótico de 4 cepas, formulado para cuidar tu bienestar íntimo.</p>
+          <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">$479</span><span class="precio-antes"><span class="solo-lectores">Antes </span>$585</span></div>
+          <span class="btn btn--secundario btn--bloque">Ver producto</span>
+        </div></a>
+<a class="tarjeta revelar" href="ashwagandha.html">
+        <div class="tarjeta__img"><img src="img/ashwagandha/ashwagandha-1-principal-sm.webp" srcset="img/ashwagandha/ashwagandha-1-principal-sm.webp 520w, img/ashwagandha/ashwagandha-1-principal.webp 1200w" sizes="(min-width:1000px) 280px, 46vw" alt="Frasco de Ashwagandha Extra Fuerza sobre fondo negro con detalles dorados" loading="lazy" decoding="async" width="520" height="650"></div>
+        <div class="tarjeta__cuerpo">
+          <span class="tarjeta__tipo">Adaptógeno · Solo adultos 18+</span>
+          <h3>Ashwagandha Extra Fuerza</h3>
+          <p class="tarjeta__beneficio">Ayuda a sobrellevar el estrés diario con 5 ingredientes naturales.</p>
+          <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">$485</span><span class="precio-antes"><span class="solo-lectores">Antes </span>$585</span></div>
+          <span class="btn btn--secundario btn--bloque">Ver producto</span>
+        </div></a>
+<a class="tarjeta revelar" href="nad.html">
+        <div class="tarjeta__img"><img src="img/nad/nad-1-portada-sm.webp" srcset="img/nad/nad-1-portada-sm.webp 520w, img/nad/nad-1-portada.webp 1200w" sizes="(min-width:1000px) 280px, 46vw" alt="Frasco de NAD+ Liposomal con Resveratrol entre salpicaduras de colores, con el lema Energía que nace en tus células" loading="lazy" decoding="async" width="520" height="650"></div>
+        <div class="tarjeta__cuerpo">
+          <span class="tarjeta__tipo">Fórmula liposomal</span>
+          <h3>NAD+ Liposomal con Resveratrol</h3>
+          <p class="tarjeta__beneficio">Precursor de NAD+ con quercetina y resveratrol, para tu energía celular.</p>
+          <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">$690</span></div>
+          <span class="btn btn--secundario btn--bloque">Ver producto</span>
+        </div></a>
+<!-- FIN:PRODUCTOS -->
         </div>
       </div>
     </section>
@@ -105,16 +149,14 @@
           <li class="paso revelar"><span class="paso__num" aria-hidden="true">3</span><div><h3>Recibe en tu casa</h3><p>Recibe en 3 a 7 días hábiles (3 a 9 en zonas lejanas). El repartidor te llama antes.</p></div></li>
           <li class="paso revelar"><span class="paso__num" aria-hidden="true">4</span><div><h3>Paga en efectivo al repartidor</h3><p>Pagas solo al recibir tu pedido. Nada por adelantado.</p></div></li>
         </ol>
+        <div class="como__faq">
+          <p class="como__faq-linea">¿Te quedó alguna duda?</p>
+          <a class="btn btn--secundario faq-enlace__btn" href="preguntas-frecuentes.html">Preguntas frecuentes · Resolvemos tus dudas<span data-i="flecha"></span></a>
+        </div>
       </div>
     </section>
 
-    <section class="seccion seccion--alt faq-enlace" aria-label="Preguntas frecuentes">
-      <div class="contenedor">
-        <a class="btn btn--secundario faq-enlace__btn" href="preguntas-frecuentes.html">Preguntas frecuentes · Resolvemos tus dudas<span data-i="flecha"></span></a>
-      </div>
-    </section>
-
-    <section class="seccion videos" aria-label="Videos de Harmon &amp; Click">
+    <section class="seccion seccion--alt videos" aria-label="Videos de Harmon &amp; Click">
       <div class="contenedor">
         <p class="etiqueta-seccion videos__etiqueta" data-c="verde">Así se vive con Harmon &amp; Click</p>
         <div class="videos__fila">
@@ -134,19 +176,19 @@
       </div>
     </section>
 
-    <section class="seccion seccion--alt" aria-labelledby="titulo-banda">
+    <section class="seccion" aria-labelledby="titulo-banda">
       <div class="contenedor">
       <div class="banda sobre-oscuro revelar">
         <h2 id="titulo-banda">¿Necesitas ayuda?</h2>
         <p>¿Tienes dudas o prefieres que te ayudemos? Escríbenos por WhatsApp y una asesora te atiende.</p>
-        <a class="btn btn--wa" data-wa-general href="https://wa.me/523353310072" target="_blank" rel="noopener"><span data-i="wa"></span>Escríbenos por WhatsApp</a>
+        <a class="btn btn--wa" data-wa-general href="https://wa.me/523353310072?text=%C2%A1Hola!%20Vengo%20de%20harmonclick.com%20y%20quiero%20informaci%C3%B3n" target="_blank" rel="noopener"><span data-i="wa"></span>Escríbenos por WhatsApp</a>
       </div>
       </div>
     </section>
   </main>
 
   <div data-pie></div>
-  <script src="js/app.js?v=20261013b" defer></script>
-  <script src="js/inicio.js?v=20261013b" defer></script>
+  <script src="js/app.js?v=20261013d" defer></script>
+  <script src="js/inicio.js?v=20261013d" defer></script>
 </body>
 </html>
