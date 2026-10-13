@@ -20,6 +20,12 @@
         const r = video.play();
         if (r && r.catch) r.catch(() => estado(true));   // si el navegador bloquea el autoplay, muestra el botón de play
       };
+      // Pantallas chicas: versión ligera de 720 px (la del HTML). Pantallas grandes: versión completa (WebM primero, luego MP4).
+      const ahorro = navigator.connection && navigator.connection.saveData;
+      if (window.matchMedia("(min-width: 900px)").matches && !ahorro) {
+        video.innerHTML = '<source src="fotos-pagina-harmon/hero/intro-portada.webm" type="video/webm"><source src="fotos-pagina-harmon/hero/intro-portada.mp4" type="video/mp4">';
+        video.load();
+      }
       video.muted = true;
       video.addEventListener("play", () => estado(false));
       video.addEventListener("pause", () => estado(true));
