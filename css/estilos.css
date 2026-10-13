@@ -554,3 +554,56 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
 @media (max-width: 899px) {
   .otros-productos .tarjeta:nth-child(3):last-child { grid-column: 1 / -1; justify-self: center; width: calc(50% - var(--s2)); }
 }
+
+/* =========================================================
+   Celular (≤ 899 px): escala tipográfica y ritmo vertical compactos.
+   El escritorio no cambia.
+   ========================================================= */
+@media (max-width: 899px) {
+  :root {
+    --t-3xl: clamp(1.75rem, 8.2vw, 2.25rem);   /* titular del héroe: ~29–32 px */
+    --t-2xl: 1.625rem;                         /* títulos de sección */
+    --t-xl: 1.25rem;
+    --t-lg: 1.0625rem;
+    --t-md: 1rem;
+    --seccion: 3rem;                           /* 48 px entre secciones */
+  }
+  body { line-height: 1.6; }
+  h1, h2, h3 { line-height: 1.12; }
+  .encabezado-seccion { margin-bottom: var(--s6); }
+  .encabezado-seccion p { font-size: var(--t-md); }
+  .etiqueta-seccion { margin-bottom: var(--s3); }
+
+  /* Héroe */
+  .heroe { padding-block: var(--s5) 4.5rem; }
+  .heroe__grid { gap: var(--s5); }
+  .heroe__texto h1 { line-height: 1.08; margin-bottom: var(--s3); }
+  .texto-degradado { display: block; }           /* la frase degradada va completa en su propia línea */
+  .heroe__texto p { font-size: .9375rem; line-height: 1.55; margin-bottom: 0; }
+  .heroe__botones { gap: var(--s2); margin-top: var(--s4); flex-wrap: nowrap; }
+  .heroe__botones .btn { flex: 1 1 auto; min-width: 0; padding-inline: var(--s3); font-size: .9375rem; gap: 6px; }
+  .heroe__botones .btn svg { width: 18px; height: 18px; }
+  .heroe__nota { margin-top: var(--s3); font-size: var(--t-xs); }
+  .video-btn { height: min(38vh, 330px); }
+
+  /* Revisor de C.P. y distintivos */
+  .zona { margin-top: -2.5rem; }
+  .zona-tarjeta { padding: var(--s5) var(--s4); gap: var(--s4); }
+  .confianza { padding-block: var(--s5) var(--s6); }
+  .confianza__item { padding: var(--s4) var(--s2); }
+  .confianza__icono { width: 30px; height: 30px; }
+
+  /* Productos */
+  .rejilla-productos { gap: var(--s5) var(--s3); }
+  .tarjeta__cuerpo { padding-top: var(--s3); gap: var(--s1); }
+  .tarjeta h3 { font-size: 1.0625rem; }
+  .tarjeta__precio { min-height: 3.1rem; margin-top: var(--s1); }
+  .tarjeta .btn { margin-top: var(--s2); }
+
+  /* Cómo funciona y preguntas */
+  .paso { padding-block: var(--s4); gap: var(--s2); }
+  .paso__num { font-size: 2.25rem; }
+  .acordeon__boton { padding-block: var(--s4); font-size: 1.0625rem; }
+  .banda { padding: var(--s6) var(--s4); }
+  .pie { padding-block: var(--s7) var(--s5); }
+}
