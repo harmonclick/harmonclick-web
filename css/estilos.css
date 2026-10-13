@@ -441,6 +441,13 @@ a:where(:not(.btn):not(.tarjeta):not(.icono-btn):not(.wa-flotante):not(.cabecera
 .paquete__frase { grid-column: 1 / -1; margin: 0; font-size: var(--t-sm); color: var(--ink); font-weight: 500; padding-top: var(--s2); border-top: 1px solid var(--line); max-width: none; }
 .etiqueta-favorito { position: absolute; top: -12px; left: 52px; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--gradiente) border-box; border: 1.5px solid transparent; color: var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 2px 12px; border-radius: var(--r-pill); line-height: 1.6; }
 .pp-cuatro { font-size: var(--t-sm); color: var(--ink-2); margin: var(--s3) 0 0; }
+.btn--carrito, .btn--carrito:hover { --bg-b: #fff; --fg: var(--ink); --bd: var(--ink); background-image: none; box-shadow: none; }
+.btn--carrito { min-height: 60px; font-size: 1.1875rem; font-weight: 600; border-width: 2px; }
+.btn--carrito:hover { --bg-b: #fff; transform: none; }
+.pp-agregado { display: grid; gap: var(--s3); justify-items: center; padding: var(--s4); border: 1.5px solid #00785a; border-radius: var(--r-lg); background: #fff; }
+.pp-agregado[hidden] { display: none; }
+.pp-agregado__texto { margin: 0; font-weight: 600; color: #00785a; }
+.pp-agregado__seguir { color: var(--ink); font-size: var(--t-sm); text-decoration: underline; text-underline-offset: 3px; }
 .pp-botones { display: grid; gap: var(--s3); margin-top: var(--s5); }
 .pp-envio { list-style: none; display: grid; gap: var(--s3); margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); font-size: var(--t-sm); color: var(--ink-2); }
 .pp-envio li { display: flex; gap: var(--s3); align-items: center; }
@@ -638,8 +645,11 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
   .tarjeta .btn { margin-top: var(--s2); }
 
   /* Cómo funciona y preguntas */
-  .paso { padding-block: var(--s4); gap: var(--s2); }
-  .paso__num { font-size: 2.25rem; }
+  .pasos { gap: 0; }
+  .paso { grid-template-columns: 2rem 1fr; column-gap: var(--s3); align-items: start; padding-block: var(--s3); }
+  .paso__num { font-size: 1.75rem; padding-bottom: 4px; }
+  .paso h3 { font-size: 1rem; line-height: 1.25; }
+  .paso p { font-size: var(--t-sm); line-height: 1.4; margin-top: 2px; }
   .banda { padding: var(--s6) var(--s4); }
   .pie { padding-block: var(--s7) var(--s5); }
 }

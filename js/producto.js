@@ -100,7 +100,13 @@
             </div>
             ${textoCuatro}
             <div class="pp-botones">
-              <button class="btn btn--compra btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
+              <button class="btn btn--compra btn--bloque" type="button" id="btn-comprar">Comprar ahora</button>
+              <button class="btn btn--carrito btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
+              <div class="pp-agregado" id="pp-agregado" role="status" hidden>
+                <p class="pp-agregado__texto">✓ Agregado a tu pedido</p>
+                <a class="btn btn--compra btn--bloque" href="carrito.html#datos">Finalizar compra →</a>
+                <a class="pp-agregado__seguir" href="index.html#productos">Seguir comprando</a>
+              </div>
               <a class="btn btn--wa btn--bloque" id="btn-wa" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
             </div>
             <ul class="pp-envio">
@@ -199,14 +205,14 @@
 
     /* ---------- Agregar al carrito / pedir ahora ---------- */
     const btnAgregar = HC.$("#btn-agregar", raiz);
-    let temporizador;
+    const cajaAgregado = HC.$("#pp-agregado", raiz);
     btnAgregar.addEventListener("click", () => {
-      const q = HC.paquete(p, clave);
-      HC.carrito.agregar(p.id, q.n);
-      btnAgregar.innerHTML = `${HC.icono.check}Agregado`;
-      clearTimeout(temporizador);
-      temporizador = setTimeout(() => (btnAgregar.textContent = "Agregar al carrito"), 1800);
-      HC.aviso(`${p.nombreCorto} – ${q.nombre} agregado`, { texto: "Ver carrito", href: "carrito.html" });
+      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
+      cajaAgregado.hidden = false;   // se queda visible
+    });
+    HC.$("#btn-comprar", raiz).addEventListener("click", () => {
+      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
+      location.href = "carrito.html#datos";   // directo al formulario de entrega
     });
     HC.$("[data-pedir-ahora]", barra).addEventListener("click", () => {
       HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
