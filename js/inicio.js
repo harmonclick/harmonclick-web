@@ -64,17 +64,6 @@
     // Revisor de código postal
     HC.montarChecker(HC.$("#revisor"), { irAProductos: true });
 
-    // Banner del lema en el héroe (opcional): sitio.heroBanner trae la ruta de la imagen
-    const rutaBanner = datos.sitio.heroBanner;
-    if (rutaBanner) {
-      const cont = HC.$("#heroe-banner");
-      const img = new Image();
-      img.alt = "Todo lo que necesitas, a un click";
-      img.decoding = "async";
-      img.onload = () => { cont.appendChild(img); cont.hidden = false; };
-      img.src = rutaBanner;
-    }
-
     HC.pintarIconos();
   });
 })();

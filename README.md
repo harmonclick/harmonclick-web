@@ -19,9 +19,6 @@ Vive en `fotos-pagina-harmon/hero/` en cuatro versiones: `intro-portada.mp4` (or
     ffmpeg -i intro-portada.mp4 -vf scale=720:1280 -an -c:v libvpx-vp9 -b:v 0 -crf 36 intro-portada-720.webm
     ffmpeg -i intro-portada.mp4 -an -c:v libvpx-vp9 -b:v 0 -crf 37 intro-portada.webm
 
-## Banner del lema (héroe)
-Sube la imagen (por ejemplo `img/hero/banner-lema.webp` o `.png`) y pon su ruta en `data/products.json`, en `"heroBanner"` (dentro de `"sitio"`). Mientras `"heroBanner"` esté vacío, no se muestra nada.
-
 ## Videos del inicio
 Están en `fotos-pagina-harmon/videos/` (`uro` y `shilajit`, en `.mp4` y `.webm`) y sus portadas en `img/videos/`. Solo se descargan cuando la persona toca play. Los videos originales (pesados) no se guardan en el repositorio. Para cambiar uno, comprímelo (ffmpeg, 720 px de ancho, `-crf 28`) y reemplaza ambos formatos con el mismo nombre.
 
@@ -30,5 +27,5 @@ Los archivos CSS, JS y de datos se cargan con una versión (`?v=AAAAMMDD`) para 
 
     python3 herramientas/actualizar_version.py
 
-(usa la fecha de hoy; también acepta una versión, por ejemplo `... 20261231`). Actualiza todas las páginas y `js/app.js` de una sola vez.
+(usa la fecha de hoy; si ya la habías usado, le agrega una letra, como `20261013b`, para que los navegadores descarguen lo nuevo; también acepta una versión, por ejemplo `... 20261231`). Actualiza todas las páginas y `js/app.js` de una sola vez.
 
