@@ -109,14 +109,14 @@
     },
     {
       "id": "uro",
-      "nombre": "URO Probióticos Vaginales",
-      "nombreCorto": "URO",
+      "nombre": "Probiótico Vaginal URO",
+      "nombreCorto": "Probiótico Vaginal URO",
       "pagina": "uro.html",
       "categoria": "Probiótico · Solo para mujeres",
       "lema": "4 cepas de lactobacilos + prebióticos XOS, formulado para cuidar tu bienestar íntimo.",
       "beneficioCorto": "Probiótico de 4 cepas, formulado para cuidar tu bienestar íntimo.",
       "intro": "Probiótico con 4 cepas de lactobacilos y prebióticos XOS, formulado para cuidar tu bienestar íntimo. Combina ambos para ayudar a que predominen las bacterias benéficas sobre las no benéficas.",
-      "metaDescripcion": "URO Probióticos Vaginales, marca O Positiv: 4 cepas de lactobacilos + prebióticos XOS. 100% original. Envío gratis y pago contra entrega.",
+      "metaDescripcion": "Probiótico Vaginal URO, marca O Positiv: 4 cepas de lactobacilos + prebióticos XOS. 100% original. Envío gratis y pago contra entrega.",
       "resumen": {
         "lema": "Bienestar íntimo, natural y sin complicaciones.",
         "apoya": ["el equilibrio natural de la flora vaginal", "tu bienestar íntimo diario"],
@@ -171,7 +171,7 @@
       "noRecomendado": null,
       "fotos": [
         { "src": "img/uro/uro-1-wow", "alt": "Cápsulas rosas de URO saliendo de un frasco, entre listones y fondo en tonos crema" },
-        { "src": "img/uro/uro-2-beneficios", "alt": "Frasco de URO Probiótico Vaginal con sus cuatro beneficios: pH, olor, levaduras y flora" },
+        { "src": "img/uro/uro-2-beneficios", "alt": "Frasco de Probiótico Vaginal URO con sus cuatro beneficios: pH, olor, levaduras y flora" },
         { "src": "img/uro/uro-3-ingredientes-beneficios", "alt": "Qué hay en cada dosis de URO: 5 mil millones de UFC y 400 mg de prebiótico XOS" },
         { "src": "img/uro/uro-4-etiqueta", "alt": "Etiqueta del frasco de URO con la información por porción" },
         { "src": "img/uro/uro-5-relajada", "alt": "Mujer sonriendo en una terraza con el frasco de URO sobre la mesa" }
