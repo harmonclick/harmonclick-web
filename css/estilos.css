@@ -672,6 +672,7 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
 .videos__fila { display: grid; gap: var(--s5); justify-items: center; }
 .video-card { margin: 0; width: min(100%, 300px); }
 .video-card video { display: block; width: 100%; aspect-ratio: 9 / 16; object-fit: contain; background: var(--ink); border-radius: var(--r-xl); box-shadow: var(--sombra-md); }
+.video-card__nota { margin: var(--s2) 0 0; text-align: center; font-size: 11px; font-weight: 400; text-transform: none; color: #8A8378; }
 @media (min-width: 700px) { .videos__fila { grid-template-columns: repeat(2, 320px); justify-content: center; gap: var(--s7); } .video-card { width: 320px; } }
 
 /* ---------- Banner del lema en el héroe ---------- */
