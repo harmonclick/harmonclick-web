@@ -185,7 +185,7 @@
         if (on && enfocar) r.focus();
       });
       btnWa.href = HC.waUrl(datos, mensajeWa(q.nombre));
-      HC.$("[data-b-nombre]", barra).textContent = `${p.nombreCorto} · ${q.nombre}`;
+      HC.$("[data-b-nombre]", barra).textContent = q.nombre;
       HC.$("[data-b-precio]", barra).textContent = HC.fmt(q.precio);
     }
     radios.forEach((r) => r.addEventListener("click", () => seleccionar(r.dataset.clave)));
