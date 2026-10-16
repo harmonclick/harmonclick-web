@@ -29,6 +29,8 @@
       "nombre": "Shilajit Puro JBHK",
       "nombreCorto": "Shilajit",
       "pagina": "shilajit.html",
+      "marca": "JBHK",
+      "sku": "HC-SHILAJIT",
       "categoria": "Resina pura del Himalaya",
       "lema": "Resina pura del Himalaya con más de 85 minerales traza y ácido fúlvico.",
       "beneficioCorto": "Resina pura del Himalaya para apoyar tu energía y tu vitalidad.",
@@ -112,6 +114,8 @@
       "nombre": "Probiótico Vaginal URO",
       "nombreCorto": "Probiótico Vaginal URO",
       "pagina": "uro.html",
+      "marca": "O Positiv",
+      "sku": "HC-URO",
       "categoria": "Probiótico · Solo para mujeres",
       "lema": "4 cepas de lactobacilos + prebióticos XOS, formulado para cuidar tu bienestar íntimo.",
       "beneficioCorto": "Probiótico de 4 cepas, formulado para cuidar tu bienestar íntimo.",
@@ -182,6 +186,8 @@
       "nombre": "Ashwagandha Extra Fuerza",
       "nombreCorto": "Ashwagandha",
       "pagina": "ashwagandha.html",
+      "marca": "Harmon & Click",
+      "sku": "HC-ASHWAGANDHA",
       "categoria": "Adaptógeno · Solo adultos 18+",
       "lema": "Fórmula con 5 ingredientes naturales para acompañar tu día a día.",
       "beneficioCorto": "Ayuda a sobrellevar el estrés diario con 5 ingredientes naturales.",
@@ -267,6 +273,8 @@
       "nombre": "NAD+ Liposomal con Resveratrol",
       "nombreCorto": "NAD+",
       "pagina": "nad.html",
+      "marca": "Harmon & Click",
+      "sku": "HC-NAD",
       "categoria": "Fórmula liposomal",
       "lema": "Energía que nace en tus células.",
       "beneficioCorto": "Precursor de NAD+ con quercetina y resveratrol, para tu energía celular.",
@@ -377,6 +385,11 @@
     {
       "p": "¿El envío tiene costo?",
       "r": "No. El envío es gratis en todos los pedidos y no hay pedido mínimo: puedes comprar desde 1 frasco."
+    },
+    {
+      "p": "¿Puedo devolver mi pedido?",
+      "r": "Por tratarse de suplementos alimenticios, no aceptamos devoluciones una vez entregado el producto. Como pagas al recibir, no adelantas ningún pago. Si tienes cualquier duda con tu pedido, escríbenos por WhatsApp y con gusto te ayudamos.",
+      "enlaceWhatsApp": "escríbenos por WhatsApp"
     },
     {
       "p": "¿Cuál es el horario de atención?",

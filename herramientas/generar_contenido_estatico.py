@@ -5,7 +5,7 @@ También crea los datos estructurados (JSON-LD) FAQPage de preguntas-frecuentes.
 Uso:  python3 herramientas/generar_contenido_estatico.py
 (herramientas/actualizar_version.py ya lo corre solo; sirve si cambias precios, textos o preguntas en products.json)
 """
-import html, json, os, re
+import html, json, os, re, urllib.parse
 
 RAIZ = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 with open(os.path.join(RAIZ, "data", "products.json"), encoding="utf-8") as f:
@@ -31,11 +31,20 @@ def tarjeta(p):
 
 MAS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M5 12h14"/></svg>'
 
+def respuesta_faq(it):
+    r = txt(it["r"])
+    frase = it.get("enlaceWhatsApp")  # frase de la respuesta que lleva el enlace general de WhatsApp (el mismo de los botones)
+    if frase:
+        s = datos["sitio"]
+        url = f'https://wa.me/{s["whatsapp"]}?text=' + urllib.parse.quote(s["mensajeWhatsApp"], safe="!")
+        r = r.replace(txt(frase), f'<a href="{url}" target="_blank" rel="noopener">{txt(frase)}</a>', 1)
+    return r
+
 def fila_faq(it, i):
     return f'''
       <div class="acordeon__item">
         <h3 style="margin:0;font-size:inherit"><button class="acordeon__boton" type="button" aria-expanded="false" aria-controls="faq-p{i}" id="faq-b{i}">{txt(it["p"])}{MAS}</button></h3>
-        <div class="acordeon__panel" id="faq-p{i}" role="region" aria-labelledby="faq-b{i}"><div><p>{txt(it["r"])}</p></div></div>
+        <div class="acordeon__panel" id="faq-p{i}" role="region" aria-labelledby="faq-b{i}"><div><p>{respuesta_faq(it)}</p></div></div>
       </div>'''
 
 def faq_html(items):
