@@ -387,6 +387,11 @@
       "r": "No. El envío es gratis en todos los pedidos y no hay pedido mínimo: puedes comprar desde 1 frasco."
     },
     {
+      "p": "¿Puedo devolver mi pedido?",
+      "r": "Por tratarse de suplementos alimenticios, no aceptamos devoluciones una vez entregado el producto. Como pagas al recibir, no adelantas ningún pago. Si tienes cualquier duda con tu pedido, escríbenos por WhatsApp y con gusto te ayudamos.",
+      "enlaceWhatsApp": "escríbenos por WhatsApp"
+    },
+    {
       "p": "¿Cuál es el horario de atención?",
       "r": "Atención por WhatsApp todos los días."
     },
