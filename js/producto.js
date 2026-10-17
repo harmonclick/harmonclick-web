@@ -107,7 +107,7 @@
                 <a class="btn btn--compra btn--bloque" href="carrito.html#datos">Finalizar compra →</a>
                 <a class="pp-agregado__seguir" href="index.html#productos">Seguir comprando</a>
               </div>
-              <a class="btn btn--wa btn--bloque" id="btn-wa" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
+              <a class="btn btn--wa btn--bloque" id="btn-wa" data-ubicacion="pedir_por_whatsapp" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
             </div>
             <ul class="pp-envio">
               <li>${HC.icono.camion}Envío gratis en todos tus pedidos</li>
@@ -185,6 +185,7 @@
         if (on && enfocar) r.focus();
       });
       btnWa.href = HC.waUrl(datos, mensajeWa(q.nombre));
+      btnWa.dataset.producto = p.nombreCorto;
       HC.$("[data-b-nombre]", barra).textContent = q.nombre;
       HC.$("[data-b-precio]", barra).textContent = HC.fmt(q.precio);
     }
@@ -201,7 +202,7 @@
     seleccionar(clave);
 
     const cuatro = HC.$("[data-wa-cuatro]", raiz);
-    if (cuatro) cuatro.addEventListener("click", (e) => { e.preventDefault(); window.open(HC.waUrl(datos, `¡Hola! Quiero pedir 4 o más de ${p.nombreCorto}`), "_blank", "noopener"); });
+    if (cuatro) cuatro.addEventListener("click", (e) => { e.preventDefault(); HC.registrarWhatsApp("cuatro_o_mas", p.nombreCorto); window.open(HC.waUrl(datos, `¡Hola! Quiero pedir 4 o más de ${p.nombreCorto}`), "_blank", "noopener"); });
 
     /* ---------- Agregar al carrito / pedir ahora ---------- */
     const btnAgregar = HC.$("#btn-agregar", raiz);

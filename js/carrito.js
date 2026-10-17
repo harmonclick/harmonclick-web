@@ -209,7 +209,7 @@
         window.location.href = url;
         return false;
       };
-      const enviarPedido = () => {
+      const enviarPedido = (e) => {
         let primero = null;
         CAMPOS.forEach((c) => { if (!validar(c, true) && !primero) primero = campo(c.id); });
         if (primero) {
@@ -221,6 +221,8 @@
         v.cp = v.cp.replace(/\D/g, "");
         const r = zona && zona.cp === v.cp ? zona : HC.consultarCPSync(v.cp);   // sin esperar nada de la red
         const url = HC.waUrl(datos, mensaje(v, r));
+        const nombres = HC.calcular(datos, HC.carrito.leer()).lineas.map((l) => l.producto.nombreCorto).join(", ");
+        HC.registrarWhatsApp(e && e.currentTarget && e.currentTarget.id === "btn-finalizar" ? "finalizar_compra" : "confirmar_pedido", nombres);
         const abrio = abrirWhatsApp(url);
         const conf = HC.$("#confirmacion", form);
         conf.hidden = false;
@@ -229,7 +231,7 @@
           <p><a href="${url}" target="_blank" rel="noopener">${abrio ? "¿No se abrió WhatsApp? Toca aquí." : "Toca aquí para abrir WhatsApp con tu pedido."}</a></p>`;
         if (abrio) conf.scrollIntoView({ block: "center", behavior: "smooth" });
       };
-      form.addEventListener("submit", (e) => { e.preventDefault(); enviarPedido(); });
+      form.addEventListener("submit", (e) => { e.preventDefault(); enviarPedido(e); });
       // "Finalizar compra": valida todo y, si está bien, abre WhatsApp con el pedido (igual que "Confirmar pedido por WhatsApp")
       HC.$("#btn-finalizar", raiz).addEventListener("click", enviarPedido);
     }
