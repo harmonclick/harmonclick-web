@@ -175,7 +175,6 @@
       "noRecomendado": null,
       "fotos": [
         { "src": "img/uro/uro-1-wow", "alt": "Cápsulas rosas de URO saliendo de un frasco, entre listones y fondo en tonos crema" },
-        { "src": "img/uro/uro-2-beneficios", "alt": "Frasco de Probiótico Vaginal URO con sus cuatro beneficios: pH, olor, levaduras y flora" },
         { "src": "img/uro/uro-3-ingredientes-beneficios", "alt": "Qué hay en cada dosis de URO: 5 mil millones de UFC y 400 mg de prebiótico XOS" },
         { "src": "img/uro/uro-4-etiqueta", "alt": "Etiqueta del frasco de URO con la información por porción" },
         { "src": "img/uro/uro-5-relajada", "alt": "Mujer sonriendo en una terraza con el frasco de URO sobre la mesa" }
@@ -190,7 +189,7 @@
       "sku": "HC-ASHWAGANDHA",
       "categoria": "Adaptógeno · Solo adultos 18+",
       "lema": "Fórmula con 5 ingredientes naturales para acompañar tu día a día.",
-      "beneficioCorto": "Ayuda a sobrellevar el estrés diario con 5 ingredientes naturales.",
+      "beneficioCorto": "Tu rutina de calma con 5 ingredientes naturales",
       "intro": "La Ashwagandha, también conocida como ginseng indio, es una planta usada desde hace siglos en la medicina ayurvédica. Es un adaptógeno natural: ayuda a tu cuerpo a adaptarse al estrés físico y mental. Esta fórmula la combina con cúrcuma, rhodiola rosea, jengibre y pimienta negra, que ayuda a su absorción.",
       "metaDescripcion": "Ashwagandha Extra Fuerza: fórmula avanzada con 5 ingredientes naturales, solo para adultos 18+. 100% original. Envío gratis y pago contra entrega.",
       "resumen": {
@@ -304,7 +303,7 @@
         { "t": "Metabolismo", "d": "Acompaña el metabolismo de tu cuerpo." },
         { "t": "Protección antioxidante", "d": "El resveratrol y la quercetina aportan protección antioxidante." },
         { "t": "Defensas naturales", "d": "Apoya las defensas naturales de tu cuerpo." },
-        { "t": "Bienestar con los años", "d": "Acompaña tu bienestar a lo largo de los años." }
+        { "t": "Bienestar diario", "d": "Un hábito sencillo para acompañar tu energía de todos los días." }
       ],
       "notaBeneficios": "",
       "uso": {
