@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261016d";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261017";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -63,6 +63,22 @@
   HC.waUrl = (datos, texto) => `https://wa.me/${datos.sitio.whatsapp}?text=${encodeURIComponent(texto)}`;
   /* Botones generales de WhatsApp: abren el chat con el mensaje de bienvenida (sitio.mensajeWhatsApp). El pedido del carrito usa su propio mensaje. */
   HC.waGeneral = (datos) => HC.waUrl(datos, datos.sitio.mensajeWhatsApp);
+  /* Analytics: evento "clic_whatsapp" cada vez que alguien abre WhatsApp. producto = nombre del producto cuando aplica. */
+  HC.registrarWhatsApp = (ubicacion, producto) => {
+    try {
+      if (typeof window.gtag !== "function") return;
+      const parametros = { ubicacion: ubicacion || "enlace" };
+      if (producto) parametros.producto = producto;
+      window.gtag("event", "clic_whatsapp", parametros);
+    } catch (e) { /* el registro nunca debe estorbar la compra */ }
+  };
+  /* Cualquier enlace a wa.me (botones, pie, botón flotante, avisos): se registra con un solo escuchador */
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest('a[href*="wa.me/"]');
+    if (!a) return;
+    const conProducto = a.closest("[data-producto]");
+    HC.registrarWhatsApp(a.dataset.ubicacion || (a.classList.contains("wa-flotante") ? "boton_flotante" : "enlace"), conProducto && conProducto.dataset.producto);
+  });
 
   /* ---------- Paquetes y precios ---------- */
   HC.PAQUETES = [
