@@ -187,11 +187,11 @@
       "pagina": "ashwagandha.html",
       "marca": "Harmon & Click",
       "sku": "HC-ASHWAGANDHA",
-      "categoria": "Adaptógeno · Solo adultos 18+",
+      "categoria": "Bienestar diario",
       "lema": "Fórmula con 5 ingredientes naturales para acompañar tu día a día.",
       "beneficioCorto": "Tu rutina de calma con 5 ingredientes naturales",
       "intro": "La Ashwagandha, también conocida como ginseng indio, es una planta usada desde hace siglos en la medicina ayurvédica. Se usa tradicionalmente en rutinas de calma y bienestar. Esta fórmula la combina con cúrcuma, rhodiola rosea, jengibre y pimienta negra, que ayuda a su absorción.",
-      "metaDescripcion": "Ashwagandha Extra Fuerza: fórmula avanzada con 5 ingredientes naturales, solo para adultos 18+. 100% original. Envío gratis y pago contra entrega.",
+      "metaDescripcion": "Ashwagandha Extra Fuerza: fórmula avanzada con 5 ingredientes naturales. 100% original. Envío gratis y pago contra entrega.",
       "resumen": {
         "lema": "Tómate un momento para ti.",
         "apoya": ["rutina de calma", "energía y concentración", "mejor descanso", "bienestar diario", "rendimiento físico"],
@@ -233,7 +233,7 @@
         ]
       },
       "paraQuien": {
-        "texto": "Solo para adultos mayores de 18 años, mujeres y hombres. No es para niños ni menores de edad. No se recomienda durante el embarazo ni la lactancia.",
+        "texto": "Mujeres y hombres adultos. No se recomienda durante el embarazo ni la lactancia.",
         "extra": ""
       },
       "composicion": {
@@ -314,7 +314,7 @@
         "notas": []
       },
       "paraQuien": {
-        "texto": "Mujeres y hombres adultos (mayores de 18 años).",
+        "texto": "Mujeres y hombres adultos.",
         "extra": ""
       },
       "composicion": {
