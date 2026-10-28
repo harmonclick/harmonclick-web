@@ -51,8 +51,7 @@
       "precios": {
         "uno": { "precio": 449, "antes": 549 },
         "duo": { "precio": 798 },
-        "trio": { "precio": 999 },
-        "cuatroMas": { "precio": 319, "mostrarTexto": true }
+        "trio": { "precio": 999 }
       },
       "beneficios": [
         { "t": "Energía y vitalidad diaria", "d": "Apoya tu energía y tu vitalidad en el día a día." },
@@ -206,9 +205,7 @@
       },
       "precios": {
         "uno": { "precio": 485, "antes": 585 },
-        "duo": { "precio": 830, "frase": "Tu rutina de 2 meses" },
-        "trio": { "precio": 1098 },
-        "cuatroMas": { "precio": 339, "mostrarTexto": true }
+        "duo": { "precio": 880, "frase": "Tu rutina de 2 meses" }
       },
       "beneficios": [
         { "t": "Rutina de calma", "d": "Un momento para ti al final de un día intenso." },

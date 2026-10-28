@@ -86,6 +86,9 @@
     { clave: "duo", nombre: "Dúo Bienestar", n: 2 },
     { clave: "trio", nombre: "Trío Bienestar", n: 3 }
   ];
+  /* Paquetes que ofrece un producto: los que tienen precio en products.json (p. ej. Ashwagandha solo 1 y Dúo) */
+  HC.paquetesDe = (p) => HC.PAQUETES.filter((x) => p.precios[x.clave]);
+  HC.maxFrascos = (p) => (p.precios.cuatroMas ? 99 : Math.max(...HC.paquetesDe(p).map((x) => x.n)));
   HC.precioUnitario = (p) => p.precios.uno.precio;
   HC.paquete = (p, clave) => {
     const def = HC.PAQUETES.find((x) => x.clave === clave);
@@ -97,9 +100,10 @@
   HC.precioLinea = (p, qty) => {
     const pr = p.precios;
     let total, etiqueta;
+    qty = Math.min(qty, HC.maxFrascos(p));
     if (qty <= 1) { total = pr.uno.precio; etiqueta = "1 frasco"; }
     else if (qty === 2) { total = pr.duo.precio; etiqueta = "Dúo Bienestar"; }
-    else if (qty === 3) { total = pr.trio.precio; etiqueta = "Trío Bienestar"; }
+    else if (qty === 3 && pr.trio) { total = pr.trio.precio; etiqueta = "Trío Bienestar"; }
     else { total = qty * pr.cuatroMas.precio; etiqueta = `${qty} frascos a ${HC.fmt(pr.cuatroMas.precio)} c/u`; }
     const normal = pr.uno.precio * Math.max(qty, 1);
     return { total, etiqueta, ahorro: Math.max(0, normal - total) };
@@ -109,7 +113,7 @@
     const lineas = items
       .map((it) => ({ it, p: HC.producto(datos, it.id) }))
       .filter((x) => x.p && x.it.qty > 0)
-      .map(({ it, p }) => ({ id: p.id, producto: p, qty: it.qty, ...HC.precioLinea(p, it.qty) }));
+      .map(({ it, p }) => { const qty = Math.min(it.qty, HC.maxFrascos(p)); return { id: p.id, producto: p, qty, max: HC.maxFrascos(p), ...HC.precioLinea(p, qty) }; });
     const combo = datos.sitio.combo;
     const qtyDe = (id) => (lineas.find((l) => l.id === id) || { qty: 0 }).qty;
     let descuentoCombo = 0, comboAplicado = false;
@@ -134,7 +138,9 @@
     agregar(id, n) {
       const items = this.leer();
       const it = items.find((x) => x.id === id);
-      if (it) it.qty = Math.min(99, it.qty + n); else items.push({ id, qty: n });
+      const prod = HC._datos && HC.producto(HC._datos, id);
+      const tope = prod ? HC.maxFrascos(prod) : 99;
+      if (it) it.qty = Math.min(tope, it.qty + n); else items.push({ id, qty: Math.min(tope, n) });
       this.guardar(items);
     },
     poner(id, qty) {
