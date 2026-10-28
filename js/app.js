@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261017d";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261028";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
