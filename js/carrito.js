@@ -57,7 +57,7 @@
               <div class="cantidad" role="group" aria-label="Cantidad de frascos de ${l.producto.nombreCorto}">
                 <button type="button" data-menos aria-label="Quitar un frasco">−</button>
                 <output aria-live="polite">${l.qty}</output>
-                <button type="button" data-mas aria-label="Agregar un frasco">+</button>
+                <button type="button" data-mas aria-label="Agregar un frasco" ${l.qty >= l.max ? "disabled" : ""}>+</button>
               </div>
               <div class="linea__total">${HC.fmt(l.total)}${l.ahorro > 0 ? `<small>Ahorras ${HC.fmt(l.ahorro)}</small>` : ""}</div>
             </div>

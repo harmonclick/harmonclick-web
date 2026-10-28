@@ -10,7 +10,9 @@
     if (!p) { raiz.innerHTML = '<div class="contenedor vacio"><h1>No encontramos este producto</h1><a class="btn" href="index.html#productos">Ver productos</a></div>'; return; }
 
     const t = p.tema;
-    let clave = "trio"; // el Trío viene preseleccionado (es el favorito)
+    const claves = HC.paquetesDe(p).map((x) => x.clave);
+    let clave = claves.includes("trio") ? "trio" : claves[claves.length - 1]; // el paquete más grande viene preseleccionado (es el favorito)
+    const favorito = clave;
 
     /* ---------- Plantilla ---------- */
     const slides = p.fotos.map((f, i) => `
@@ -27,7 +29,7 @@
       const detalle = q.n === 1 ? "" : `${q.n} frascos · ${HC.fmt(q.cadaUno)} c/u`;
       return `
       <button class="paquete" type="button" role="radio" aria-checked="false" tabindex="-1" data-clave="${c}">
-        ${c === "trio" ? '<span class="etiqueta-favorito">Favorito</span>' : ""}
+        ${c === favorito && claves.length > 1 ? '<span class="etiqueta-favorito">Favorito</span>' : ""}
         <span class="paquete__radio" aria-hidden="true">${HC.icono.checkFino}</span>
         <span>
           <span class="paquete__nombre">${q.nombre}</span>
@@ -43,7 +45,7 @@
     };
 
     const c4 = p.precios.cuatroMas;
-    const textoCuatro = c4.mostrarTexto
+    const textoCuatro = c4 && c4.mostrarTexto
       ? `<p class="pp-cuatro">¿Quieres 4 o más? <a href="#" data-wa-cuatro>Escríbenos</a> y te los dejamos a ${HC.fmt(c4.precio)} c/u.</p>` : "";
 
     const beneficios = p.beneficios.map((b) => `
@@ -96,7 +98,7 @@
             ${resumenHTML}
             <h2 id="titulo-paquete">Elige tu paquete</h2>
             <div class="paquetes" role="radiogroup" aria-labelledby="titulo-paquete">
-              ${["uno", "duo", "trio"].map(tarjetaPaquete).join("")}
+              ${claves.map(tarjetaPaquete).join("")}
             </div>
             ${textoCuatro}
             <div class="pp-botones">
@@ -191,10 +193,10 @@
     }
     radios.forEach((r) => r.addEventListener("click", () => seleccionar(r.dataset.clave)));
     HC.$(".paquetes", raiz).addEventListener("keydown", (e) => {
-      const orden = ["uno", "duo", "trio"];
+      const orden = claves;
       let i = orden.indexOf(clave);
-      if (["ArrowRight", "ArrowDown"].includes(e.key)) i = (i + 1) % 3;
-      else if (["ArrowLeft", "ArrowUp"].includes(e.key)) i = (i + 2) % 3;
+      if (["ArrowRight", "ArrowDown"].includes(e.key)) i = (i + 1) % orden.length;
+      else if (["ArrowLeft", "ArrowUp"].includes(e.key)) i = (i + orden.length - 1) % orden.length;
       else return;
       e.preventDefault();
       seleccionar(orden[i], true);
