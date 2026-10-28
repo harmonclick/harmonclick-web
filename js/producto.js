@@ -280,31 +280,6 @@
     /* ---------- Revisor de C.P. compacto ---------- */
     HC.montarChecker(HC.$("#revisor", raiz), { compacto: true });
 
-    /* ---------- Datos estructurados (SEO) ---------- */
-    const ld = document.createElement("script");
-    ld.type = "application/ld+json";
-    ld.textContent = JSON.stringify({
-      "@context": "https://schema.org", "@type": "Product", name: p.nombre, description: p.metaDescripcion,
-      image: p.fotos.map((f) => `${datos.sitio.dominio}/${f.src}.webp`),
-      brand: { "@type": "Brand", name: p.marca }, sku: p.sku,
-      offers: {
-        "@type": "Offer", priceCurrency: "MXN", price: String(p.precios.uno.precio), availability: "https://schema.org/InStock", url: `${datos.sitio.dominio}/${p.pagina}`,
-        shippingDetails: {
-          "@type": "OfferShippingDetails",
-          shippingRate: { "@type": "MonetaryAmount", value: 0, currency: "MXN" },
-          shippingDestination: { "@type": "DefinedRegion", addressCountry: "MX" },
-          deliveryTime: {
-            "@type": "ShippingDeliveryTime",
-            handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 1, unitCode: "DAY" },
-            transitTime: { "@type": "QuantitativeValue", minValue: 3, maxValue: 7, unitCode: "DAY" },
-            businessDays: { "@type": "OpeningHoursSpecification", dayOfWeek: ["https://schema.org/Monday", "https://schema.org/Tuesday", "https://schema.org/Wednesday", "https://schema.org/Thursday", "https://schema.org/Friday"] }
-          }
-        },
-        hasMerchantReturnPolicy: { "@type": "MerchantReturnPolicy", applicableCountry: "MX", returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted" }
-      }
-    });
-    document.head.appendChild(ld);
-
     document.body.classList.add("con-barra");
     HC.revelar(raiz);
   });
