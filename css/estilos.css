@@ -569,6 +569,15 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
 .confirmacion { padding: var(--s4); border-radius: var(--r-md); background: var(--ok-bg); color: var(--ok); font-size: var(--t-sm); }
 .confirmacion p { margin: 0 0 var(--s2); max-width: none; }
 .confirmacion a { color: var(--ok); }
+.campo select { width: 100%; min-height: 52px; padding: var(--s3) var(--s4); border: 1.5px solid var(--line); border-radius: var(--r-md); background: var(--bg); font-size: 1rem; color: var(--ink); }
+.campo select:focus { outline: none; border-color: var(--ink); background: #fff; box-shadow: 0 0 0 4px rgba(20,20,20,.08); }
+.campo select[aria-invalid="true"] { border-color: var(--error); background: var(--error-bg); }
+.campo select[aria-invalid="true"] ~ .error { display: block; }
+.enlace-campo { display: inline-flex; align-items: center; min-height: 44px; padding: 0; background: none; border: 0; color: var(--verde-800); font-size: var(--t-sm); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.extras-enlace { margin: 0; }
+.zona-resumen { margin: calc(-1 * var(--s2)) 0 0; font-size: var(--t-sm); color: var(--ink-2); }
+.trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.gracias { display: grid; gap: var(--s4); }
 
 /* ---------- Texto legal ---------- */
 .texto-legal { max-width: 70ch; padding-block: var(--s5) var(--seccion); }

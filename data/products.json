@@ -2,6 +2,7 @@
   "_ayuda": "ARCHIVO ÚNICO DE PRECIOS Y TEXTOS. Para cambiar un precio busca el producto y edita solo el número de \"precio\" (sin $ ni comas). Guarda el archivo y listo: el diseño no se toca. Los precios \"antes\" son opcionales: borra la línea \"antes\" si no quieres mostrarlo.",
   "sitio": {
     "whatsapp": "523353310072",
+    "pedidosUrl": "",
     "whatsappVisible": "+52 33 5331 0072",
     "correo": "contacto.harmonclick@gmail.com",
     "facebook": "https://www.facebook.com/HarmonClickMx",
