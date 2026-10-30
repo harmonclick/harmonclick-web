@@ -87,8 +87,8 @@ PLANTILLA = """<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Plus+Jakarta+Sans:wght@400..600&amp;display=swap">
-  <link rel="stylesheet" href="css/estilos.css?v=20261030">
-  <link rel="preload" href="data/products.json?v=20261030" as="fetch" crossorigin>
+  <link rel="stylesheet" href="css/estilos.css?v=20261030b">
+  <link rel="preload" href="data/products.json?v=20261030b" as="fetch" crossorigin>
   <script type="application/ld+json">{ld}</script>
 </head>
 <body data-pagina="producto" data-producto="{id}">
@@ -103,8 +103,8 @@ PLANTILLA = """<!doctype html>
     </div>
   </main>
   <div data-pie></div>
-  <script src="js/app.js?v=20261030" defer></script>
-  <script src="js/producto.js?v=20261030" defer></script>
+  <script src="js/app.js?v=20261030b" defer></script>
+  <script src="js/producto.js?v=20261030b" defer></script>
 </body>
 </html>
 """

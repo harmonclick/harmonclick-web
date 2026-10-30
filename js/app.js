@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261030";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261030b";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -236,14 +236,15 @@
     const [cob, datos] = await Promise.all([HC.cobertura(), HC.datos()]);
     return resolverCP(cob, datos, cp5);
   };
-  /* Colonias por C.P. (data/colonias.json, se descarga solo cuando la persona escribe su C.P.).
-     Si el archivo no existe, devuelve lista vacía y la colonia se escribe a mano. */
-  let promesaColonias;
+  /* Colonias por C.P. Están divididas por los 2 primeros dígitos (data/colonias/44.json) y solo se
+     descarga el archivo que corresponde al C.P. escrito. Si no existe, devuelve lista vacía y la colonia se escribe a mano. */
+  const coloniasPorPrefijo = {};
   HC.colonias = (cp5) => {
-    if (!promesaColonias) {
-      promesaColonias = fetch("data/colonias.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("colonias"); return r.json(); }).catch(() => ({}));
+    const prefijo = String(cp5).slice(0, 2);
+    if (!coloniasPorPrefijo[prefijo]) {
+      coloniasPorPrefijo[prefijo] = fetch("data/colonias/" + prefijo + ".json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("colonias"); return r.json(); }).catch(() => ({}));
     }
-    return promesaColonias.then((mapa) => mapa[cp5] || []);
+    return coloniasPorPrefijo[prefijo].then((mapa) => mapa[cp5] || []);
   };
   /* Versión síncrona (solo si la cobertura ya se cargó): sirve para no perder el permiso del clic al abrir WhatsApp */
   HC.consultarCPSync = (cp5) => (HC._cob && HC._datos ? resolverCP(HC._cob, HC._datos, cp5) : null);

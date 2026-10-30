@@ -363,9 +363,17 @@
         v.correo = v.correo.trim();
         v.referencias = campo("referencias").value.trim();
         const c = HC.calcular(datos, HC.carrito.leer());
-        const r = zona && zona.cp === v.cp ? zona : await HC.consultarCP(v.cp).catch(() => null);
-        const pago = pagoDe(r);
         const nombres = c.lineas.map((l) => l.producto.nombreCorto).join(", ");
+        // Sin registro en línea: WhatsApp se abre desde este clic, antes de cualquier espera (iPhone lo bloquearía)
+        const rSync = zona && zona.cp === v.cp ? zona : HC.consultarCPSync(v.cp);
+        if (!datos.sitio.pedidosUrl) {
+          const urlDirecta = HC.waUrl(datos, textoWhatsApp(datos, v, c, rSync));
+          HC.registrarWhatsApp("pedido_directo", nombres);
+          if (!abrirWhatsApp(urlDirecta)) window.location.href = urlDirecta;
+          return;
+        }
+        const r = rSync || await HC.consultarCP(v.cp).catch(() => null);
+        const pago = pagoDe(r);
         const url = HC.waUrl(datos, textoWhatsApp(datos, v, c, r));
         const pedido = {
           productos: resumenProductos(c),

@@ -49,7 +49,7 @@ function doPost(e) {
     const bloqueo = LockService.getScriptLock();
     bloqueo.waitLock(15000);
     try {
-      obtenerHoja().appendRow(fila);
+      obtenerHoja().appendRow(fila.map(textoSeguro));
     } finally {
       bloqueo.releaseLock();
     }
@@ -58,6 +58,12 @@ function doPost(e) {
   } catch (err) {
     return respuesta({ ok: false, error: String(err) });
   }
+}
+
+/* Si un texto empieza con = + - @, Sheets lo tomaría como fórmula. Le ponemos un apóstrofo delante para que se vea como texto. */
+function textoSeguro(valor) {
+  if (typeof valor === "string" && /^[=+\-@]/.test(valor)) return "'" + valor;
+  return valor;
 }
 
 function obtenerHoja() {
