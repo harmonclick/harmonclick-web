@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261028";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261030";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -63,14 +63,18 @@
   HC.waUrl = (datos, texto) => `https://wa.me/${datos.sitio.whatsapp}?text=${encodeURIComponent(texto)}`;
   /* Botones generales de WhatsApp: abren el chat con el mensaje de bienvenida (sitio.mensajeWhatsApp). El pedido del carrito usa su propio mensaje. */
   HC.waGeneral = (datos) => HC.waUrl(datos, datos.sitio.mensajeWhatsApp);
-  /* Analytics: evento "clic_whatsapp" cada vez que alguien abre WhatsApp. producto = nombre del producto cuando aplica. */
-  HC.registrarWhatsApp = (ubicacion, producto) => {
+  /* Analytics (GA4). El registro nunca debe estorbar la compra. */
+  HC.registrarEvento = (nombre, parametros) => {
     try {
       if (typeof window.gtag !== "function") return;
-      const parametros = { ubicacion: ubicacion || "enlace" };
-      if (producto) parametros.producto = producto;
-      window.gtag("event", "clic_whatsapp", parametros);
-    } catch (e) { /* el registro nunca debe estorbar la compra */ }
+      window.gtag("event", nombre, parametros || {});
+    } catch (e) { /* sin registro, pero la compra sigue */ }
+  };
+  /* Evento "clic_whatsapp" cada vez que alguien abre WhatsApp. producto = nombre del producto cuando aplica. */
+  HC.registrarWhatsApp = (ubicacion, producto) => {
+    const parametros = { ubicacion: ubicacion || "enlace" };
+    if (producto) parametros.producto = producto;
+    HC.registrarEvento("clic_whatsapp", parametros);
   };
   /* Cualquier enlace a wa.me (botones, pie, botón flotante, avisos): se registra con un solo escuchador */
   document.addEventListener("click", (e) => {
@@ -231,6 +235,15 @@
   HC.consultarCP = async (cp5) => {
     const [cob, datos] = await Promise.all([HC.cobertura(), HC.datos()]);
     return resolverCP(cob, datos, cp5);
+  };
+  /* Colonias por C.P. (data/colonias.json, se descarga solo cuando la persona escribe su C.P.).
+     Si el archivo no existe, devuelve lista vacía y la colonia se escribe a mano. */
+  let promesaColonias;
+  HC.colonias = (cp5) => {
+    if (!promesaColonias) {
+      promesaColonias = fetch("data/colonias.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("colonias"); return r.json(); }).catch(() => ({}));
+    }
+    return promesaColonias.then((mapa) => mapa[cp5] || []);
   };
   /* Versión síncrona (solo si la cobertura ya se cargó): sirve para no perder el permiso del clic al abrir WhatsApp */
   HC.consultarCPSync = (cp5) => (HC._cob && HC._datos ? resolverCP(HC._cob, HC._datos, cp5) : null);

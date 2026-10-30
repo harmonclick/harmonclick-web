@@ -1,38 +1,120 @@
-/* Carrito y pedido por WhatsApp (sin servidor) */
+/* Carrito y pedido. El pedido se guarda en una Google Sheet con Apps Script (sitio.pedidosUrl en data/products.json).
+   Si no se puede guardar, se abre WhatsApp con el mismo pedido para no perderlo. */
 (function () {
   "use strict";
   const ESTADOS = ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila de Zaragoza", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz de Ignacio de la Llave", "Yucatán", "Zacatecas"];
-  const CAMPOS = [
-    { id: "nombre", etiqueta: "Nombre completo", auto: "name", err: "Escribe tu nombre completo (nombre y apellido).", ok: (v) => v.trim().split(/\s+/).filter((x) => x.length > 1).length >= 2 },
-    { id: "telefono", etiqueta: "Teléfono / WhatsApp", auto: "tel", tipo: "tel", modo: "tel", err: "El teléfono debe tener 10 dígitos", ok: (v) => telefono10(v).length === 10 },
-    { id: "correo", etiqueta: "Correo electrónico", opcional: true, tipo: "email", auto: "email", modo: "email", err: "Escribe un correo válido, por ejemplo nombre@correo.com", ok: (v) => !v.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) },
-    { id: "cp", etiqueta: "Código postal", auto: "postal-code", modo: "numeric", max: 5, err: "Escribe tu código postal de 5 dígitos.", ok: (v) => /^\d{5}$/.test(v) },
-    { id: "calle", etiqueta: "Calle y número", auto: "address-line1", err: "Escribe tu calle y número.", ok: (v) => v.trim().length >= 3 },
-    { id: "colonia", etiqueta: "Colonia", auto: "address-line2", err: "Escribe tu colonia.", ok: (v) => v.trim().length >= 2 },
-    { id: "municipio", etiqueta: "Municipio o ciudad", auto: "address-level2", err: "Escribe tu municipio o ciudad.", ok: (v) => v.trim().length >= 2 },
-    { id: "estado", etiqueta: "Estado", auto: "address-level1", lista: "estados", err: "Escribe o elige tu estado.", ok: (v) => v.trim().length >= 3 },
-    { id: "referencias", etiqueta: "Referencias", opcional: true, area: true, ph: "Ejemplo: portón negro, casa de dos pisos, entre Calle Hidalgo y Calle Morelos", ok: () => true }
-  ];
-  function telefono10(v) {
-    return String(v).replace(/\D/g, "");   // exactamente 10 dígitos (sin lada de país)
-  }
+  const OTRA = "__otra__";   // opción del menú de colonias: "Mi colonia no aparece"
+  const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  const telefono10 = (v) => String(v).replace(/\D/g, "");   // exactamente 10 dígitos (sin lada de país)
+
+  /* Reglas de cada campo. zona: municipio y estado, que solo se escriben a mano si no encontramos el C.P. */
+  const REGLAS = {
+    nombre: { err: "Escribe tu nombre completo (nombre y apellido).", ok: (v) => v.trim().split(/\s+/).filter((x) => x.length > 1).length >= 2 },
+    telefono: { err: "El teléfono debe tener 10 dígitos", ok: (v) => telefono10(v).length === 10 },
+    cp: { err: "Escribe tu código postal de 5 dígitos.", ok: (v) => /^\d{5}$/.test(v) },
+    calle: { err: "Escribe tu calle y número.", ok: (v) => v.trim().length >= 3 },
+    colonia: { err: "Elige o escribe tu colonia.", ok: (v) => v.trim().length >= 2 },
+    municipio: { err: "Escribe tu municipio o ciudad.", ok: (v) => v.trim().length >= 2, zona: true },
+    estado: { err: "Escribe o elige tu estado.", ok: (v) => v.trim().length >= 3, zona: true },
+    correo: { err: "Escribe un correo válido, por ejemplo nombre@correo.com", ok: (v) => !v.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()) }
+  };
+
+  const txt = (id, etiqueta, attrs, extra) => `
+      <div class="campo">
+        <label for="f-${id}">${etiqueta}</label>
+        <input id="f-${id}" name="${id}" ${attrs} aria-describedby="e-${id}">
+        <p class="error" id="e-${id}">${REGLAS[id].err}</p>${extra || ""}
+      </div>`;
+
+  const formularioHTML = () => `
+    <form class="formulario" id="form-pedido" novalidate>
+      ${txt("nombre", "Nombre completo", 'type="text" autocomplete="name" required aria-required="true"')}
+      ${txt("telefono", "WhatsApp (10 dígitos)", 'type="tel" inputmode="numeric" autocomplete="tel-national" required aria-required="true"')}
+      ${txt("cp", "Código postal", 'type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" required aria-required="true"', '<div id="estado-cp" aria-live="polite" style="margin-top:.5rem"></div>')}
+      ${txt("calle", "Calle y número", 'type="text" autocomplete="address-line1" required aria-required="true"')}
+      <div class="campo">
+        <label for="f-colonia" id="l-colonia">Colonia</label>
+        <select id="f-colonia-lista" name="colonia_lista" hidden aria-describedby="e-colonia"></select>
+        <input id="f-colonia" name="colonia" type="text" autocomplete="address-line2" required aria-required="true" aria-describedby="e-colonia">
+        <button class="enlace-campo" type="button" id="btn-colonia-lista" hidden>← Elegir de la lista</button>
+        <p class="error" id="e-colonia">${REGLAS.colonia.err}</p>
+      </div>
+      <div id="bloque-zona" hidden>
+        ${txt("municipio", "Municipio o ciudad", 'type="text" autocomplete="address-level2" required aria-required="true"')}
+        ${txt("estado", "Estado", 'type="text" autocomplete="address-level1" list="estados" required aria-required="true"')}
+      </div>
+      <p class="zona-resumen" id="zona-resumen" hidden></p>
+      <div class="extras-enlace" id="enlace-extras">
+        <button class="enlace-campo" type="button" id="btn-extras" aria-expanded="false" aria-controls="bloque-extras">+ Agregar referencias o correo (opcional)</button>
+      </div>
+      <div id="bloque-extras" hidden>
+        ${txt("correo", "Correo electrónico (opcional)", 'type="email" inputmode="email" autocomplete="email"')}
+        <div class="campo">
+          <label for="f-referencias">Referencias (opcional)</label>
+          <textarea id="f-referencias" name="referencias" rows="3" autocomplete="off" placeholder="Ejemplo: portón negro, casa de dos pisos, entre Calle Hidalgo y Calle Morelos"></textarea>
+        </div>
+      </div>
+      <datalist id="estados">${ESTADOS.map((e) => `<option value="${e}">`).join("")}</datalist>
+      <div class="trampa" aria-hidden="true"><label>No llenes este campo<input type="text" name="web_extra" tabindex="-1" autocomplete="off"></label></div>
+      <button class="btn btn--compra btn--bloque" type="submit" id="btn-pedir">Pedir</button>
+      <p class="privacidad">🔒 Tus datos solo se usan para enviar tu pedido.</p>
+      <div id="pedido-error" aria-live="assertive"></div>
+    </form>`;
+
+  /* Forma de pago según la cobertura del C.P. */
+  const pagoDe = (r) => (r && r.cubierto
+    ? { texto: "Contra entrega, en efectivo al repartidor", clave: "contra_entrega" }
+    : r ? { texto: "Pago anticipado (mi C.P. no tiene contra entrega); por favor envíenme los datos de pago", clave: "pago_anticipado" }
+    : { texto: "Por confirmar", clave: "por_confirmar" });
+
+  /* Mensaje de WhatsApp: el respaldo y el botón "Escribir por WhatsApp ahora" usan este mismo texto */
+  const textoWhatsApp = (datos, v, c, r) => {
+    const lineas = c.lineas.map((l) => `• ${l.producto.nombreCorto} – ${l.etiqueta}: ${HC.fmt(l.total)}`);
+    return [
+      "🛒 Pedido desde la web", "",
+      "*Productos*", ...lineas,
+      ...(c.comboAplicado ? [`🎁 ${c.comboNombre}: −${HC.fmt(c.descuentoCombo)}`] : []),
+      "", `*Total a pagar: ${HC.fmt(c.total)}*`, "Envío: GRATIS", `Pago: ${pagoDe(r).texto}`,
+      ...(r && r.cubierto ? [`Entrega estimada: ${r.dias}`] : []),
+      "", "*Datos de entrega*",
+      `👤 Nombre: ${v.nombre}`,
+      `📱 Teléfono: ${telefono10(v.telefono)}`,
+      ...(v.correo.trim() ? [`📧 Correo: ${v.correo.trim()}`] : []),
+      `📍 C.P.: ${v.cp}`,
+      `🏠 Calle y número: ${v.calle}`,
+      `🏘️ Colonia: ${v.colonia}`,
+      `🏙️ Municipio/ciudad: ${v.municipio}`,
+      `🗺️ Estado: ${v.estado}`,
+      `📝 Referencias: ${v.referencias || "Sin referencias"}`
+    ].join("\n");
+  };
+
+  const resumenProductos = (c) => c.lineas.map((l) => `${l.producto.nombreCorto} (${l.etiqueta})`).join("; ")
+    + (c.comboAplicado ? `; ${c.comboNombre} −${HC.fmt(c.descuentoCombo)}` : "");
+
+  /* Envía el pedido a Apps Script. text/plain evita el preflight de CORS; la respuesta sí se puede leer. */
+  const guardarPedido = async (url, pedido) => {
+    if (!url) throw new Error("sin url de pedidos");
+    const control = new AbortController();
+    const espera = setTimeout(() => control.abort(), 20000);
+    try {
+      const r = await fetch(url, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(pedido), signal: control.signal });
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.error || "pedido rechazado");
+    } finally { clearTimeout(espera); }
+  };
+
+  /* Abre WhatsApp sin que lo bloqueen: se llama directo desde el clic. Si el navegador lo impide, devuelve false. */
+  const abrirWhatsApp = (url) => {
+    const ventana = window.open(url, "_blank");
+    if (ventana) { try { ventana.opener = null; } catch (err) { /* nada */ } }
+    return !!ventana;
+  };
 
   HC.listo.then((datos) => {
     const raiz = HC.$("#carrito-raiz");
     let zona = HC.zonaGuardada();
-    const editado = {}; // campos que la persona ya modificó a mano (no los pisamos al autocompletar)
-
-    const campoHTML = (c) => `
-      <div class="campo">
-        <label for="f-${c.id}">${c.etiqueta}${c.opcional ? ' <span class="opcional">(opcional)</span>' : ""}</label>
-        ${c.area
-          ? `<textarea id="f-${c.id}" name="${c.id}" rows="3" autocomplete="off" ${c.ph ? `placeholder="${c.ph}"` : ""}></textarea>`
-          : `<input id="f-${c.id}" name="${c.id}" type="${c.tipo || "text"}" ${c.modo ? `inputmode="${c.modo}"` : ""} ${c.auto ? `autocomplete="${c.auto}"` : ""} ${c.max ? `maxlength="${c.max}"` : ""} ${c.lista ? `list="${c.lista}"` : ""} ${c.opcional ? "" : 'required aria-required="true"'} aria-describedby="e-${c.id}">`}
-        ${c.err ? `<p class="error" id="e-${c.id}">${c.err}</p>` : ""}
-        ${c.id === "cp" ? '<div id="estado-cp" aria-live="polite" style="margin-top:.5rem"></div>' : ""}
-      </div>`;
-
-    HC.cobertura().catch(() => {});   // precarga: así el envío por WhatsApp no espera la red
+    HC.cobertura().catch(() => {});   // precarga: así el envío no espera la red
 
     function pintar() {
       const items = HC.carrito.leer();
@@ -93,28 +175,15 @@
         <div>
           <section class="caja" aria-labelledby="t-datos">
             <h2 id="t-datos">Datos de entrega</h2>
-            <form class="formulario" id="form-pedido" novalidate>
-              ${campoHTML(CAMPOS[0])}
-              ${campoHTML(CAMPOS[1])}
-              ${campoHTML(CAMPOS[2])}
-              ${campoHTML(CAMPOS[3])}
-              ${campoHTML(CAMPOS[4])}
-              <div class="fila-2">${campoHTML(CAMPOS[5])}${campoHTML(CAMPOS[6])}</div>
-              ${campoHTML(CAMPOS[7])}
-              <datalist id="estados">${ESTADOS.map((e) => `<option value="${e}">`).join("")}</datalist>
-              ${campoHTML(CAMPOS[8])}
-              <button class="btn btn--wa btn--bloque" type="submit" id="btn-confirmar">${HC.icono.wa}Confirmar pedido por WhatsApp</button>
-              <p class="privacidad">🔒 Tus datos solo se usan para enviar tu pedido.</p>
-              <div class="confirmacion" id="confirmacion" hidden></div>
-            </form>
+            ${formularioHTML()}
           </section>
         </div>
       </div>`;
       HC.pintarIconos(raiz);
-      enlazar(calc);
+      enlazar();
     }
 
-    function enlazar(calc) {
+    function enlazar() {
       // Cantidades
       HC.$$(".linea", raiz).forEach((el) => {
         const id = el.dataset.id;
@@ -125,125 +194,222 @@
       });
       HC.$("[data-vaciar]", raiz).addEventListener("click", () => { HC.carrito.vaciar(); pintar(); });
 
+      /* ---------- Formulario ---------- */
       const form = HC.$("#form-pedido", raiz);
       const campo = (id) => form.elements[id];
-      const validar = (c, mostrar) => {
-        const el = campo(c.id);
-        let v = el.value;
-        if (c.id === "cp") v = v.replace(/\D/g, "");
-        const bien = c.ok(v);
-        if (c.opcional && !c.err) return true;
-        if (mostrar) el.setAttribute("aria-invalid", bien ? "false" : "true");
-        else if (bien) el.setAttribute("aria-invalid", "false");
+      const cp = campo("cp"), nota = HC.$("#nota-pago", raiz), salida = HC.$("#estado-cp", form);
+      const bloqueZona = HC.$("#bloque-zona", form), resumenZona = HC.$("#zona-resumen", form);
+      const etiquetaColonia = HC.$("#l-colonia", form), btnLista = HC.$("#btn-colonia-lista", form);
+      const enlaceExtras = HC.$("#enlace-extras", form), bloqueExtras = HC.$("#bloque-extras", form), btnExtras = HC.$("#btn-extras", form);
+      const btnPedir = HC.$("#btn-pedir", form), errorEnvio = HC.$("#pedido-error", form);
+      let coloniasCP = [];      // colonias del C.P. actual (vacío = la colonia se escribe a mano)
+      let modoOtra = false;     // "Mi colonia no aparece": la colonia se escribe a mano
+      let zonaManual = false;   // no encontramos el C.P.: municipio y estado a mano
+      let zonaAuto = false;     // municipio y estado llenados desde la cobertura
+      let enviando = false;
+      let seq = 0;
+
+      const usaLista = () => coloniasCP.length > 0 && !modoOtra;
+      const elementoDe = (id) => (id === "colonia" && usaLista() ? campo("colonia_lista") : campo(id));
+      const valor = (id) => (id === "colonia" && usaLista() ? campo("colonia_lista").value : campo(id).value.trim());
+
+      const validar = (id, mostrar) => {
+        if (REGLAS[id].zona && !zonaManual) return true;
+        const bien = REGLAS[id].ok(valor(id));
+        const el = elementoDe(id);
+        if (mostrar || bien) el.setAttribute("aria-invalid", bien ? "false" : "true");
         return bien;
       };
-      CAMPOS.forEach((c) => {
-        const el = campo(c.id);
-        el.addEventListener("input", () => { editado[c.id] = true; if (c.id === "cp") el.value = el.value.replace(/\D/g, "").slice(0, 5); validar(c, false); });
-        el.addEventListener("blur", () => { if (el.value || el.getAttribute("aria-invalid")) validar(c, true); });
+
+      const pintarColonia = () => {
+        const hayLista = coloniasCP.length > 0, verLista = usaLista();
+        campo("colonia_lista").hidden = !verLista;
+        campo("colonia_lista").disabled = !verLista;
+        campo("colonia").hidden = verLista;
+        campo("colonia").disabled = verLista;
+        etiquetaColonia.htmlFor = verLista ? "f-colonia-lista" : "f-colonia";
+        btnLista.hidden = !(hayLista && modoOtra);
+      };
+      const cargarColonias = (lista) => {
+        coloniasCP = lista;
+        modoOtra = false;
+        campo("colonia_lista").innerHTML = lista.length
+          ? `<option value="">Elige tu colonia</option>${lista.map((c) => `<option value="${esc(c)}">${esc(c)}</option>`).join("")}<option value="${OTRA}">Mi colonia no aparece</option>`
+          : "";
+        campo("colonia_lista").value = lista.length === 1 ? lista[0] : "";   // si solo hay una colonia, va elegida
+        pintarColonia();
+      };
+      campo("colonia_lista").addEventListener("change", () => {
+        if (campo("colonia_lista").value === OTRA) { modoOtra = true; pintarColonia(); campo("colonia").focus(); return; }
+        validar("colonia", false);
+      });
+      btnLista.addEventListener("click", () => {
+        modoOtra = false;
+        campo("colonia_lista").value = "";
+        pintarColonia();
+        campo("colonia_lista").focus();
       });
 
-      // C.P.: autocompleta estado y municipio y muestra la cobertura
-      const salida = HC.$("#estado-cp", raiz), nota = HC.$("#nota-pago", raiz);
+      const mostrarExtras = (si) => {
+        bloqueExtras.hidden = !si;
+        enlaceExtras.hidden = si;
+        btnExtras.setAttribute("aria-expanded", String(si));
+      };
+      btnExtras.addEventListener("click", () => { mostrarExtras(true); campo("correo").focus(); });
+
+      Object.keys(REGLAS).forEach((id) => {
+        const el = campo(id);
+        el.addEventListener("input", () => validar(id, false));
+        el.addEventListener("blur", () => { if (el.value || el.getAttribute("aria-invalid") === "true") validar(id, true); });
+      });
+
+      /* ---------- Código postal: municipio, estado, cobertura y colonias ---------- */
+      const aviso = (clase, icono, texto) => {
+        salida.innerHTML = `<div class="aviso ${clase}" style="padding:var(--s3)"><span data-i="${icono}"></span><div>${texto}</div></div>`;
+        HC.pintarIconos(salida);
+      };
       const mostrarZona = (r) => {
-        const aviso = (clase, icono, texto) => { salida.innerHTML = `<div class="aviso ${clase}" style="padding:var(--s3)"><span data-i="${icono}"></span><div>${texto}</div></div>`; HC.pintarIconos(salida); };
-        if (r.cubierto) {
+        if (r && r.cubierto) {
           aviso("aviso--ok", "checkCirculo", `<strong>¡Llegamos a tu zona!</strong> Pago contra entrega disponible. Entrega estimada: ${r.dias}.`);
           nota.textContent = `Pago contra entrega: pagas en efectivo al repartidor. Entrega estimada: ${r.dias}.`;
-          if (!editado.estado) campo("estado").value = r.estado;
-          if (!editado.municipio) campo("municipio").value = r.municipio;
-          ["estado", "municipio"].forEach((k) => { if (campo(k).value) campo(k).setAttribute("aria-invalid", "false"); });
+          campo("municipio").value = r.municipio;
+          campo("estado").value = r.estado;
+          resumenZona.textContent = `📍 ${r.municipio}, ${r.estado}`;
+          zonaAuto = true;
+          zonaManual = false;
         } else {
-          aviso("aviso--info", "info", "<strong>Pago contra entrega no disponible aún en tu zona.</strong> Te enviamos con pago anticipado y tu asesora te da los datos por WhatsApp. El envío sigue siendo gratis.");
-          nota.textContent = "En tu zona el pago contra entrega todavía no está disponible. Te enviamos con pago anticipado y te damos los datos por WhatsApp.";
+          if (zonaAuto) { campo("municipio").value = ""; campo("estado").value = ""; }
+          zonaAuto = false;
+          zonaManual = true;
+          if (r) {
+            aviso("aviso--info", "info", "<strong>Pago contra entrega no disponible aún en tu zona.</strong> Te enviamos con pago anticipado y tu asesora te da los datos por WhatsApp. El envío sigue siendo gratis.");
+            nota.textContent = "En tu zona el pago contra entrega todavía no está disponible. Te enviamos con pago anticipado y te damos los datos por WhatsApp.";
+          } else {
+            aviso("aviso--info", "info", "<strong>No pudimos revisar tu C.P.</strong> Escribe tu municipio y estado; tu asesora te confirma la entrega por WhatsApp.");
+            nota.textContent = "Escribe tu municipio y estado. Tu asesora te confirma la entrega por WhatsApp.";
+          }
         }
+        bloqueZona.hidden = !zonaManual;
+        resumenZona.hidden = zonaManual;
+        ["municipio", "estado"].forEach((id) => campo(id).removeAttribute("aria-invalid"));
       };
-      let seq = 0;
-      const revisarCP = async (cp) => {
+      const limpiarZona = () => {
+        if (zonaAuto) { campo("municipio").value = ""; campo("estado").value = ""; }
+        zonaAuto = false;
+        zonaManual = false;
+        bloqueZona.hidden = true;
+        resumenZona.hidden = true;
+        resumenZona.textContent = "";
+        salida.innerHTML = "";
+        nota.textContent = "Pagas en efectivo al repartidor cuando recibes tu pedido. Escribe tu C.P. para confirmar la cobertura.";
+        cargarColonias([]);
+      };
+      const revisarCP = async (cpActual) => {
         const mi = ++seq;
-        try { const r = await HC.consultarCP(cp); if (mi !== seq) return; zona = r; HC.guardarZona(r); mostrarZona(r); return r; }
-        catch (e) { if (mi === seq) salida.innerHTML = ""; }
+        const [r, lista] = await Promise.all([HC.consultarCP(cpActual).catch(() => null), HC.colonias(cpActual)]);
+        if (mi !== seq) return;   // ya cambió el C.P.
+        zona = r;
+        if (r) HC.guardarZona(r);
+        mostrarZona(r);
+        cargarColonias(lista);
       };
-      campo("cp").addEventListener("input", () => {
-        const v = campo("cp").value;
-        if (v.length === 5) revisarCP(v); else { seq++; salida.innerHTML = ""; }
+      cp.addEventListener("input", () => {
+        cp.value = telefono10(cp.value).slice(0, 5);
+        if (cp.value.length === 5) revisarCP(cp.value);
+        else { seq++; limpiarZona(); }
       });
-      campo("cp").addEventListener("blur", () => {
-        const n = HC.normalizarCP(campo("cp").value);
-        if (n && n !== campo("cp").value) { campo("cp").value = n; revisarCP(n); }
+      cp.addEventListener("blur", () => {
+        const n = HC.normalizarCP(cp.value);
+        if (n && n !== cp.value) { cp.value = n; revisarCP(n); }
       });
-      if (zona && zona.cp) { campo("cp").value = zona.cp; revisarCP(zona.cp); }
+      if (zona && zona.cp) { cp.value = zona.cp; revisarCP(zona.cp); }
 
-      // Enviar por WhatsApp
-      const mensaje = (v, r) => {
-        const c = HC.calcular(datos, HC.carrito.leer());
-        const lineas = c.lineas.map((l) => `• ${l.producto.nombreCorto} – ${l.etiqueta}: ${HC.fmt(l.total)}`);
-        const pago = r && r.cubierto
-          ? "Contra entrega, en efectivo al repartidor"
-          : r ? "Pago anticipado (mi C.P. no tiene contra entrega); por favor envíenme los datos de pago"
-          : "Por confirmar";
-        const partes = [
-          "🛒 Pedido desde la web", "",
-          "*Productos*", ...lineas,
-          ...(c.comboAplicado ? [`🎁 ${c.comboNombre}: −${HC.fmt(c.descuentoCombo)}`] : []),
-          "", `*Total a pagar: ${HC.fmt(c.total)}*`, "Envío: GRATIS", `Pago: ${pago}`,
-          ...(r && r.cubierto ? [`Entrega estimada: ${r.dias}`] : []),
-          "", "*Datos de entrega*",
-          `👤 Nombre: ${v.nombre.trim()}`,
-          `📱 Teléfono: ${telefono10(v.telefono)}`,
-          ...(v.correo.trim() ? [`📧 Correo: ${v.correo.trim()}`] : []),
-          `📍 C.P.: ${v.cp}`,
-          `🏠 Calle y número: ${v.calle.trim()}`,
-          `🏘️ Colonia: ${v.colonia.trim()}`,
-          `🏙️ Municipio/ciudad: ${v.municipio.trim()}`,
-          `🗺️ Estado: ${v.estado.trim()}`,
-          `📝 Referencias: ${v.referencias.trim() || "Sin referencias"}`
-        ];
-        return partes.join("\n");
+      /* ---------- Pedir ---------- */
+      const abrirRespaldo = (url, abrio) => {
+        errorEnvio.innerHTML = `
+          <div class="aviso aviso--error">
+            <div>
+              <strong>No pudimos registrar tu pedido en línea.</strong>
+              <p>${abrio ? "Abrimos WhatsApp con tu pedido para que no se pierda." : "Toca el botón para enviar tu pedido por WhatsApp y no se pierda."}</p>
+              <a class="btn btn--wa btn--bloque" href="${url}" target="_blank" rel="noopener" data-ubicacion="pedido_respaldo">${HC.icono.wa}Enviar pedido por WhatsApp</a>
+            </div>
+          </div>`;
+        errorEnvio.scrollIntoView({ block: "center", behavior: "smooth" });
       };
-      /* Abre WhatsApp sin que lo bloqueen: se llama directo desde el clic (sin esperas antes).
-         Si el navegador impide la ventana nueva, se navega en esta misma pestaña (eso nunca se bloquea). */
-      const abrirWhatsApp = (url) => {
-        const ventana = window.open(url, "_blank");
-        if (ventana) { try { ventana.opener = null; } catch (err) { /* nada */ } return true; }
-        window.location.href = url;
-        return false;
+      const mostrarGracias = (url) => {
+        raiz.innerHTML = `
+          <div class="caja gracias" role="status">
+            <div class="aviso aviso--ok"><div><strong>✓ ¡Pedido recibido!</strong>Te escribimos por WhatsApp para confirmar tu entrega.</div></div>
+            <a class="btn btn--wa btn--bloque" href="${url}" target="_blank" rel="noopener" data-ubicacion="pedido_confirmacion">${HC.icono.wa}Escribir por WhatsApp ahora</a>
+            <p class="nota" style="text-align:center;margin:0"><a href="index.html#productos">Seguir comprando</a></p>
+          </div>`;
+        raiz.scrollIntoView({ block: "start", behavior: "smooth" });
       };
-      const enviarPedido = (e) => {
-        let primero = null;
-        CAMPOS.forEach((c) => { if (!validar(c, true) && !primero) primero = campo(c.id); });
-        if (primero) {
+
+      const enviarPedido = async () => {
+        if (enviando) return;
+        errorEnvio.innerHTML = "";
+        const errores = Object.keys(REGLAS).filter((id) => !validar(id, true));
+        if (errores.includes("correo")) mostrarExtras(true);
+        if (errores.length) {
+          const primero = elementoDe(errores[0]);
           primero.scrollIntoView({ block: "center", behavior: "smooth" });
           primero.focus({ preventScroll: true });
           return;
         }
-        const v = {}; CAMPOS.forEach((c) => (v[c.id] = campo(c.id).value));
-        v.cp = v.cp.replace(/\D/g, "");
-        const r = zona && zona.cp === v.cp ? zona : HC.consultarCPSync(v.cp);   // sin esperar nada de la red
-        const url = HC.waUrl(datos, mensaje(v, r));
-        const nombres = HC.calcular(datos, HC.carrito.leer()).lineas.map((l) => l.producto.nombreCorto).join(", ");
-        HC.registrarWhatsApp(e && e.currentTarget && e.currentTarget.id === "btn-finalizar" ? "finalizar_compra" : "confirmar_pedido", nombres);
-        const abrio = abrirWhatsApp(url);
-        const conf = HC.$("#confirmacion", form);
-        conf.hidden = false;
-        conf.innerHTML = `<p><strong>¡Listo! Abrimos WhatsApp con tu pedido.</strong></p>
-          <p>Envía el mensaje para que tu asesora lo confirme. Tu carrito se queda guardado por si necesitas ajustar algo.</p>
-          <p><a href="${url}" target="_blank" rel="noopener">${abrio ? "¿No se abrió WhatsApp? Toca aquí." : "Toca aquí para abrir WhatsApp con tu pedido."}</a></p>`;
-        if (abrio) conf.scrollIntoView({ block: "center", behavior: "smooth" });
+
+        const v = {};
+        Object.keys(REGLAS).forEach((id) => (v[id] = valor(id)));
+        v.correo = v.correo.trim();
+        v.referencias = campo("referencias").value.trim();
+        const c = HC.calcular(datos, HC.carrito.leer());
+        const r = zona && zona.cp === v.cp ? zona : await HC.consultarCP(v.cp).catch(() => null);
+        const pago = pagoDe(r);
+        const nombres = c.lineas.map((l) => l.producto.nombreCorto).join(", ");
+        const url = HC.waUrl(datos, textoWhatsApp(datos, v, c, r));
+        const pedido = {
+          productos: resumenProductos(c),
+          total: c.total,
+          nombre: v.nombre,
+          whatsapp: telefono10(v.telefono),
+          direccion: `${v.calle}, Col. ${v.colonia}, ${v.municipio}, ${v.estado}, C.P. ${v.cp}`,
+          referencias: v.referencias,
+          correo: v.correo,
+          pago: pago.texto,
+          origen: "Web (carrito)",
+          web_extra: campo("web_extra").value   // trampa anti-spam: los robots la llenan
+        };
+
+        enviando = true;
+        btnPedir.disabled = true;
+        btnPedir.textContent = "Enviando…";
+        const guardado = !pedido.web_extra && await guardarPedido(datos.sitio.pedidosUrl, pedido).then(() => true, () => false);
+
+        if (guardado) {
+          HC.registrarEvento("pedido_enviado", { producto: nombres, valor: c.total, metodo_pago: pago.clave, moneda: "MXN" });
+          HC.carrito.vaciar();
+          mostrarGracias(url);
+          return;
+        }
+        const abrio = abrirWhatsApp(url);   // respaldo: el pedido no se pierde aunque falle el registro
+        if (abrio) HC.registrarWhatsApp("pedido_respaldo", nombres);
+        enviando = false;
+        btnPedir.disabled = false;
+        btnPedir.textContent = "Pedir";
+        abrirRespaldo(url, abrio);
       };
-      form.addEventListener("submit", (e) => { e.preventDefault(); enviarPedido(e); });
-      // "Finalizar compra": valida todo y, si está bien, abre WhatsApp con el pedido (igual que "Confirmar pedido por WhatsApp")
+      form.addEventListener("submit", (e) => { e.preventDefault(); enviarPedido(); });
+      // "Finalizar compra" del resumen hace lo mismo que "Pedir"
       HC.$("#btn-finalizar", raiz).addEventListener("click", enviarPedido);
     }
 
     pintar();
     // Llegada desde "Comprar ahora" / "Finalizar compra" de la página de producto: directo al formulario
     if (location.hash === "#datos" && HC.$("#form-pedido", raiz)) {
-      const primero = HC.$("#form-pedido input, #form-pedido textarea", raiz);
+      const primero = HC.$("#f-nombre", raiz);
       HC.$("#t-datos", raiz).scrollIntoView({ block: "start" });
       if (primero) primero.focus({ preventScroll: true });
     }
-    document.addEventListener("hc:carrito", () => { /* otros cambios (otra pestaña) */ });
     window.addEventListener("storage", (e) => { if (e.key === "hc_carrito_v1") pintar(); });
   });
 })();

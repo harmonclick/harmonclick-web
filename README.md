@@ -28,6 +28,11 @@ La tarjeta oscura junto al verificador de C.P. usa `fotos-pagina-harmon/videos/m
 ## Contenido estático (SEO)
 Los productos del inicio y las preguntas frecuentes (con su JSON-LD FAQPage) se escriben en el HTML con `python3 herramientas/generar_contenido_estatico.py`, leyendo `data/products.json`. `actualizar_version.py` lo corre solo, así que después de editar precios o textos basta con correr ese script.
 
+## Pedidos (carrito)
+El formulario del carrito envía cada pedido a una Google Sheet con Apps Script. Pasos para configurarlo y para la colonia por C.P.:
+- Código del script y pasos: `herramientas/pedidos_apps_script.gs`. La URL que publiques va en `data/products.json` > `sitio.pedidosUrl`. Mientras esté vacía, el botón "Pedir" abre WhatsApp con el pedido.
+- Colonias por C.P.: descarga el archivo `CPdescarga.txt` de Correos de México (datos abiertos) y corre `python3 herramientas/generar_colonias.py ruta/CPdescarga.txt`. Crea `data/colonias.json`.
+
 ## Sitemap y robots
 `sitemap.xml` lista las páginas públicas con su URL completa (`https://harmonclick.com/...`) y `robots.txt` permite a todos los rastreadores y apunta al sitemap. **Cuando agregues una página nueva**, añade su `<url><loc>` en `sitemap.xml` y ponle `<link rel="canonical" href="https://harmonclick.com/nombre.html">`. Las páginas que no deben indexarse (`carrito.html`, `404.html`) llevan `noindex` y no van en el sitemap. `actualizar_version.py` avisa si falta alguna.
 
