@@ -2,7 +2,7 @@
   "_ayuda": "ARCHIVO ÚNICO DE PRECIOS Y TEXTOS. Para cambiar un precio busca el producto y edita solo el número de \"precio\" (sin $ ni comas). Guarda el archivo y listo: el diseño no se toca. Los precios \"antes\" son opcionales: borra la línea \"antes\" si no quieres mostrarlo.",
   "sitio": {
     "whatsapp": "523353310072",
-    "pedidosUrl": "",
+    "pedidosUrl": "https://script.google.com/macros/s/AKfycbxLsgg98QpxVK-HqhZXI7JyYhwlmqHdBsr_QNCckx7QSv5FZpntoila7KehPVPqWlRq_Q/exec",
     "whatsappVisible": "+52 33 5331 0072",
     "correo": "contacto.harmonclick@gmail.com",
     "facebook": "https://www.facebook.com/HarmonClickMx",
@@ -368,7 +368,7 @@
     },
     {
       "p": "¿Cómo hago mi pedido?",
-      "r": "Elige tu producto y tu paquete, agrégalo al carrito, llena tus datos de entrega y confirma por WhatsApp. Una asesora revisa tu pedido y te confirma los detalles. También puedes pedir directo por WhatsApp desde cualquier producto."
+      "r": "Elige tu producto y tu paquete, agrégalo al carrito, llena tus datos de entrega y toca Pedir. Te escribimos por WhatsApp para confirmar tu entrega. Una asesora revisa tu pedido y te confirma los detalles. También puedes pedir directo por WhatsApp desde cualquier producto."
     },
     {
       "p": "¿Puedo pagar con tarjeta?",
