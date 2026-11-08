@@ -53,7 +53,7 @@
   let promesaDatos;
   HC.datos = () => {
     if (!promesaDatos) {
-      promesaDatos = fetch("data/products.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("datos"); return r.json(); });
+      promesaDatos = fetch("/data/products.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("datos"); return r.json(); });
     }
     return promesaDatos;
   };
@@ -181,7 +181,7 @@
     if (!barra) {
       barra = document.createElement("a");
       barra.className = "barra-carrito";
-      barra.href = "carrito.html";
+      barra.href = "/carrito.html";
       document.body.appendChild(barra);
     }
     barra.innerHTML = `<span>Ver mi pedido (${calc.frascos}) · ${HC.fmt(calc.total)}</span>${HC.icono.flecha}`;
@@ -210,7 +210,7 @@
   let promesaCob;
   HC.cobertura = () => {
     if (!promesaCob) {
-      promesaCob = fetch("data/cobertura.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("cobertura"); return r.json(); }).then((d) => {
+      promesaCob = fetch("/data/cobertura.json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("cobertura"); return r.json(); }).then((d) => {
         const mapa = new Map();
         d.grupos.forEach(([e, muni, rangos]) => {
           for (let i = 0; i < rangos.length; i += 2) {
@@ -242,7 +242,7 @@
   HC.colonias = (cp5) => {
     const prefijo = String(cp5).slice(0, 2);
     if (!coloniasPorPrefijo[prefijo]) {
-      coloniasPorPrefijo[prefijo] = fetch("data/colonias/" + prefijo + ".json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("colonias"); return r.json(); }).catch(() => ({}));
+      coloniasPorPrefijo[prefijo] = fetch("/data/colonias/" + prefijo + ".json?v=" + VERSION).then((r) => { if (!r.ok) throw new Error("colonias"); return r.json(); }).catch(() => ({}));
     }
     return coloniasPorPrefijo[prefijo].then((mapa) => mapa[cp5] || []);
   };
@@ -335,7 +335,7 @@
   function armarPagina(datos) {
     const s = datos.sitio;
     const inicio = document.body.dataset.pagina === "inicio";
-    const prefijo = inicio ? "" : "index.html";
+    const prefijo = inicio ? "" : "/";
     const enlaces = [
       ["productos", "Productos"],
       ["como-funciona", "Cómo comprar"]
@@ -343,7 +343,7 @@
     const actual = document.body.dataset.pagina === "producto" ? "productos" : "";
     const enFaq = document.body.dataset.pagina === "faq";
     const lista = () => enlaces.map(([id, t]) => `<a href="${prefijo}#${id}" data-seccion="${id}"${actual === id ? ' aria-current="true"' : ""}>${t}</a>`).join("")
-      + `<a href="preguntas-frecuentes.html"${enFaq ? ' aria-current="true"' : ""}>Preguntas frecuentes</a>`;
+      + `<a href="/preguntas-frecuentes.html"${enFaq ? ' aria-current="true"' : ""}>Preguntas frecuentes</a>`;
 
     const cab = HC.$("[data-cabecera]");
     if (cab) {
@@ -351,10 +351,10 @@
 ${cintaAnuncios()}
       <header class="cabecera">
         <div class="contenedor cabecera__fila">
-          <a class="cabecera__logo" href="index.html" aria-label="Harmon &amp; Click, ir al inicio"><img src="img/logos/logo-para-fondo-oscuro.webp" alt="Harmon &amp; Click" width="96" height="60"></a>
+          <a class="cabecera__logo" href="/" aria-label="Harmon &amp; Click, ir al inicio"><img src="/img/logos/logo-para-fondo-oscuro.webp" alt="Harmon &amp; Click" width="96" height="60"></a>
           <nav class="menu" aria-label="Principal">${lista()}</nav>
           <div class="cabecera__acciones">
-            <a class="icono-btn" href="carrito.html" data-carrito-enlace aria-label="Carrito, vacío">${HC.icono.carrito}<span class="contador" data-contador data-vacio="true" aria-hidden="true">0</span></a>
+            <a class="icono-btn" href="/carrito.html" data-carrito-enlace aria-label="Carrito, vacío">${HC.icono.carrito}<span class="contador" data-contador data-vacio="true" aria-hidden="true">0</span></a>
             <button class="icono-btn burger" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">${HC.icono.menu}</button>
           </div>
         </div>
@@ -368,7 +368,7 @@ ${cintaAnuncios()}
         <div class="contenedor">
           <div class="pie__grid">
             <div class="pie__logo">
-              <img src="img/logos/logo-con-lema-fondo-oscuro.webp" alt="Harmon &amp; Click. Todo lo que necesitas, a un click" width="230" height="159" loading="lazy">
+              <img src="/img/logos/logo-con-lema-fondo-oscuro.webp" alt="Harmon &amp; Click. Todo lo que necesitas, a un click" width="230" height="159" loading="lazy">
             </div>
             <div>
               <h2>Contacto</h2>
@@ -384,8 +384,8 @@ ${cintaAnuncios()}
               <ul>
                 <li><a href="${prefijo}#productos">Productos</a></li>
                 <li><a href="${prefijo}#como-funciona">Cómo comprar</a></li>
-                <li><a href="preguntas-frecuentes.html">Preguntas frecuentes</a></li>
-                <li><a href="aviso-de-privacidad.html">Aviso de privacidad</a></li>
+                <li><a href="/preguntas-frecuentes.html">Preguntas frecuentes</a></li>
+                <li><a href="/aviso-de-privacidad.html">Aviso de privacidad</a></li>
               </ul>
             </div>
           </div>
