@@ -50,9 +50,9 @@
         "acento": "#e3b04b"
       },
       "precios": {
-        "uno": { "precio": 449, "antes": 549 },
-        "duo": { "precio": 798 },
-        "trio": { "precio": 999 }
+        "uno": { "precio": 449, "antes": 549, "mercadoPago": "https://mpago.la/2yaAtKF" },
+        "duo": { "precio": 798, "mercadoPago": "https://mpago.la/1zHr31d" },
+        "trio": { "precio": 999, "mercadoPago": "https://mpago.la/2s3XsYB" }
       },
       "beneficios": [
         { "t": "Energía y vitalidad diaria", "d": "Apoya tu energía y tu vitalidad en el día a día." },

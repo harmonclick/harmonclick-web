@@ -102,7 +102,8 @@
             </div>
             ${textoCuatro}
             <div class="pp-botones">
-              <button class="btn btn--compra btn--bloque" type="button" id="btn-comprar">Comprar ahora</button>
+              <a class="btn btn--compra btn--bloque" id="btn-comprar" href="#" target="_blank" rel="noopener" style="display:none">Pagar con Mercado Pago</a>
+              <button class="btn btn--compra btn--bloque" type="button" id="btn-comprar-carrito" style="display:none">Comprar ahora</button>
               <button class="btn btn--carrito btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
               <div class="pp-agregado" id="pp-agregado" role="status" hidden>
                 <p class="pp-agregado__texto">✓ Agregado a tu pedido</p>
@@ -190,7 +191,48 @@
       btnWa.dataset.producto = p.nombreCorto;
       HC.$("[data-b-nombre]", barra).textContent = q.nombre;
       HC.$("[data-b-precio]", barra).textContent = HC.fmt(q.precio);
+      actualizarBotonCompra();
     }
+    /* ---------- Botones de compra / carrito ---------- */
+    const btnAgregar = HC.$("#btn-agregar", raiz);
+    const cajaAgregado = HC.$("#pp-agregado", raiz);
+    const btnComprarMP = HC.$("#btn-comprar", raiz);
+    const btnComprarCarrito = HC.$("#btn-comprar-carrito", raiz);
+    const btnPedirAhora = HC.$("[data-pedir-ahora]", barra);
+
+    /* Mostrar el botón correcto según si el paquete tiene link de Mercado Pago */
+    function actualizarBotonCompra() {
+      const paq = HC.paquete(p, clave);
+      if (paq.mercadoPago) {
+        btnComprarMP.href = paq.mercadoPago;
+        btnComprarMP.style.display = "";
+        btnComprarCarrito.style.display = "none";
+        btnPedirAhora.textContent = "Pagar ahora";
+      } else {
+        btnComprarMP.style.display = "none";
+        btnComprarCarrito.style.display = "";
+        btnPedirAhora.textContent = "Pedir ahora";
+      }
+    }
+
+    btnAgregar.addEventListener("click", () => {
+      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
+      cajaAgregado.hidden = false;
+    });
+    btnComprarCarrito.addEventListener("click", () => {
+      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
+      location.href = "carrito.html#datos";
+    });
+    btnPedirAhora.addEventListener("click", () => {
+      const paq = HC.paquete(p, clave);
+      if (paq.mercadoPago) {
+        window.open(paq.mercadoPago, "_blank", "noopener");
+      } else {
+        HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
+        location.href = "carrito.html";
+      }
+    });
+
     radios.forEach((r) => r.addEventListener("click", () => seleccionar(r.dataset.clave)));
     HC.$(".paquetes", raiz).addEventListener("keydown", (e) => {
       const orden = claves;
@@ -205,22 +247,6 @@
 
     const cuatro = HC.$("[data-wa-cuatro]", raiz);
     if (cuatro) cuatro.addEventListener("click", (e) => { e.preventDefault(); HC.registrarWhatsApp("cuatro_o_mas", p.nombreCorto); window.open(HC.waUrl(datos, `¡Hola! Quiero pedir 4 o más de ${p.nombreCorto}`), "_blank", "noopener"); });
-
-    /* ---------- Agregar al carrito / pedir ahora ---------- */
-    const btnAgregar = HC.$("#btn-agregar", raiz);
-    const cajaAgregado = HC.$("#pp-agregado", raiz);
-    btnAgregar.addEventListener("click", () => {
-      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
-      cajaAgregado.hidden = false;   // se queda visible
-    });
-    HC.$("#btn-comprar", raiz).addEventListener("click", () => {
-      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
-      location.href = "carrito.html#datos";   // directo al formulario de entrega
-    });
-    HC.$("[data-pedir-ahora]", barra).addEventListener("click", () => {
-      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
-      location.href = "carrito.html";
-    });
 
     /* ---------- Galería ---------- */
     const pista = HC.$(".galeria__pista", raiz), mins = HC.$$(".miniatura", raiz), contador = HC.$(".galeria__contador", raiz);

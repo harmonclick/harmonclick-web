@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261121";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261121b";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -99,7 +99,7 @@
     const def = HC.PAQUETES.find((x) => x.clave === clave);
     const precio = p.precios[clave].precio;
     const normal = p.precios.uno.precio * def.n;
-    return { ...def, precio, cadaUno: Math.round(precio / def.n), ahorro: Math.max(0, normal - precio), antes: p.precios[clave].antes || null, frase: p.precios[clave].frase || "" };
+    return { ...def, precio, cadaUno: Math.round(precio / def.n), ahorro: Math.max(0, normal - precio), antes: p.precios[clave].antes || null, frase: p.precios[clave].frase || "", mercadoPago: p.precios[clave].mercadoPago || null };
   };
   /* Precio de una línea del carrito según la cantidad de frascos del MISMO producto */
   HC.precioLinea = (p, qty) => {
