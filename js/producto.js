@@ -120,6 +120,10 @@
                     <input id="ch-tel" name="telefono" type="tel" inputmode="numeric" autocomplete="tel" required placeholder="10 dígitos" maxlength="15">
                   </div>
                   <div class="checkout__campo">
+                    <label for="ch-email">Correo electrónico <span class="opcional">(opcional)</span></label>
+                    <input id="ch-email" name="email" type="email" autocomplete="email" placeholder="ejemplo@correo.com">
+                  </div>
+                  <div class="checkout__campo">
                     <label for="ch-colonia">Colonia <span class="req">*</span></label>
                     <select id="ch-colonia-sel" style="display:none"><option value="">Selecciona tu colonia</option></select>
                     <input id="ch-colonia" name="colonia" type="text" autocomplete="address-level3" required placeholder="Tu colonia">
@@ -293,6 +297,7 @@
 
       const nombre = HC.$("#ch-nombre", raiz).value.trim();
       const tel = HC.$("#ch-tel", raiz).value.trim();
+      const email = HC.$("#ch-email", raiz).value.trim();
       const colonia = chColoniaInput.value.trim() || (chColoniaSel.style.display !== "none" ? chColoniaSel.value : "");
       const calle = HC.$("#ch-calle", raiz).value.trim();
       const ref = HC.$("#ch-ref", raiz).value.trim();
@@ -300,6 +305,7 @@
       // Validaciones
       if (!nombre) { mostrarError("Escribe tu nombre completo."); HC.$("#ch-nombre", raiz).focus(); return; }
       if (!tel || tel.length < 10) { mostrarError("Escribe un teléfono de 10 dígitos."); HC.$("#ch-tel", raiz).focus(); return; }
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { mostrarError("Revisa tu correo electrónico."); HC.$("#ch-email", raiz).focus(); return; }
       if (!colonia || colonia === "__otra__") { mostrarError("Selecciona o escribe tu colonia."); return; }
       if (!calle) { mostrarError("Escribe tu calle y número."); HC.$("#ch-calle", raiz).focus(); return; }
 
@@ -312,6 +318,7 @@
         ``,
         `👤 ${nombre}`,
         `📱 ${tel}`,
+        email ? `📧 ${email}` : "",
         `📍 CP ${zonaActual.cp} – ${colonia}, ${zonaActual.municipio}, ${zonaActual.estado}`,
         `🏠 ${calle}`,
         ref ? `📝 Ref: ${ref}` : "",

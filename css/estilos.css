@@ -483,7 +483,7 @@ a:where(:not(.btn):not(.tarjeta):not(.icono-btn):not(.wa-flotante):not(.cabecera
 .checkout-form .btn--compra { margin-top: var(--s4); }
 .checkout__confianza { display: flex; align-items: center; gap: var(--s2); margin-top: var(--s3); font-size: var(--t-xs); color: var(--ink-2); }
 .checkout__confianza svg { width: 16px; height: 16px; flex: none; color: var(--gold); }
-@media (min-width: 600px) { .checkout__campos { grid-template-columns: 1fr 1fr; } .checkout__campo:nth-child(3), .checkout__campo:nth-child(5) { grid-column: 1 / -1; } }
+@media (min-width: 600px) { .checkout__campos { grid-template-columns: 1fr 1fr; } .checkout__campo:nth-child(n+3) { grid-column: 1 / -1; } }
 .pp-botones { display: grid; gap: var(--s3); margin-top: var(--s5); }
 .pp-envio { list-style: none; display: grid; gap: var(--s3); margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--line); font-size: var(--t-sm); color: var(--ink-2); }
 .pp-envio li { display: flex; gap: var(--s3); align-items: center; }
