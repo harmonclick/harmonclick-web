@@ -1,4 +1,4 @@
-"""Convierte cobertura_contra_entrega.csv en data/cobertura.json (compacto).
+"""Convierte cobertura_pago_anticipado.csv en data/cobertura.json (compacto).
 - Normaliza los C.P. a 5 dígitos (rellena con ceros a la izquierda).
 - NO guarda nombres de paqueterías.
 Uso:  python3 herramientas/generar_cobertura.py
@@ -13,9 +13,9 @@ def bonito(t):
 
 grupos = collections.defaultdict(set)
 vistos = set()
-with open(os.path.join(RAIZ, "cobertura_contra_entrega.csv"), encoding="utf-8-sig", newline="") as f:
+with open(os.path.join(RAIZ, "cobertura_pago_anticipado.csv"), encoding="utf-8-sig", newline="") as f:
     for fila in csv.DictReader(f):
-        cp = fila["cp"].strip().zfill(5)
+        cp = fila["codigo_postal"].strip().zfill(5)
         if not cp.isdigit() or len(cp) != 5 or cp in vistos:
             continue
         vistos.add(cp)
