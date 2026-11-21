@@ -134,10 +134,10 @@
         "acento": "#a8214f"
       },
       "precios": {
-        "uno": { "precio": 479, "antes": 585 },
-        "duo": { "precio": 798 },
-        "trio": { "precio": 999, "frase": "Tu rutina completa de 3 meses por solo $11 al día" },
-        "cuatroMas": { "precio": 319, "mostrarTexto": true }
+        "uno": { "precio": 479, "antes": 585, "mercadoPago": "https://mpago.la/2TFDb6p" },
+        "duo": { "precio": 798, "mercadoPago": "https://mpago.la/28Js1iW" },
+        "trio": { "precio": 999, "frase": "Tu rutina completa de 3 meses por solo $11 al día", "mercadoPago": "https://mpago.la/2UaPt4p" },
+        "cuatroMas": { "precio": 319, "mostrarTexto": true, "mercadoPago": "https://mpago.la/1vysb3A" }
       },
       "beneficios": [
         { "t": "Flora íntima en equilibrio", "d": "Formulado para apoyar el equilibrio natural de tu flora íntima." },
@@ -205,8 +205,8 @@
         "acento": "#d9ab4a"
       },
       "precios": {
-        "uno": { "precio": 485, "antes": 585 },
-        "duo": { "precio": 880, "frase": "Tu rutina de 2 meses" }
+        "uno": { "precio": 485, "antes": 585, "mercadoPago": "https://mpago.la/232PoLP" },
+        "duo": { "precio": 880, "frase": "Tu rutina de 2 meses", "mercadoPago": "https://mpago.la/2yXhCAQ" }
       },
       "beneficios": [
         { "t": "Rutina de calma", "d": "Un momento para ti al final de un día intenso." },
@@ -290,10 +290,10 @@
         "acento": "#8a3fb5"
       },
       "precios": {
-        "uno": { "precio": 690 },
-        "duo": { "precio": 1050 },
-        "trio": { "precio": 1350 },
-        "cuatroMas": { "precio": 413, "mostrarTexto": false }
+        "uno": { "precio": 690, "mercadoPago": "https://mpago.la/16K2TZb" },
+        "duo": { "precio": 1050, "mercadoPago": "https://mpago.la/31Bms6K" },
+        "trio": { "precio": 1350, "mercadoPago": "https://mpago.la/2udm35i" },
+        "cuatroMas": { "precio": 413, "mostrarTexto": false, "mercadoPago": "https://mpago.la/1niV32M" }
       },
       "beneficios": [
         { "t": "Energía celular y vitalidad diaria", "d": "Apoya tu energía y tu vitalidad de todos los días." },
