@@ -61,11 +61,11 @@
       <div id="pedido-error" aria-live="assertive"></div>
     </form>`;
 
-  /* Forma de pago según la cobertura del C.P. */
+  /* Forma de pago */
   const pagoDe = (r) => (r && r.cubierto
-    ? { texto: "Contra entrega, en efectivo al repartidor", clave: "contra_entrega" }
-    : r ? { texto: "Pago anticipado (mi C.P. no tiene contra entrega); por favor envíenme los datos de pago", clave: "pago_anticipado" }
-    : { texto: "Por confirmar", clave: "por_confirmar" });
+    ? { texto: "Pago en línea con tarjeta (Mercado Pago)", clave: "pago_anticipado" }
+    : r ? { texto: "Pago en línea con tarjeta (Mercado Pago)", clave: "pago_anticipado" }
+    : { texto: "Pago en línea con tarjeta (Mercado Pago)", clave: "pago_anticipado" });
 
   /* Mensaje de WhatsApp: el respaldo y el botón "Escribir por WhatsApp ahora" usan este mismo texto */
   const textoWhatsApp = (datos, v, c, r) => {
@@ -148,9 +148,9 @@
         </div>`).join("");
 
       const pagoTxt = !zona || zona.cubierto === undefined
-        ? "Pagas en efectivo al repartidor cuando recibes tu pedido. Escribe tu C.P. para confirmar la cobertura."
-        : zona.cubierto ? `Pago contra entrega: pagas en efectivo al repartidor. Entrega estimada: ${zona.dias}.`
-        : "En tu zona el pago contra entrega todavía no está disponible. Te enviamos con pago anticipado y te damos los datos por WhatsApp.";
+        ? "Pago seguro en línea con tarjeta vía Mercado Pago. Escribe tu C.P. para confirmar la cobertura de envío."
+        : zona.cubierto ? `Pago en línea con tarjeta (Mercado Pago). Entrega estimada: ${zona.dias}.`
+        : "Tu zona aún no está en nuestra cobertura. Escríbenos por WhatsApp y te ayudamos con tu envío.";
 
       raiz.innerHTML = `
       <div class="carrito-grid">
@@ -270,8 +270,8 @@
       };
       const mostrarZona = (r) => {
         if (r && r.cubierto) {
-          aviso("aviso--ok", "checkCirculo", `<strong>¡Llegamos a tu zona!</strong> Pago contra entrega disponible. Entrega estimada: ${r.dias}.`);
-          nota.textContent = `Pago contra entrega: pagas en efectivo al repartidor. Entrega estimada: ${r.dias}.`;
+          aviso("aviso--ok", "checkCirculo", `<strong>¡Llegamos a tu zona!</strong> Envío gratis. Entrega estimada: ${r.dias}.`);
+          nota.textContent = `Pago en línea con tarjeta (Mercado Pago). Entrega estimada: ${r.dias}.`;
           campo("municipio").value = r.municipio;
           campo("estado").value = r.estado;
           resumenZona.textContent = `📍 ${r.municipio}, ${r.estado}`;
@@ -282,8 +282,8 @@
           zonaAuto = false;
           zonaManual = true;
           if (r) {
-            aviso("aviso--info", "info", "<strong>Pago contra entrega no disponible aún en tu zona.</strong> Te enviamos con pago anticipado y tu asesora te da los datos por WhatsApp. El envío sigue siendo gratis.");
-            nota.textContent = "En tu zona el pago contra entrega todavía no está disponible. Te enviamos con pago anticipado y te damos los datos por WhatsApp.";
+            aviso("aviso--info", "info", "<strong>Tu zona aún no está en nuestra cobertura de envío.</strong> Escríbenos por WhatsApp y te ayudamos con tu pedido.");
+            nota.textContent = "Tu zona aún no está en nuestra cobertura. Escríbenos por WhatsApp y te ayudamos con tu envío.";
           } else {
             aviso("aviso--info", "info", "<strong>No pudimos revisar tu C.P.</strong> Escribe tu municipio y estado; tu asesora te confirma la entrega por WhatsApp.");
             nota.textContent = "Escribe tu municipio y estado. Tu asesora te confirma la entrega por WhatsApp.";
@@ -301,7 +301,7 @@
         resumenZona.hidden = true;
         resumenZona.textContent = "";
         salida.innerHTML = "";
-        nota.textContent = "Pagas en efectivo al repartidor cuando recibes tu pedido. Escribe tu C.P. para confirmar la cobertura.";
+        nota.textContent = "Pago seguro en línea con tarjeta vía Mercado Pago. Escribe tu C.P. para confirmar la cobertura de envío.";
         cargarColonias([]);
       };
       const revisarCP = async (cpActual) => {

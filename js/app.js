@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261030c";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261121";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -24,6 +24,7 @@
   HC.icono = {
     camion: I('<path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7z"/><circle cx="7.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>'),
     efectivo: I('<rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v.01M18 14.5v.01"/>'),
+    tarjeta: I('<rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/><path d="M6 14h4M14 14h4"/>'),
     escudo: I('<path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M8.5 12.2l2.5 2.5 4.5-5"/>'),
     chat: I('<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5"/>'),
     carrito: I('<path d="M3 4h2.4l2.2 11h10.2l2-8H6.2"/><circle cx="9.5" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>'),
@@ -292,13 +293,14 @@
       const datos = await HC.datos();
       if (r.cubierto) {
         pintar("aviso--ok", "checkCirculo", "¡Sí llegamos a tu zona!",
-          `<p>En ${r.municipio}, ${r.estado} tienes <strong style="display:inline;font-size:inherit">pago contra entrega</strong>.</p>
+          `<p>En ${r.municipio}, ${r.estado} tienes <strong style="display:inline;font-size:inherit">envío gratis</strong>.</p>
            <p>Entrega estimada: <strong style="display:inline;font-size:inherit">${r.dias}</strong>.</p>
+           <p>Pago seguro en línea con tarjeta vía Mercado Pago.</p>
            ${o.irAProductos ? '<a class="enlace-flecha" href="#productos">Ver productos <span data-i="flecha"></span></a>' : ""}`);
       } else {
-        const msg = `¡Hola! Mi código postal es ${cp5} y vi que no tiene pago contra entrega. Quiero información del envío con pago anticipado.`;
-        pintar("aviso--info", "info", "Por ahora el pago contra entrega no llega a tu zona",
-          `<p>Nuestra cobertura sigue creciendo. Mientras tanto, sí te lo enviamos con <strong style="display:inline;font-size:inherit">pago anticipado 100% confiable</strong>: te damos tu número de guía y tu link de rastreo, y el repartidor siempre te llama antes de entregar. El envío sigue siendo gratis.</p>
+        const msg = `¡Hola! Mi código postal es ${cp5} y quiero saber si pueden enviar a mi zona.`;
+        pintar("aviso--info", "info", "Tu zona aún no está en nuestra cobertura de envío",
+          `<p>Nuestra cobertura sigue creciendo. Escríbenos por WhatsApp y te ayudamos con tu envío. El repartidor siempre te llama antes de entregar.</p>
            <a class="btn btn--wa" href="${HC.waUrl(datos, msg)}" target="_blank" rel="noopener"><span data-i="wa"></span>Escríbenos por WhatsApp</a>`);
       }
     };

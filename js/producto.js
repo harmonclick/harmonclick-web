@@ -113,7 +113,7 @@
             </div>
             <ul class="pp-envio">
               <li>${HC.icono.camion}Envío gratis en todos tus pedidos</li>
-              <li>${HC.icono.efectivo}Pagas en efectivo al recibir</li>
+              <li>${HC.icono.tarjeta}Pago seguro con tarjeta · Hasta 24 meses</li>
               <li>${HC.icono.escudo}Producto 100% original</li>
             </ul>
             <div class="zona--compacta" id="revisor"></div>
