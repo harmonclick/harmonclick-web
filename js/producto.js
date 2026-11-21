@@ -102,14 +102,7 @@
             </div>
             ${textoCuatro}
             <div class="pp-botones">
-              <a class="btn btn--compra btn--bloque" id="btn-comprar" href="#" target="_blank" rel="noopener" style="display:none">Pagar con Mercado Pago</a>
-              <button class="btn btn--compra btn--bloque" type="button" id="btn-comprar-carrito" style="display:none">Comprar ahora</button>
-              <button class="btn btn--carrito btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
-              <div class="pp-agregado" id="pp-agregado" role="status" hidden>
-                <p class="pp-agregado__texto">✓ Agregado a tu pedido</p>
-                <a class="btn btn--compra btn--bloque" href="carrito.html#datos">Finalizar compra →</a>
-                <a class="pp-agregado__seguir" href="index.html#productos">Seguir comprando</a>
-              </div>
+              <a class="btn btn--compra btn--bloque" id="btn-comprar" href="#" target="_blank" rel="noopener">Pagar con Mercado Pago</a>
               <a class="btn btn--wa btn--bloque" id="btn-wa" data-ubicacion="pedir_por_whatsapp" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
             </div>
             <ul class="pp-envio">
@@ -193,43 +186,21 @@
       HC.$("[data-b-precio]", barra).textContent = HC.fmt(q.precio);
       actualizarBotonCompra();
     }
-    /* ---------- Botones de compra / carrito ---------- */
-    const btnAgregar = HC.$("#btn-agregar", raiz);
-    const cajaAgregado = HC.$("#pp-agregado", raiz);
+    /* ---------- Botones de compra ---------- */
     const btnComprarMP = HC.$("#btn-comprar", raiz);
-    const btnComprarCarrito = HC.$("#btn-comprar-carrito", raiz);
     const btnPedirAhora = HC.$("[data-pedir-ahora]", barra);
 
-    /* Mostrar el botón correcto según si el paquete tiene link de Mercado Pago */
+    /* Actualizar el link de Mercado Pago según el paquete seleccionado */
     function actualizarBotonCompra() {
       const paq = HC.paquete(p, clave);
-      if (paq.mercadoPago) {
-        btnComprarMP.href = paq.mercadoPago;
-        btnComprarMP.style.display = "";
-        btnComprarCarrito.style.display = "none";
-        btnPedirAhora.textContent = "Pagar ahora";
-      } else {
-        btnComprarMP.style.display = "none";
-        btnComprarCarrito.style.display = "";
-        btnPedirAhora.textContent = "Pedir ahora";
-      }
+      btnComprarMP.href = paq.mercadoPago || "#";
+      btnPedirAhora.textContent = "Pagar ahora";
     }
 
-    btnAgregar.addEventListener("click", () => {
-      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
-      cajaAgregado.hidden = false;
-    });
-    btnComprarCarrito.addEventListener("click", () => {
-      HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
-      location.href = "carrito.html#datos";
-    });
     btnPedirAhora.addEventListener("click", () => {
       const paq = HC.paquete(p, clave);
       if (paq.mercadoPago) {
         window.open(paq.mercadoPago, "_blank", "noopener");
-      } else {
-        HC.carrito.agregar(p.id, HC.paquete(p, clave).n);
-        location.href = "carrito.html";
       }
     });
 

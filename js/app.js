@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261121c";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261121d";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -356,7 +356,7 @@ ${cintaAnuncios()}
           <a class="cabecera__logo" href="/" aria-label="Harmon &amp; Click, ir al inicio"><img src="/img/logos/logo-para-fondo-oscuro.webp" alt="Harmon &amp; Click" width="96" height="60"></a>
           <nav class="menu" aria-label="Principal">${lista()}</nav>
           <div class="cabecera__acciones">
-            <a class="icono-btn" href="/carrito.html" data-carrito-enlace aria-label="Carrito, vacío">${HC.icono.carrito}<span class="contador" data-contador data-vacio="true" aria-hidden="true">0</span></a>
+            <a class="icono-btn" href="#" data-wa-header aria-label="WhatsApp">${HC.icono.wa}</a>
             <button class="icono-btn burger" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">${HC.icono.menu}</button>
           </div>
         </div>
@@ -399,6 +399,8 @@ ${cintaAnuncios()}
         </div>
       </footer>`;
     }
+    const waHeader = HC.$("[data-wa-header]");
+    if (waHeader) { waHeader.href = HC.waGeneral(datos); waHeader.target = "_blank"; waHeader.rel = "noopener"; }
     if (!HC.$(".wa-flotante")) {
       const a = document.createElement("a");
       a.className = "wa-flotante";
