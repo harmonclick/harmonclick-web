@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261121d";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261121e";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -169,24 +169,11 @@
     HC.actualizarBarraCarrito();
   };
 
-  /* ---------- Barra fija "Ver mi pedido (N) · $TOTAL →" ---------- */
+  /* Barra de carrito desactivada (todo va por Mercado Pago) */
   HC.actualizarBarraCarrito = () => {
-    if (!HC._datos || document.body.dataset.pagina === "carrito") return;
-    const calc = HC.calcular(HC._datos, HC.carrito.leer());
-    let barra = HC.$(".barra-carrito");
-    if (!calc.lineas.length) {
-      if (barra) barra.remove();
-      document.body.classList.remove("con-carro");
-      return;
-    }
-    if (!barra) {
-      barra = document.createElement("a");
-      barra.className = "barra-carrito";
-      barra.href = "/carrito.html";
-      document.body.appendChild(barra);
-    }
-    barra.innerHTML = `<span>Ver mi pedido (${calc.frascos}) · ${HC.fmt(calc.total)}</span>${HC.icono.flecha}`;
-    document.body.classList.add("con-carro");
+    const barra = HC.$(".barra-carrito");
+    if (barra) barra.remove();
+    document.body.classList.remove("con-carro");
   };
 
   /* ---------- Aviso emergente ---------- */

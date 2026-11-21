@@ -144,6 +144,9 @@ a:where(:not(.btn):not(.tarjeta):not(.icono-btn):not(.wa-flotante):not(.cabecera
 .btn--wa { background: #25d366; min-height: 48px; padding: 0 var(--s4); font-size: var(--t-sm); font-weight: 600; gap: .4rem; text-shadow: 0 1px 1px rgba(0, 0, 0, .22); box-shadow: 0 4px 12px rgba(37, 211, 102, .15); }
 .btn--wa:hover { background: #1ebe5a; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, .25); }
 .btn--wa svg { width: 20px; height: 20px; }
+.btn--wa-dudas { background: transparent; color: #25d366; border: 1.5px solid #25d366; min-height: 44px; padding: 0 var(--s4); font-size: var(--t-sm); font-weight: 600; gap: .4rem; }
+.btn--wa-dudas:hover { background: #25d366; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37, 211, 102, .25); }
+.btn--wa-dudas svg { width: 18px; height: 18px; }
 .btn svg { width: 20px; height: 20px; flex: none; }
 .btn[disabled], .btn[aria-busy="true"] { opacity: .6; pointer-events: none; }
 .enlace-flecha { display: inline-flex; align-items: center; gap: var(--s2); font-weight: 600; }

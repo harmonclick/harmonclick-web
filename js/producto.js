@@ -46,7 +46,7 @@
 
     const c4 = p.precios.cuatroMas;
     const textoCuatro = c4 && c4.mostrarTexto
-      ? `<p class="pp-cuatro">¿Quieres 4 o más? <a href="#" data-wa-cuatro>Escríbenos</a> y te los dejamos a ${HC.fmt(c4.precio)} c/u.</p>` : "";
+      ? `<p class="pp-cuatro">¿Quieres 4 o más? ${HC.fmt(c4.precio)} c/u. <a href="${c4.mercadoPago || '#'}" target="_blank" rel="noopener">Comprar aquí</a></p>` : "";
 
     const beneficios = p.beneficios.map((b) => `
       <li class="beneficio">${HC.icono.checkFino}<div><strong>${esc(b.t)}</strong><span>${esc(b.d)}</span></div></li>`).join("");
@@ -103,7 +103,7 @@
             ${textoCuatro}
             <div class="pp-botones">
               <a class="btn btn--compra btn--bloque" id="btn-comprar" href="#" target="_blank" rel="noopener">Pagar con Mercado Pago</a>
-              <a class="btn btn--wa btn--bloque" id="btn-wa" data-ubicacion="pedir_por_whatsapp" href="#" target="_blank" rel="noopener">${HC.icono.wa}Pedir por WhatsApp</a>
+              <a class="btn btn--wa-dudas btn--bloque" id="btn-wa" data-ubicacion="dudas_whatsapp" href="#" target="_blank" rel="noopener">${HC.icono.wa}¿Dudas? Escríbenos</a>
             </div>
             <ul class="pp-envio">
               <li>${HC.icono.camion}Envío gratis en todos tus pedidos</li>
@@ -164,13 +164,13 @@
     const barra = document.createElement("div");
     barra.className = "barra-fija";
     barra.innerHTML = `<div class="barra-fija__info"><small data-b-nombre></small><span class="precio" data-b-precio></span></div>
-      <button class="btn btn--compra" type="button" data-pedir-ahora>Pedir ahora</button>`;
+      <button class="btn btn--compra" type="button" data-pedir-ahora>Pagar ahora</button>`;
     document.body.appendChild(barra);
 
     /* ---------- Paquetes ---------- */
     const radios = HC.$$(".paquete", raiz);
     const btnWa = HC.$("#btn-wa", raiz);
-    const mensajeWa = (nombrePaquete) => `¡Hola! Quiero pedir ${p.nombreCorto} – ${nombrePaquete}`;
+    const mensajeWa = (nombrePaquete) => `¡Hola! Tengo una duda sobre ${p.nombreCorto} – ${nombrePaquete}`;
     function seleccionar(c, enfocar) {
       clave = c;
       const q = HC.paquete(p, c);
@@ -215,9 +215,6 @@
       seleccionar(orden[i], true);
     });
     seleccionar(clave);
-
-    const cuatro = HC.$("[data-wa-cuatro]", raiz);
-    if (cuatro) cuatro.addEventListener("click", (e) => { e.preventDefault(); HC.registrarWhatsApp("cuatro_o_mas", p.nombreCorto); window.open(HC.waUrl(datos, `¡Hola! Quiero pedir 4 o más de ${p.nombreCorto}`), "_blank", "noopener"); });
 
     /* ---------- Galería ---------- */
     const pista = HC.$(".galeria__pista", raiz), mins = HC.$$(".miniatura", raiz), contador = HC.$(".galeria__contador", raiz);
