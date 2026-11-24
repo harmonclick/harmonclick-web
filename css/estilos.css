@@ -603,7 +603,7 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
 .campo input[aria-invalid="true"], .campo textarea[aria-invalid="true"] { border-color: var(--error); background: var(--error-bg); }
 .campo .error { display: none; margin: var(--s2) 0 0; font-size: var(--t-sm); color: var(--error); font-weight: 500; max-width: none; }
 .campo input[aria-invalid="true"] ~ .error, .campo textarea[aria-invalid="true"] ~ .error { display: block; }
-.privacidad { display: flex; gap: var(--s2); align-items: center; justify-content: center; font-size: var(--t-sm); color: var(--ink-2); margin: 0 auto; text-align: center; }
+.privacidad { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; justify-content: center; font-size: var(--t-sm); color: var(--ink-2); margin: 0 auto; text-align: center; }
 .confirmacion { padding: var(--s4); border-radius: var(--r-md); background: var(--ok-bg); color: var(--ok); font-size: var(--t-sm); }
 .confirmacion p { margin: 0 0 var(--s2); max-width: none; }
 .confirmacion a { color: var(--ok); }
@@ -755,3 +755,11 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
 .nosotros p { margin: 0 0 var(--s3); }
 .nosotros p:last-of-type { margin-bottom: 0; }
 .nosotros__ubicacion { margin-top: var(--s4); font-weight: 600; color: var(--ink); font-size: var(--t-sm); letter-spacing: .03em; }
+
+/* Carrito y pago */
+.nota-reenvio { margin: 0 0 var(--s3); }
+.pp-pago-seguro { display: flex; gap: var(--s2); align-items: center; justify-content: center; margin: var(--s3) 0 0; font-size: var(--t-sm); color: var(--ink-2); }
+.pp-pago-seguro svg { width: 18px; height: 18px; flex: none; }
+.pp-panel #btn-agregar { margin-top: var(--s3); }
+.gracias-caja { max-width: 560px; margin: 0 auto var(--s8); display: grid; gap: var(--s4); }
+.gracias-caja .btn { justify-self: stretch; }

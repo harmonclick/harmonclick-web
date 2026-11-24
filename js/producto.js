@@ -46,7 +46,7 @@
 
     const c4 = p.precios.cuatroMas;
     const textoCuatro = c4 && c4.mostrarTexto
-      ? `<p class="pp-cuatro">¿Quieres 4 o más? ${HC.fmt(c4.precio)} c/u. <a href="${c4.mercadoPago || '#'}" target="_blank" rel="noopener">Comprar aquí</a></p>` : "";
+      ? `<p class="pp-cuatro">¿Quieres 4 o más? ${HC.fmt(c4.precio)} c/u. <a href="carrito.html#datos" data-cuatro>Llévate 4</a> y en el carrito ajustas la cantidad.</p>` : "";
 
     const beneficios = p.beneficios.map((b) => `
       <li class="beneficio">${HC.icono.checkFino}<div><strong>${esc(b.t)}</strong><span>${esc(b.d)}</span></div></li>`).join("");
@@ -108,43 +108,14 @@
               <li>${HC.icono.escudo}<span>Si no llega o llega dañado, te devolvemos tu dinero · <a href="/garantia-y-devoluciones.html">Ver garantía</a></span></li>
             </ul>
             <div class="zona--compacta" id="revisor"></div>
-            <div class="checkout-form" id="checkout-form" style="display:none">
-              <h2 class="checkout__titulo">${HC.icono.camion}Completa tu pedido</h2>
-              <form id="form-pedido" novalidate>
-                <div class="checkout__campos">
-                  <div class="checkout__campo">
-                    <label for="ch-nombre">Nombre completo <span class="req">*</span></label>
-                    <input id="ch-nombre" name="nombre" type="text" autocomplete="name" required placeholder="Tu nombre completo">
-                  </div>
-                  <div class="checkout__campo">
-                    <label for="ch-tel">Teléfono <span class="req">*</span></label>
-                    <input id="ch-tel" name="telefono" type="tel" inputmode="numeric" autocomplete="tel" required placeholder="10 dígitos" maxlength="15">
-                  </div>
-                  <div class="checkout__campo">
-                    <label for="ch-email">Correo electrónico <span class="opcional">(opcional)</span></label>
-                    <input id="ch-email" name="email" type="email" autocomplete="email" placeholder="ejemplo@correo.com">
-                  </div>
-                  <div class="checkout__campo">
-                    <label for="ch-colonia">Colonia <span class="req">*</span></label>
-                    <select id="ch-colonia-sel" style="display:none"><option value="">Selecciona tu colonia</option></select>
-                    <input id="ch-colonia" name="colonia" type="text" autocomplete="address-level3" required placeholder="Tu colonia">
-                  </div>
-                  <div class="checkout__campo">
-                    <label for="ch-calle">Calle y número <span class="req">*</span></label>
-                    <input id="ch-calle" name="calle" type="text" autocomplete="street-address" required placeholder="Ej. Av. Juárez 123">
-                  </div>
-                  <div class="checkout__campo">
-                    <label for="ch-ref">Referencia <span class="opcional">(opcional)</span></label>
-                    <input id="ch-ref" name="referencia" type="text" placeholder="Ej. Casa azul, entre calles...">
-                  </div>
-                </div>
-                <div class="checkout__error" id="ch-error" role="alert"></div>
-                <button class="btn btn--compra btn--bloque" type="submit" id="btn-comprar">COMPRAR AHORA</button>
-                <div class="checkout__confianza">
-                  ${HC.icono.candado}<span>Tus datos están protegidos · Pago seguro con Mercado Pago</span>
-                </div>
-              </form>
+            <button class="btn btn--compra btn--bloque" type="button" id="btn-comprar">Comprar ahora</button>
+            <button class="btn btn--carrito btn--bloque" type="button" id="btn-agregar">Agregar al carrito</button>
+            <div class="pp-agregado" id="pp-agregado" role="status" hidden>
+              <p class="pp-agregado__texto">✓ Agregado a tu carrito</p>
+              <a class="btn btn--compra btn--bloque" href="carrito.html#datos">Finalizar compra →</a>
+              <a class="pp-agregado__seguir" href="index.html#productos">Seguir comprando</a>
             </div>
+            <p class="pp-pago-seguro">${HC.icono.candado}<span>Pago seguro con Mercado Pago</span></p>
             <a class="btn btn--wa-dudas btn--bloque" id="btn-wa" data-ubicacion="dudas_whatsapp" href="#" target="_blank" rel="noopener">${HC.icono.wa}¿Dudas? Escríbenos</a>
           </div>
         </div>
@@ -219,128 +190,27 @@
       btnWa.dataset.producto = p.nombreCorto;
       HC.$("[data-b-nombre]", barra).textContent = q.nombre;
       HC.$("[data-b-precio]", barra).textContent = HC.fmt(q.precio);
-      actualizarBotonCompra();
     }
-    /* ---------- Checker de zona + formulario de checkout ---------- */
+    /* ---------- Checker de zona (solo informa la cobertura; los datos se llenan en el carrito) ---------- */
     HC.montarChecker(HC.$("#revisor", raiz), { compacto: true });
 
-    const checkoutForm = HC.$("#checkout-form", raiz);
-    const formPedido = HC.$("#form-pedido", raiz);
-    const chError = HC.$("#ch-error", raiz);
-    const chColoniaSel = HC.$("#ch-colonia-sel", raiz);
-    const chColoniaInput = HC.$("#ch-colonia", raiz);
-    const btnPedirAhora = HC.$("[data-pedir-ahora]", barra);
-
-    let zonaActual = null; // {cp, cubierto, estado, municipio, dias}
-
-    /* Escuchar cuando el checker confirma cobertura */
-    document.addEventListener("hc:zona", (e) => {
-      zonaActual = e.detail;
-      if (zonaActual && zonaActual.cubierto) {
-        checkoutForm.style.display = "";
-        cargarColonias(zonaActual.cp);
-        checkoutForm.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        checkoutForm.style.display = "none";
-      }
+    /* ---------- Comprar ahora / Agregar al carrito ---------- */
+    const cajaAgregado = HC.$("#pp-agregado", raiz);
+    const irAPagar = (n) => {
+      HC.carrito.agregar(p.id, n);
+      HC.registrarEvento("add_to_cart", { producto: p.nombreCorto, paquete: HC.paquete(p, clave).nombre, valor: HC.paquete(p, clave).precio, moneda: "MXN" });
+      location.href = "carrito.html#datos";
+    };
+    HC.$("#btn-comprar", raiz).addEventListener("click", () => irAPagar(HC.paquete(p, clave).n));
+    HC.$("[data-pedir-ahora]", barra).addEventListener("click", () => irAPagar(HC.paquete(p, clave).n));
+    HC.$("#btn-agregar", raiz).addEventListener("click", () => {
+      const q = HC.paquete(p, clave);
+      HC.carrito.agregar(p.id, q.n);
+      HC.registrarEvento("add_to_cart", { producto: p.nombreCorto, paquete: q.nombre, valor: q.precio, moneda: "MXN" });
+      cajaAgregado.hidden = false;
     });
-
-    /* Si ya tenía zona guardada y es cubierta, mostrar formulario */
-    const zonaPrevia = HC.zonaGuardada();
-    if (zonaPrevia && zonaPrevia.cubierto) {
-      zonaActual = zonaPrevia;
-      checkoutForm.style.display = "";
-      cargarColonias(zonaPrevia.cp);
-    }
-
-    async function cargarColonias(cp5) {
-      try {
-        const cols = await HC.colonias(cp5);
-        if (cols && cols.length > 0) {
-          chColoniaSel.innerHTML = '<option value="">Selecciona tu colonia</option>'
-            + cols.map((c) => `<option value="${c}">${c}</option>`).join("")
-            + '<option value="__otra__">Otra colonia...</option>';
-          chColoniaSel.style.display = "";
-          chColoniaInput.style.display = "none";
-        } else {
-          chColoniaSel.style.display = "none";
-          chColoniaInput.style.display = "";
-          chColoniaInput.value = "";
-        }
-      } catch (e) {
-        chColoniaSel.style.display = "none";
-        chColoniaInput.style.display = "";
-      }
-    }
-
-    chColoniaSel.addEventListener("change", () => {
-      if (chColoniaSel.value === "__otra__") {
-        chColoniaSel.style.display = "none";
-        chColoniaInput.style.display = "";
-        chColoniaInput.value = "";
-        chColoniaInput.focus();
-      } else if (chColoniaSel.value) {
-        chColoniaInput.value = chColoniaSel.value;
-      }
-    });
-
-    /* Teléfono: solo números */
-    HC.$("#ch-tel", raiz).addEventListener("input", function () {
-      this.value = this.value.replace(/\D/g, "").slice(0, 10);
-    });
-
-    /* Enviar pedido por WhatsApp */
-    formPedido.addEventListener("submit", (e) => {
-      e.preventDefault();
-      chError.textContent = "";
-
-      if (!zonaActual || !zonaActual.cubierto) { mostrarError("Primero verifica tu código postal arriba."); return; }
-
-      const nombre = HC.$("#ch-nombre", raiz).value.trim();
-      const tel = HC.$("#ch-tel", raiz).value.trim();
-      const email = HC.$("#ch-email", raiz).value.trim();
-      const colonia = chColoniaInput.value.trim() || (chColoniaSel.style.display !== "none" ? chColoniaSel.value : "");
-      const calle = HC.$("#ch-calle", raiz).value.trim();
-      const ref = HC.$("#ch-ref", raiz).value.trim();
-
-      // Validaciones
-      if (!nombre) { mostrarError("Escribe tu nombre completo."); HC.$("#ch-nombre", raiz).focus(); return; }
-      if (!tel || tel.length < 10) { mostrarError("Escribe un teléfono de 10 dígitos."); HC.$("#ch-tel", raiz).focus(); return; }
-      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { mostrarError("Revisa tu correo electrónico."); HC.$("#ch-email", raiz).focus(); return; }
-      if (!colonia || colonia === "__otra__") { mostrarError("Selecciona o escribe tu colonia."); return; }
-      if (!calle) { mostrarError("Escribe tu calle y número."); HC.$("#ch-calle", raiz).focus(); return; }
-
-      const paq = HC.paquete(p, clave);
-
-      const mensaje = [
-        `¡Hola! Quiero hacer un pedido desde harmonclick.com`,
-        ``,
-        `📦 *${p.nombreCorto} – ${paq.nombre}* ($${Math.round(paq.precio)})`,
-        ``,
-        `👤 ${nombre}`,
-        `📱 ${tel}`,
-        email ? `📧 ${email}` : "",
-        `📍 CP ${zonaActual.cp} – ${colonia}, ${zonaActual.municipio}, ${zonaActual.estado}`,
-        `🏠 ${calle}`,
-        ref ? `📝 Ref: ${ref}` : "",
-      ].filter(Boolean).join("\n");
-
-      HC.registrarEvento("comprar_ahora", { producto: p.nombreCorto, paquete: paq.nombre, precio: paq.precio });
-
-      window.open(HC.waUrl(datos, mensaje), "_blank", "noopener");
-    });
-
-    function mostrarError(msg) {
-      chError.textContent = msg;
-      chError.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    function actualizarBotonCompra() {}
-
-    btnPedirAhora.addEventListener("click", () => {
-      const revisor = HC.$("#revisor", raiz);
-      if (revisor) revisor.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    const enlaceCuatro = HC.$("[data-cuatro]", raiz);
+    if (enlaceCuatro) enlaceCuatro.addEventListener("click", (e) => { e.preventDefault(); irAPagar(4); });
 
     radios.forEach((r) => r.addEventListener("click", () => seleccionar(r.dataset.clave)));
     HC.$(".paquetes", raiz).addEventListener("keydown", (e) => {

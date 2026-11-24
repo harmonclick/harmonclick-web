@@ -1,9 +1,12 @@
 /* Carrito y pedido. El pedido se guarda en una Google Sheet con Apps Script (sitio.pedidosUrl en data/products.json).
-   Si no se puede guardar, se abre WhatsApp con el mismo pedido para no perderlo. */
+   Si la zona tiene cobertura, Apps Script crea el cobro en Mercado Pago (Checkout Pro) y la persona va a pagar;
+   al terminar vuelve a gracias.html. Si no se puede guardar, se abre WhatsApp con el mismo pedido para no perderlo. */
 (function () {
   "use strict";
   const ESTADOS = ["Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua", "Ciudad de México", "Coahuila de Zaragoza", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero", "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla", "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz de Ignacio de la Llave", "Yucatán", "Zacatecas"];
-  const OTRA = "__otra__";   // opción del menú de colonias: "Mi colonia no aparece"
+  const OTRA = "__otra__";
+  const TEXTO_PAGAR = "Pagar con Mercado Pago";
+  const CLAVE_ULTIMO = "hc_ultimo_pedido";   // gracias.html lo usa para mostrar el pedido y vaciar el carrito   // opción del menú de colonias: "Mi colonia no aparece"
   const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   const telefono10 = (v) => String(v).replace(/\D/g, "");   // exactamente 10 dígitos (sin lada de país)
 
@@ -56,8 +59,9 @@
       </div>
       <datalist id="estados">${ESTADOS.map((e) => `<option value="${e}">`).join("")}</datalist>
       <div class="trampa" aria-hidden="true"><label>No llenes este campo<input type="text" name="web_extra" tabindex="-1" autocomplete="off"></label></div>
-      <button class="btn btn--compra btn--bloque" type="submit" id="btn-pedir">Pedir</button>
-      <p class="privacidad">🔒 Tus datos solo se usan para enviar tu pedido.</p>
+      <p class="nota nota-reenvio">Revisa bien tu dirección, código postal y teléfono: el envío gratis cubre una entrega. Si el paquete regresa por datos incorrectos o porque nadie lo recibió, el reenvío tiene costo.</p>
+      <button class="btn btn--compra btn--bloque" type="submit" id="btn-pedir">${TEXTO_PAGAR}</button>
+      <p class="privacidad">🔒 Pago seguro con Mercado Pago. Tus datos solo se usan para enviar tu pedido. <a href="garantia-y-devoluciones.html">Garantía y devoluciones</a></p>
       <div id="pedido-error" aria-live="assertive"></div>
     </form>`;
 
@@ -101,6 +105,7 @@
       const r = await fetch(url, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(pedido), signal: control.signal });
       const j = await r.json();
       if (!j.ok) throw new Error(j.error || "pedido rechazado");
+      return j;
     } finally { clearTimeout(espera); }
   };
 
@@ -168,7 +173,7 @@
             <div class="fila-resumen fila-resumen--total"><span>Total a pagar</span><span class="precio">${HC.fmt(calc.total)}</span></div>
             ${calc.ahorroTotal > 0 ? `<p class="combo-aplicado">${calc.comboAplicado ? `¡Aplicamos el ${calc.comboNombre}! ` : ""}Con tus paquetes ahorras ${HC.fmt(calc.ahorroTotal)}.</p>` : ""}
             ${calc.distintos >= 2 ? `<p class="nota-combinados">${datos.sitio.notaCombinados}</p>` : ""}
-            <button class="btn btn--compra btn--bloque" type="button" id="btn-finalizar" style="margin-top:var(--s5)">Finalizar compra</button>
+            <button class="btn btn--compra btn--bloque" type="button" id="btn-finalizar" style="margin-top:var(--s5)">${TEXTO_PAGAR}</button>
             <p class="nota" style="margin:var(--s4) 0 0" id="nota-pago">${pagoTxt}</p>
           </section>
         </div>
@@ -385,14 +390,24 @@
           correo: v.correo,
           pago: pago.texto,
           origen: "Web (carrito)",
+          items: HC.carrito.leer().map((x) => ({ id: x.id, qty: x.qty })),
+          cubierto: !!(r && r.cubierto),
           web_extra: campo("web_extra").value   // trampa anti-spam: los robots la llenan
         };
 
         enviando = true;
         btnPedir.disabled = true;
-        btnPedir.textContent = "Enviando…";
-        const guardado = !pedido.web_extra && await guardarPedido(datos.sitio.pedidosUrl, pedido).then(() => true, () => false);
+        btnPedir.textContent = "Preparando tu pago…";
+        const res = pedido.web_extra ? null : await guardarPedido(datos.sitio.pedidosUrl, pedido).catch(() => null);
+        const guardado = !!res;
 
+        if (res && res.pago) {
+          // Va a pagar a Mercado Pago. El carrito se vacía en gracias.html cuando el pago queda aprobado o pendiente.
+          try { sessionStorage.setItem(CLAVE_ULTIMO, JSON.stringify({ pedido: res.pedido, total: res.total, wa: url })); } catch (err) { /* sin respaldo */ }
+          HC.registrarEvento("begin_checkout", { producto: nombres, valor: res.total, moneda: "MXN" });
+          window.location.href = res.pago;
+          return;
+        }
         if (guardado) {
           HC.registrarEvento("pedido_enviado", { producto: nombres, valor: c.total, metodo_pago: pago.clave, moneda: "MXN" });
           HC.carrito.vaciar();
@@ -403,7 +418,7 @@
         if (abrio) HC.registrarWhatsApp("pedido_respaldo", nombres);
         enviando = false;
         btnPedir.disabled = false;
-        btnPedir.textContent = "Pedir";
+        btnPedir.textContent = TEXTO_PAGAR;
         abrirRespaldo(url, abrio);
       };
       form.addEventListener("submit", (e) => { e.preventDefault(); enviarPedido(); });

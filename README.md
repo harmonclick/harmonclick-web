@@ -30,7 +30,7 @@ Los productos del inicio y las preguntas frecuentes (con su JSON-LD FAQPage) se 
 
 ## Pedidos (carrito)
 El formulario del carrito envía cada pedido a una Google Sheet con Apps Script. Pasos para configurarlo y para la colonia por C.P.:
-- Código del script y pasos: `herramientas/pedidos_apps_script.gs`. La URL que publiques va en `data/products.json` > `sitio.pedidosUrl`. Mientras esté vacía, el botón "Pedir" abre WhatsApp con el pedido.
+- Código del script y pasos: `herramientas/pedidos_apps_script.gs`. Con la propiedad `MP_ACCESS_TOKEN` (Access Token de Mercado Pago) el script recalcula el total con los precios de `data/products.json`, crea el cobro en Mercado Pago (Checkout Pro) y manda a la persona a pagar; al terminar vuelve a `gracias.html`, y el estado del pago se anota en la hoja. Sin esa propiedad, el pedido se guarda y se confirma por WhatsApp como antes. La URL que publiques va en `data/products.json` > `sitio.pedidosUrl`. Mientras esté vacía, el botón "Pedir" abre WhatsApp con el pedido.
 - Colonias por C.P.: descarga el archivo `CPdescarga.txt` de Correos de México (datos abiertos) y corre `python3 herramientas/generar_colonias.py ruta/CPdescarga.txt`. Crea `data/colonias/NN.json`, un archivo por los 2 primeros dígitos del C.P. (por ejemplo `data/colonias/44.json`). El sitio descarga solo el de la zona que escribe la persona.
 
 ## Sitemap y robots
