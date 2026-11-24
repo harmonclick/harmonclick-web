@@ -102,9 +102,10 @@
             </div>
             ${textoCuatro}
             <ul class="pp-envio">
-              <li>${HC.icono.camion}Envío gratis en todos tus pedidos</li>
+              <li>${HC.icono.camion}<span>Envío gratis en tu primera entrega. Revisa bien tu dirección, código postal y teléfono: si el paquete regresa por datos incorrectos o porque nadie lo recibió, el reenvío tiene costo.</span></li>
               <li>${HC.icono.tarjeta}Pago seguro con tarjeta · Hasta 24 meses</li>
               <li>${HC.icono.escudo}Producto 100% original</li>
+              <li>${HC.icono.escudo}<span>Si no llega o llega dañado, te devolvemos tu dinero · <a href="/garantia-y-devoluciones.html">Ver garantía</a></span></li>
             </ul>
             <div class="zona--compacta" id="revisor"></div>
             <div class="checkout-form" id="checkout-form" style="display:none">

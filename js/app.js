@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261124c";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261124d";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -375,6 +375,7 @@ ${cintaAnuncios()}
                 <li><a href="${prefijo}#como-funciona">Cómo comprar</a></li>
                 <li><a href="${prefijo}#nosotros">Nuestra historia</a></li>
                 <li><a href="/preguntas-frecuentes.html">Preguntas frecuentes</a></li>
+                <li><a href="/garantia-y-devoluciones.html">Garantía y devoluciones</a></li>
                 <li><a href="/aviso-de-privacidad.html">Aviso de privacidad</a></li>
               </ul>
             </div>

@@ -380,11 +380,11 @@
     },
     {
       "p": "¿El envío tiene costo?",
-      "r": "No. El envío es gratis en todos los pedidos y no hay pedido mínimo: puedes comprar desde 1 frasco."
+      "r": "No. El envío es gratis y no hay pedido mínimo: puedes comprar desde 1 frasco. El envío gratis cubre una entrega: si el paquete regresa por datos incorrectos o porque nadie lo recibió, el reenvío tiene costo según tu código postal."
     },
     {
       "p": "¿Puedo devolver mi pedido?",
-      "r": "Por tratarse de suplementos alimenticios, no aceptamos devoluciones una vez entregado el producto. Si tienes cualquier duda con tu pedido, escríbenos por WhatsApp y con gusto te ayudamos.",
+      "r": "Sí. Si tu pedido no llega o llega dañado, te devolvemos tu dinero. Además, tienes 5 días hábiles después de recibirlo para cancelar tu compra, siempre que el producto esté cerrado y con su sello intacto; el envío de regreso corre por tu cuenta. Consulta todos los detalles en nuestra página de Garantía y devoluciones o escríbenos por WhatsApp.",
       "enlaceWhatsApp": "escríbenos por WhatsApp"
     },
     {

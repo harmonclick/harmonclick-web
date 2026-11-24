@@ -30,7 +30,7 @@ def product_ld(p):
                 "businessDays": {"@type": "OpeningHoursSpecification", "dayOfWeek": ["https://schema.org/Monday", "https://schema.org/Tuesday", "https://schema.org/Wednesday", "https://schema.org/Thursday", "https://schema.org/Friday"]}
             }
         },
-        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "MX", "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted"}
+        "hasMerchantReturnPolicy": {"@type": "MerchantReturnPolicy", "applicableCountry": "MX", "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow", "merchantReturnDays": 5, "returnMethod": "https://schema.org/ReturnByMail", "returnFees": "https://schema.org/ReturnShippingFees", "merchantReturnLink": "https://harmonclick.com/garantia-y-devoluciones.html"}
     })
     ld = {"@context": "https://schema.org", "@type": "Product", "name": p["nombre"], "description": p["metaDescripcion"],
           "image": [f"{dom}/{f['src']}.webp" for f in p["fotos"]], "brand": {"@type": "Brand", "name": "Harmon & Click"},
@@ -87,8 +87,8 @@ PLANTILLA = """<!doctype html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Plus+Jakarta+Sans:wght@400..600&amp;display=swap">
-  <link rel="stylesheet" href="css/estilos.css?v=20261124c">
-  <link rel="preload" href="data/products.json?v=20261124c" as="fetch" crossorigin>
+  <link rel="stylesheet" href="css/estilos.css?v=20261124d">
+  <link rel="preload" href="data/products.json?v=20261124d" as="fetch" crossorigin>
   <script type="application/ld+json">{ld}</script>
 </head>
 <body data-pagina="producto" data-producto="{id}">
@@ -103,8 +103,8 @@ PLANTILLA = """<!doctype html>
     </div>
   </main>
   <div data-pie></div>
-  <script src="js/app.js?v=20261124c" defer></script>
-  <script src="js/producto.js?v=20261124c" defer></script>
+  <script src="js/app.js?v=20261124d" defer></script>
+  <script src="js/producto.js?v=20261124d" defer></script>
 </body>
 </html>
 """
