@@ -290,7 +290,7 @@
         "acento": "#8a3fb5"
       },
       "precios": {
-        "uno": { "precio": 690, "antes": 850, "mercadoPago": "https://mpago.la/16K2TZb" },
+        "uno": { "precio": 690, "mercadoPago": "https://mpago.la/16K2TZb" },
         "duo": { "precio": 1050, "mercadoPago": "https://mpago.la/31Bms6K" },
         "trio": { "precio": 1350, "mercadoPago": "https://mpago.la/2udm35i" },
         "cuatroMas": { "precio": 413, "mostrarTexto": false, "mercadoPago": "https://mpago.la/1niV32M" }
