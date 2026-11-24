@@ -5,7 +5,7 @@
   document.documentElement.classList.add("js");
 
   const HC = (window.HC = {});
-  const VERSION = "20261121g";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
+  const VERSION = "20261124b";   // lo actualiza herramientas/actualizar_version.py (evita datos viejos en caché)
   const CLAVE_CARRITO = "hc_carrito_v1";
   const CLAVE_ZONA = "hc_zona_v1";
 
@@ -373,6 +373,7 @@ ${cintaAnuncios()}
               <ul>
                 <li><a href="${prefijo}#productos">Productos</a></li>
                 <li><a href="${prefijo}#como-funciona">Cómo comprar</a></li>
+                <li><a href="${prefijo}#nosotros">Nuestra historia</a></li>
                 <li><a href="/preguntas-frecuentes.html">Preguntas frecuentes</a></li>
                 <li><a href="/aviso-de-privacidad.html">Aviso de privacidad</a></li>
               </ul>
@@ -380,7 +381,7 @@ ${cintaAnuncios()}
           </div>
           <div class="pie__legal">
             <p>${s.leyenda}</p>
-            <p>© Harmon &amp; Click. Tienda 100% en línea. Todos los derechos reservados.</p>
+            <p>© Harmon &amp; Click. Tienda 100% en línea · Zapopan, Jalisco, México. Todos los derechos reservados.</p>
             <p class="pie__seguro"><span class="pie__candado" aria-hidden="true">🔒</span> Sitio seguro · Conexión cifrada (HTTPS)</p>
           </div>
         </div>

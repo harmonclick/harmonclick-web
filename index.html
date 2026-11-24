@@ -48,8 +48,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&amp;family=Plus+Jakarta+Sans:wght@400..600&amp;display=swap">
-  <link rel="stylesheet" href="css/estilos.css?v=20261121g">
-  <link rel="preload" href="data/products.json?v=20261121g" as="fetch" crossorigin>
+  <link rel="stylesheet" href="css/estilos.css?v=20261124b">
+  <link rel="preload" href="data/products.json?v=20261124b" as="fetch" crossorigin>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Harmon & Click","url":"https://harmonclick.com/","logo":"https://harmonclick.com/img/favicon-192.png","email":"contacto.harmonclick@gmail.com","telephone":"+52 33 5331 0072","sameAs":["https://www.facebook.com/HarmonClickMx"]}</script>
 </head>
 <body data-pagina="inicio">
@@ -103,7 +103,7 @@
     <section class="confianza" aria-label="Por qué comprar con nosotros">
       <div class="contenedor">
         <ul class="confianza__lista">
-          <li class="confianza__item revelar"><span class="confianza__icono" data-i="tarjeta"></span><span>Pago seguro en línea</span></li>
+          <li class="confianza__item revelar"><span class="confianza__icono" data-i="tarjeta"></span><span>Pago seguro con Mercado Pago</span></li>
           <li class="confianza__item revelar"><span class="confianza__icono" data-i="camion"></span><span>Envío gratis</span></li>
           <li class="confianza__item revelar"><span class="confianza__icono" data-i="escudo"></span><span>Productos 100% originales</span></li>
           <li class="confianza__item revelar"><span class="confianza__icono" data-i="chat"></span><span>Atención por WhatsApp</span></li>
@@ -153,7 +153,7 @@
           <span class="tarjeta__tipo">Fórmula liposomal</span>
           <h3>NAD+ Liposomal con Resveratrol</h3>
           <p class="tarjeta__beneficio">Precursor de NAD+ con quercetina y resveratrol, para tu energía celular.</p>
-          <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">$690</span></div>
+          <div class="tarjeta__precio"><span class="tarjeta__desde">Desde</span><span class="precio">$690</span><span class="precio-antes"><span class="solo-lectores">Antes </span>$850</span></div>
           <span class="btn btn--secundario btn--bloque">Ver producto</span>
         </div></a>
 <!-- FIN:PRODUCTOS -->
@@ -180,24 +180,17 @@
       </div>
     </section>
 
-    <section class="seccion seccion--alt videos" aria-label="Videos de Harmon &amp; Click">
+    <section class="seccion seccion--alt" id="nosotros" aria-labelledby="titulo-nosotros">
       <div class="contenedor">
-        <p class="etiqueta-seccion videos__etiqueta" data-c="verde">Así se vive con Harmon &amp; Click</p>
-        <div class="videos__fila">
-          <figure class="video-card">
-            <video controls preload="none" playsinline poster="img/videos/uro-poster.webp" aria-label="Video de URO">
-              <source src="fotos-pagina-harmon/videos/uro.mp4" type="video/mp4">
-              <source src="fotos-pagina-harmon/videos/uro.webm" type="video/webm">
-            </video>
-            <figcaption class="video-card__nota">Video creado con IA</figcaption>
-          </figure>
-          <figure class="video-card">
-            <video controls preload="none" playsinline poster="img/videos/shilajit-poster.webp" aria-label="Video de Shilajit">
-              <source src="fotos-pagina-harmon/videos/shilajit.mp4" type="video/mp4">
-              <source src="fotos-pagina-harmon/videos/shilajit.webm" type="video/webm">
-            </video>
-            <figcaption class="video-card__nota">Video creado con IA</figcaption>
-          </figure>
+        <div class="encabezado-seccion revelar">
+          <span class="etiqueta-seccion" data-c="verde">Nuestra historia</span>
+          <h2 id="titulo-nosotros">¿Quiénes somos?</h2>
+        </div>
+        <div class="nosotros revelar">
+          <p>Harmon &amp; Click nació de una idea simple: que cuidar tu bienestar sea fácil, accesible y sin complicaciones.</p>
+          <p>Seleccionamos cada producto con cuidado. Si no nos convence, no lo vendemos. Así de sencillo.</p>
+          <p>Somos una tienda 100% en línea con envío a todo México. Te atendemos de forma personal por WhatsApp, porque creemos que comprar bienestar debe sentirse cercano y de confianza.</p>
+          <p class="nosotros__ubicacion">📍 Zapopan, Jalisco, México</p>
         </div>
       </div>
     </section>
@@ -214,7 +207,7 @@
   </main>
 
   <div data-pie></div>
-  <script src="js/app.js?v=20261121g" defer></script>
-  <script src="js/inicio.js?v=20261121g" defer></script>
+  <script src="js/app.js?v=20261124b" defer></script>
+  <script src="js/inicio.js?v=20261124b" defer></script>
 </body>
 </html>

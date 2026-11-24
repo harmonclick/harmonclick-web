@@ -749,3 +749,9 @@ body.con-barra, body.con-carro { padding-bottom: calc(var(--bar-prod) + var(--ba
 .resumen-prod__apoya svg { width: 14px; height: 14px; stroke-width: 2; color: var(--ink); flex: none; }
 .resumen-prod__datos { padding-top: var(--s2); border-top: 1px solid var(--line); font-size: var(--t-xs); letter-spacing: .01em; }
 @media (max-width: 899px) { .zona__marca { gap: var(--s4); padding: var(--s4) var(--s4) calc(var(--s4) + 14px); } .zona__marca-video { width: 118px; } .zona__marca-titulo { font-size: 1.25rem; } .videos__fila { gap: var(--s4); } }
+
+/* ---------- Sección "Nuestra historia" ---------- */
+.nosotros { max-width: 640px; margin: 0 auto; text-align: center; font-size: var(--t-base); line-height: 1.7; color: var(--ink-2); }
+.nosotros p { margin: 0 0 var(--s3); }
+.nosotros p:last-of-type { margin-bottom: 0; }
+.nosotros__ubicacion { margin-top: var(--s4); font-weight: 600; color: var(--ink); font-size: var(--t-sm); letter-spacing: .03em; }
